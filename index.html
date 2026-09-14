@@ -1,202 +1,848 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The 3x Playbook</title>
-<meta name="robots" content="noindex">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Archivo+Narrow:wght@400;500&family=JetBrains+Mono:wght@500;700&display=swap"><style>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cargill Family Board</title>
+<meta name="description" content="One page for the Cargill household plan: the 3x scorecard, the LLC, the truck calculator, and the benefits guide.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@400;500&family=JetBrains+Mono:wght@500&display=swap">
+<style>
 :root{
-  --bg:#f6f4ee; --ink:#14201b; --muted:#5c6862; --rule:#d8d4c9; --panel:#ffffff;
-  --go:#1c7a5e; --go-ink:#ffffff; --earn:#b8741a; --add:#2f5f9e; --bet:#b9432c; --keep:#1c7a5e;
-  --flag-bg:#efe6d0; --flag-ink:#5a4110;
+  --bg:#f5f1ea; --surface:#fbf9f5; --surface-2:#efeae0; --ink:#201e1d; --ink-2:#4a4642; --muted:#7d766d; --rule:#d9d2c6; --rule-2:#e9e3d8;
+  --accent:#ec3013; --on-accent:#ffffff;
+  --s1:#ec3013; --s2:#1a66a8; --s3:#b07a0a; --s4:#1e7a4d;
+  --good:#1e7a4d; --warn:#b07a0a; --crit:#b3200b;
+  --grid:#e2dbcf; --fill:#fff3c4;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#121715; --ink:#e9e7e0; --muted:#98a39d; --rule:#2b332f; --panel:#1a211e;
-    --go:#2e9d7c; --go-ink:#0f1a15; --earn:#dba24f; --add:#6f9bd8; --bet:#e0765d; --keep:#2e9d7c;
-    --flag-bg:#33291a; --flag-ink:#eacb8e;
+    --bg:#201e1d; --surface:#2a2725; --surface-2:#332f2c; --ink:#f0ebe3; --ink-2:#cfc8bd; --muted:#9a928a; --rule:#3d3935; --rule-2:#33302d;
+    --accent:#f0502f; --on-accent:#201e1d;
+    --s1:#f0502f; --s2:#3f8fd0; --s3:#bf8a2a; --s4:#4fb07f;
+    --good:#4fb07f; --warn:#d9a441; --crit:#ff6a4a;
+    --grid:#3a3633; --fill:#3d3412;
+    color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121715; --ink:#e9e7e0; --muted:#98a39d; --rule:#2b332f; --panel:#1a211e;
-  --go:#2e9d7c; --go-ink:#0f1a15; --earn:#dba24f; --add:#6f9bd8; --bet:#e0765d; --keep:#2e9d7c;
-  --flag-bg:#33291a; --flag-ink:#eacb8e;
+  --bg:#201e1d; --surface:#2a2725; --surface-2:#332f2c; --ink:#f0ebe3; --ink-2:#cfc8bd; --muted:#9a928a; --rule:#3d3935; --rule-2:#33302d;
+  --accent:#f0502f; --on-accent:#201e1d;
+  --s1:#f0502f; --s2:#3f8fd0; --s3:#bf8a2a; --s4:#4fb07f;
+  --good:#4fb07f; --warn:#d9a441; --crit:#ff6a4a;
+  --grid:#3a3633; --fill:#3d3412;
+  color-scheme:dark;
 }
-body{background:var(--bg);color:var(--ink);font-family:"Archivo Narrow","Arial Narrow",system-ui,sans-serif;font-size:17px;line-height:1.5;padding:0 20px;padding-block:36px 64px;}
-main{max-width:720px;margin:0 auto;display:grid;gap:40px;}
-h1,h2,h3{font-family:Archivo,system-ui,sans-serif;text-wrap:balance;}
-h1{font-weight:800;font-size:clamp(34px,6vw,50px);line-height:1;margin:6px 0 12px;letter-spacing:-.01em;}
-h2{font-weight:700;font-size:22px;margin:0 0 12px;text-transform:uppercase;letter-spacing:.04em;}
-h3{font-weight:700;font-size:17px;margin:0 0 4px;}
-p{margin:0 0 10px;}
-.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
-.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
-.thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;border-radius:8px;overflow:hidden;}
-.thesis div{padding:14px 16px;color:#fff;}
-.thesis .n{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:26px;font-weight:700;display:block;line-height:1;}
-.thesis small{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-top:6px;}
-.engines{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
-.engine{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:16px;border-top:4px solid var(--rule);}
-.engine .lbl{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-size:20px;}
-.engine .val{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:15px;color:var(--muted);margin-bottom:8px;}
-.engine p{font-size:15px;margin:0;}
-.flag{background:var(--flag-bg);color:var(--flag-ink);border-radius:6px;padding:12px 16px;font-size:15px;}
-ol.script{list-style:none;padding:0;margin:0;display:grid;gap:0;counter-reset:step;}
-ol.script li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--rule);counter-increment:step;}
-ol.script li::before{content:counter(step);font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:700;font-size:20px;color:var(--go);line-height:1.2;}
-ol.script .when{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;}
-ol.script b{font-family:Archivo,system-ui,sans-serif;font-weight:700;}
-table{border-collapse:collapse;width:100%;font-size:16px;}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top;}
-th{font-family:Archivo,system-ui,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
-td.num,th.num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
-.tablewrap{overflow-x:auto;}
-.rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
-.rhythm div{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px;font-size:15px;}
-.rhythm b{display:block;font-family:Archivo,system-ui,sans-serif;font-size:16px;margin-bottom:4px;}
-.rules{display:grid;gap:8px;padding-left:0;list-style:none;margin:0;}
-.rules li{padding-left:22px;position:relative;}
-.rules li::before{content:"";position:absolute;left:0;top:9px;width:10px;height:10px;border-radius:2px;background:var(--bet);}
-.foot{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px;}
-a{color:var(--add);}
-a:focus-visible{outline:2px solid var(--add);outline-offset:2px;}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:Archivo,system-ui,sans-serif;font-size:15px;line-height:1.45;padding-inline:20px;padding-block:0 64px}
+a{color:var(--ink);text-decoration-color:var(--accent);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-weight:800;font-size:clamp(26px,4vw,36px);line-height:1.05;margin:4px 0 6px;letter-spacing:-.01em;text-wrap:balance}
+h2{font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;color:var(--ink-2)}
+h3{font-weight:700;font-size:15px;margin:0 0 6px;text-wrap:balance}
+p{margin:0 0 8px;max-width:70ch}
+small{font-size:12px;color:var(--muted)}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--rule);margin-inline:-20px;padding-inline:20px}
+.top .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:12px}
+.brand{font-weight:800;font-size:15px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.brand i{display:inline-block;width:10px;height:10px;background:var(--accent)}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{font:inherit;font-size:13px;font-weight:600;padding:8px 12px;background:transparent;color:var(--ink-2);border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tools{display:flex;gap:6px;align-items:center}
+.btn{font:inherit;font-size:12px;font-weight:600;padding:6px 10px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn:hover{border-color:var(--ink)}
+
+main{max-width:1120px;margin:0 auto;padding-top:26px}
+.view{display:none;gap:26px}
+.view.on{display:grid}
+header.h p{color:var(--ink-2)}
+.panel{background:var(--surface);border:1px solid var(--rule);padding:16px 18px}
+.panel.flag{border-left:4px solid var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:2px;background:var(--rule)}
+.kpi{background:var(--surface);padding:14px 16px}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .v{font-size:28px;font-weight:800;line-height:1.1;margin-top:4px;letter-spacing:-.01em}
+.kpi .s{font-size:12px;color:var(--muted);margin-top:4px}
+.kpi.hot .v{color:var(--accent)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.total td{font-weight:700;border-top:2px solid var(--ink);border-bottom:0}
+.tablewrap{overflow-x:auto}
+.pill{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:3px 7px;color:#fff;white-space:nowrap}
+.pill.good{background:var(--good)} .pill.warn{background:var(--warn)} .pill.crit{background:var(--crit)} .pill.flat{background:var(--muted)} .pill.acc{background:var(--accent);color:var(--on-accent)}
+input.cell{font:inherit;font-size:14px;font-variant-numeric:tabular-nums;width:110px;padding:4px 6px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);text-align:right}
+input.text{font:inherit;font-size:14px;padding:4px 8px;border:1px dashed var(--muted);background:var(--fill);color:var(--ink);min-width:120px}
+select.cell{font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--rule);background:var(--bg);color:var(--ink)}
+
+/* progress bar */
+.bar{height:14px;background:var(--surface-2);position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent)}
+.bar b{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink)}
+.ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+
+/* checklist */
+ol.script{list-style:none;padding:0;margin:0;display:grid}
+ol.script li{display:grid;grid-template-columns:28px 110px 1fr auto;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule-2);align-items:start}
+ol.script li.done .what{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--rule)}
+ol.script .when{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding-top:3px}
+ol.script .what b{font-weight:700}
+ol.script input[type=checkbox]{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent)}
+ol.script .who{font-size:11px;color:var(--muted);white-space:nowrap;padding-top:3px}
+@media (max-width:640px){ol.script li{grid-template-columns:28px 1fr}ol.script .when,ol.script .who{grid-column:2}}
+
+/* entity tree */
+.tree{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.ent{background:var(--surface);border:1px solid var(--rule);border-top:4px solid var(--rule);padding:14px 16px}
+.ent .lbl{font-weight:800;font-size:17px}
+.ent .val{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12px;color:var(--muted);margin-bottom:8px}
+.ent p{font-size:14px;margin:0 0 6px}
+.ent .status{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:12px}
+
+/* truck */
+.grid{display:grid;grid-template-columns:minmax(260px,320px) 1fr;gap:20px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.inputs{display:grid;gap:10px}
+.inputs fieldset{border:0;padding:0;margin:0;display:grid;gap:8px}
+.inputs legend{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:6px 0 2px}
+.f{display:grid;grid-template-columns:1fr 92px;gap:8px;align-items:center}
+.f label{font-size:13px;color:var(--ink-2)}
+.f input,.f select{width:100%;font:inherit;font-size:14px;font-variant-numeric:tabular-nums;padding:6px 8px;border:1px solid var(--rule);background:var(--bg);color:var(--ink)}
+.seg{display:flex;border:1px solid var(--rule)}
+.seg button{flex:1;font:inherit;font-size:13px;font-weight:600;padding:8px;background:var(--bg);color:var(--ink-2);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.stack{display:grid;gap:20px}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:820px){.charts{grid-template-columns:1fr}}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin:6px 0 10px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 8px;z-index:10;display:none;white-space:nowrap}
+.credit{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;background:var(--rule)}
+.credit>div{background:var(--surface);padding:14px 16px}
+.credit .who{font-weight:800;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.credit p{font-size:13px;color:var(--ink-2);margin-top:6px}
+.callout{border-left:4px solid var(--accent);padding:10px 14px;background:var(--surface);font-size:14px}
+
+/* benefits */
+.alert{border:1px solid var(--crit);border-left:6px solid var(--crit);background:var(--surface);padding:14px 16px}
+.ladder{list-style:none;margin:0;padding:0;display:grid;gap:2px;background:var(--rule)}
+.ladder li{background:var(--surface);padding:14px 16px 14px 20px;display:grid;grid-template-columns:1fr auto;gap:4px 16px;position:relative}
+.ladder li::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--rung)}
+.ladder .cost{grid-column:2;grid-row:1/span 3;align-self:center;text-align:center;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;color:var(--muted)}
+.ladder .cost input{display:block;margin-top:4px;width:80px;text-align:center}
+.ladder .when{color:var(--ink-2);font-size:14px}
+.ladder .how{font-size:13px;color:var(--ink-2)}
+.r1{--rung:var(--s4)} .r2{--rung:var(--s2)} .r3{--rung:var(--s3)} .r4{--rung:var(--crit)}
+@media (max-width:520px){.ladder li{grid-template-columns:1fr}.ladder .cost{grid-column:1;grid-row:auto;text-align:left}.ladder .cost input{display:inline-block;margin:0 0 0 8px}}
+.contacts{display:grid;background:var(--rule);gap:1px}
+.contacts .row{background:var(--surface);display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:10px 14px;align-items:center}
+.contacts .who{font-weight:700;font-size:14px}
+.contacts .what{grid-column:1;font-size:12px;color:var(--muted)}
+.contacts .n{grid-column:2;grid-row:1/span 2;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;text-align:right}
+.contacts .n a{text-decoration:none;color:var(--accent);font-weight:600}
+details{background:var(--surface);border:1px solid var(--rule)}
+details+details{border-top:0}
+summary{cursor:pointer;padding:10px 14px;font-weight:700;font-size:14px;list-style:none;display:flex;justify-content:space-between}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--accent);font-weight:700}
+details[open] summary::after{content:"−"}
+details .body{padding:0 14px 12px;font-size:14px;color:var(--ink-2)}
+ul.plain{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px;background:var(--rule)}
+.links a{display:block;background:var(--surface);padding:14px 16px;text-decoration:none}
+.links a b{display:block;font-size:15px}
+.links a span{font-size:12px;color:var(--muted)}
+.links a:hover{background:var(--surface-2)}
+.foot{font-size:12px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px;max-width:none}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
 </style>
-<style>body{margin:0}img{max-width:100%}</style>
 </head>
 <body>
+
+<div class="top"><div class="in">
+  <div class="brand"><i></i>Cargill Family Board</div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-v="board" aria-selected="true">Board</button>
+    <button role="tab" data-v="script" aria-selected="false">Script</button>
+    <button role="tab" data-v="llc" aria-selected="false">LLC</button>
+    <button role="tab" data-v="truck" aria-selected="false">Truck</button>
+    <button role="tab" data-v="benefits" aria-selected="false">Benefits</button>
+    <button role="tab" data-v="links" aria-selected="false">Sources</button>
+  </nav>
+  <div class="tools">
+    <button class="btn" id="exportBtn" title="Download your checkmarks and numbers as JSON">Export</button>
+    <label class="btn" for="importFile" style="margin:0">Import<input id="importFile" type="file" accept="application/json" hidden></label>
+  </div>
+</div></div>
+
 <main>
-  <header>
+
+<!-- ============ BOARD ============ -->
+<section class="view on" id="v-board" role="tabpanel">
+  <header class="h">
     <div class="eyebrow">Cargill household · Sept 2026 → Sept 2028</div>
-    <h1>The 3x Playbook</h1>
-    <p>Start with about <span class="mono">$13,500</span> from the medical claims. Finish 24 months later with <span class="mono">$40,000</span> working for the family. No lottery tickets doing the heavy lifting: three engines run at once, and a fourth stays small on purpose.</p>
-    <div class="thesis" aria-label="Start, target, timeline">
-      <div style="background:var(--keep)"><span class="n">$13.5K</span><small>Day one</small></div>
-      <div style="background:var(--add)"><span class="n">$40K</span><small>Month 24 target</small></div>
-      <div style="background:var(--earn)"><span class="n">3</span><small>Engines + 1 bet</small></div>
-    </div>
+    <h1>One page for the whole plan</h1>
+    <p>Settlement in, truck bought, LLC filed, business running, $40,000 working for the family by month 24. Everything you tick or type on this page stays in this browser; use Export to move it or to save a snapshot into the repo.</p>
   </header>
 
-  <section>
-    <h2>The four engines</h2>
-    <div class="engines">
-      <div class="engine" style="border-top-color:var(--keep)">
-        <div class="lbl">KEEP</div>
-        <div class="val">Reserve + Roth · $6,500 day one</div>
-        <p>High-yield savings at ~4% and a Roth IRA in index funds. Steady, boring, and never touched for the bet. This is the floor the other engines stand on.</p>
-      </div>
-      <div class="engine" style="border-top-color:var(--earn)">
-        <div class="lbl">EARN</div>
-        <div class="val">Brace business · $1,500 day one</div>
-        <p>Jesica's LLC selling knee and elbow braces. Capital turns four times a year at roughly 2x markup. The only engine that can multiply inside twelve months, because hours are the fuel.</p>
-      </div>
-      <div class="engine" style="border-top-color:var(--add)">
-        <div class="lbl">ADD</div>
-        <div class="val">Cash flow · $500 per month + bonus</div>
-        <p>A fixed transfer every payday plus the Q1 bonus each year. Does more of the tripling than any rate of return possibly can at this horizon.</p>
-      </div>
-      <div class="engine" style="border-top-color:var(--bet)">
-        <div class="lbl">BET</div>
-        <div class="val">Venture slice · $750 day one, 10% cap</div>
-        <p>Reg CF startups or a small-cap ETF. Written off the day it's placed. If it hits, two-thirds moves to KEEP.</p>
-      </div>
+  <section class="kpis" aria-label="Key figures">
+    <div class="kpi hot"><div class="l">In the plan today</div><div class="v num" id="b-inplan">—</div><div class="s" id="b-inplan-s">Enter actuals in the scorecard</div></div>
+    <div class="kpi"><div class="l">Month 24 target</div><div class="v num">$40,000</div><div class="s">3x from a $13,500 start</div></div>
+    <div class="kpi"><div class="l">Plan month</div><div class="v num" id="b-month">—</div><div class="s" id="b-month-s">—</div></div>
+    <div class="kpi"><div class="l">Script steps done</div><div class="v num" id="b-steps">—</div><div class="s" id="b-steps-s">—</div></div>
+    <div class="kpi"><div class="l">LLC formation</div><div class="v num" id="b-llc">—</div><div class="s" id="b-llc-s">—</div></div>
+    <div class="kpi"><div class="l">Truck net / month</div><div class="v num" id="b-truck">—</div><div class="s">From the Truck tab, current inputs</div></div>
+  </section>
+
+  <section class="panel">
+    <h2>Progress to $40,000</h2>
+    <div class="bar" aria-hidden="true"><i id="bar-fill" style="width:0%"></i><b style="left:33.75%" title="$13,500 start"></b></div>
+    <div class="ticks num"><span>$0</span><span>$13.5K start</span><span>$22K · Mo 12</span><span>$30K · Mo 18</span><span>$40K</span></div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Scorecard · plan vs. actual</h2>
+      <p><small>Type what's actually in the plan at each checkpoint: reserve, Roths, business capital, the bet, and truck equity from the down payment. Plan figures come from the 3x Playbook.</small></p>
+      <div class="tablewrap"><table id="t-score">
+        <thead><tr><th>Checkpoint</th><th class="r">Plan</th><th class="r">Actual</th><th class="r">Δ</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+    <section class="panel">
+      <h2>Up next</h2>
+      <ol class="script" id="next-steps"></ol>
+      <p style="margin-top:10px"><small>The first five unchecked steps from the Script tab, in order.</small></p>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Payday rhythm · every other Friday</h2>
+    <div class="three">
+      <div><h3>1 · ADD</h3><p style="font-size:14px">$250 to high-yield savings; becomes Roth once the reserve equals three months of expenses.</p></div>
+      <div><h3>2 · EARN</h3><p style="font-size:14px">Business profit for the period: reinvest share to inventory, household share to savings.</p></div>
+      <div><h3>3 · LOG</h3><p style="font-size:14px">Mileage log reconciled, receipts photographed into the business folder.</p></div>
     </div>
   </section>
+</section>
 
-  <section>
-    <h2>Day-one allocation</h2>
-    <div class="tablewrap"><table>
-      <thead><tr><th>Where</th><th class="num">Amount</th><th>Engine</th><th>Job</th></tr></thead>
-      <tbody>
-        <tr><td>High-yield savings (reserve)</td><td class="num">$4,500</td><td>KEEP</td><td>Emergency floor; also parks the business seed until it's used</td></tr>
-        <tr><td>Vehicle down payment</td><td class="num">$4,000</td><td>—</td><td>Buys the truck at the excellent-credit rate; becomes equity, not spending</td></tr>
-        <tr><td>Roth IRA, index fund</td><td class="num">$2,000</td><td>KEEP</td><td>Long-horizon growth, tax-free forever</td></tr>
-        <tr><td>Brace business seed</td><td class="num">$1,500</td><td>EARN</td><td>First inventory once the LLC is filed</td></tr>
-        <tr><td>Venture slice</td><td class="num">$750</td><td>BET</td><td>Placed once, across 3–5 names</td></tr>
-        <tr><td>Family</td><td class="num">$750</td><td>—</td><td>Spent on purpose; keeps the other 94% intact</td></tr>
-        <tr><th>Total</th><th class="num">$13,500</th><th></th><th></th></tr>
-      </tbody>
-    </table></div>
-    <p class="flag">If the check is $12,000: family and venture drop to $500 each, seed to $1,000. If it's $15,000: the extra $1,500 goes straight to the reserve.</p>
-  </section>
+<!-- ============ SCRIPT ============ -->
+<section class="view" id="v-script" role="tabpanel">
+  <header class="h">
+    <div class="eyebrow">The script · 16 moves, Sept 2026 → Sept 2028</div>
+    <h1>What happens, in order</h1>
+    <p>Check a step off when it's done. The Board tab pulls the next five open steps from here.</p>
+  </header>
+  <section class="panel"><ol class="script" id="script-list"></ol></section>
 
-  <section>
-    <h2>The script</h2>
-    <ol class="script">
-      <li><div><div class="when">This week</div><b>Open the three accounts.</b> High-yield savings, Roth IRA at Fidelity, and a second Roth for Jesica. Pull both credit reports and dispute anything wrong.</div></li>
-      <li><div><div class="when">Check arrives · Oct 2026</div><b>Everything into savings. Wait 14 days.</b> Then move $2,000 to the Roth, tag $4,000 as the down payment, and leave the rest.</div></li>
-      <li><div><div class="when">Oct 2026</div><b>Get a credit-union pre-approval</b> for a half-ton pickup over 6,000 lb GVWR. Super-prime rates are running 4.4% new, 6.3% used.</div></li>
-      <li><div><div class="when">Nov 2026</div><b>Buy the truck in your own name.</b> $4,000 down, 60 months or shorter, dealer beats the pre-approval or you use the pre-approval. Start a mileage log the day you drive it home.</div></li>
-      <li><div><div class="when">Nov 2026</div><b>Place the bet.</b> $750 across 3–5 Reg CF companies or one small-cap ETF. Then don't look at it until May.</div></li>
-      <li><div><div class="when">Dec 2026</div><b>Pick the first two brace SKUs.</b> Not five. The two with clear demand (post-surgery knee, sports elbow). Price supplier quotes. Ask HR whether part of the bonus can go straight to the 401(k).</div></li>
-      <li><div><div class="when">Jan 2027</div><b>File the LLC with the Texas SOS ($300).</b> Jesica as member, Cooper as paid helper. Open business checking the same week. Buy the first $1,500 of inventory.</div></li>
-      <li><div><div class="when">Jan 2027</div><b>Start the ADD transfer.</b> $500 every payday-pair into savings until the reserve equals three months of expenses, then it redirects to the Roth.</div></li>
-      <li><div><div class="when">Feb–Mar 2027</div><b>Sell the first turn.</b> Local clinics, physical therapists, gyms, marketplace listings, and the truck bed at weekend markets. Every business mile in the log. Reinvest 100% of gross profit into inventory.</div></li>
-      <li><div><div class="when">Mar 2027</div><b>Bonus lands. Split the net:</b> 30% reserve, 30% Roth, 20% business (second inventory buy), 10% bet round two, 10% extra truck principal or a trip.</div></li>
-      <li><div><div class="when">Apr 2027</div><b>First tax return with the business on it.</b> CPA picks mileage vs. depreciation for the truck. Any refund follows the bonus split.</div></li>
-      <li><div><div class="when">Jun 2027</div><b>Third inventory turn.</b> Business now funds itself; start paying the household $300–500 a month from profit. That money joins ADD.</div></li>
-      <li><div><div class="when">Sept 2027 · Month 12</div><b>Scorecard check.</b> Target: about $22,000 in the plan (see below). Roth 2027 on pace, reserve nearly full, business profitable on its own books.</div></li>
-      <li><div><div class="when">Jan 2028</div><b>New Roth room, both accounts.</b> Business profit and ADD point at the Roths first this year. Open Cooper's Roth with what he earned.</div></li>
-      <li><div><div class="when">Mar 2028</div><b>Second bonus, same split.</b> Reserve is full by now, so its 30% goes to the Roth.</div></li>
-      <li><div><div class="when">Sept 2028 · Month 24</div><b>$40,000.</b> Rewrite the playbook for the next 3x.</div></li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>The profit engine, one turn</h2>
-    <p>How $1,500 of braces becomes the accelerator. One "turn" is buying inventory, selling it out, and buying again. Illustrative numbers at a 2x markup:</p>
-    <div class="tablewrap"><table>
-      <thead><tr><th>Turn</th><th class="num">Inventory in</th><th class="num">Revenue</th><th class="num">Gross profit</th><th class="num">Reinvest</th><th class="num">To household</th></tr></thead>
-      <tbody>
-        <tr><td>1 · Feb–Mar 2027</td><td class="num">$1,500</td><td class="num">$3,000</td><td class="num">$1,300</td><td class="num">$1,300</td><td class="num">$0</td></tr>
-        <tr><td>2 · Apr–May (+ bonus $700)</td><td class="num">$3,500</td><td class="num">$7,000</td><td class="num">$3,100</td><td class="num">$2,100</td><td class="num">$1,000</td></tr>
-        <tr><td>3 · Jun–Aug</td><td class="num">$5,600</td><td class="num">$11,200</td><td class="num">$5,000</td><td class="num">$2,500</td><td class="num">$2,500</td></tr>
-        <tr><td>4 · Sept–Dec</td><td class="num">$8,100</td><td class="num">$16,200</td><td class="num">$7,300</td><td class="num">$3,300</td><td class="num">$4,000</td></tr>
-        <tr><th>Year one</th><th></th><th class="num">$37,400</th><th class="num">$16,700</th><th></th><th class="num">$7,500</th></tr>
-      </tbody>
-    </table></div>
-    <p>Gross profit assumes about 13% of revenue lost to shipping, fees, and returns. Every number above depends on the inventory actually selling; a turn that takes six months instead of two halves the year. That's why it starts with two SKUs and why the truck, the clinics, and the markets matter more than the spreadsheet.</p>
-  </section>
-
-  <section>
-    <h2>Scorecard</h2>
-    <p>"In the plan" counts reserve, Roths, business capital, the bet, and truck equity from the down payment. Illustrative, assuming the $13,500 midpoint, a $3,500 net bonus each March, $500/month ADD from January 2027, and the profit table above landing at roughly half speed.</p>
-    <div class="tablewrap"><table>
-      <thead><tr><th>Checkpoint</th><th class="num">In the plan</th><th>What must be true</th></tr></thead>
-      <tbody>
-        <tr><td>Day one · Oct 2026</td><td class="num">$13,500</td><td>Accounts open, credit clean, cooling period respected</td></tr>
-        <tr><td>Month 3 · Dec 2026</td><td class="num">$13,000</td><td>Truck bought, bet placed, SKUs chosen (family $750 spent, so the number dips)</td></tr>
-        <tr><td>Month 6 · Mar 2027</td><td class="num">$18,500</td><td>LLC filed, first turn sold, bonus split applied</td></tr>
-        <tr><td>Month 12 · Sept 2027</td><td class="num">$22,000</td><td>Reserve near 3 months, business paying the household, both Roths funded</td></tr>
-        <tr><td>Month 18 · Mar 2028</td><td class="num">$30,000</td><td>Second bonus in, business at 4 turns/year, ADD now $800+/month with profit</td></tr>
-        <tr><td>Month 24 · Sept 2028</td><td class="num">$40,000</td><td>3x. Reserve full, Roths on pace, business on its own books</td></tr>
-      </tbody>
-    </table></div>
-  </section>
-
-  <section>
-    <h2>Payday rhythm</h2>
-    <p>Every other Friday, three transfers, ten minutes, no decisions:</p>
-    <div class="rhythm">
-      <div><b>1 · ADD</b>$250 to high-yield savings (becomes Roth once the reserve is full)</div>
-      <div><b>2 · EARN</b>Business profit for the period: reinvest share to inventory, household share to savings</div>
-      <div><b>3 · LOG</b>Mileage log reconciled, receipts photographed into the business folder</div>
-    </div>
-  </section>
-
-  <section>
+  <section class="panel">
     <h2>Rules that keep it 3x instead of 0.5x</h2>
-    <ul class="rules">
+    <ul class="plain">
       <li>The bet never exceeds 10% of everything in the plan. If it grows past that, sell down to 10% and move the rest to KEEP.</li>
       <li>The reserve is never inventory money and never bet money. The business grows only from its own profit and its scheduled slices.</li>
       <li>No third SKU until the first two have sold through twice.</li>
       <li>The truck stays a personal loan at the excellent-credit rate; the business reimburses miles or takes the depreciation on paper. Never a commercial loan on a months-old LLC.</li>
-      <li>If the LLC has no sales by June 2027, the business capital rolls to the Roth and the plan still reaches 3x by month 30 on ADD alone. Nothing is lost but time.</li>
-      <li>Any windfall not on this page (refund, side job, gift) follows the bonus split. No exceptions, no re-planning.</li>
+      <li>If the LLC has no sales by June 2027, the business capital rolls to the Roth and the plan still reaches 3x by month 30 on ADD alone.</li>
+      <li>Any windfall not on this page (refund, side job, gift) follows the bonus split: 30% reserve, 30% Roth, 20% business, 10% bet, 10% truck principal or a trip.</li>
     </ul>
   </section>
+</section>
 
-  <p class="foot">Companion to the detailed <a href="plan.html">Settlement Allocation Plan</a>, which carries the rates, tax rules, and sources. Planning arithmetic, not financial, tax, or legal advice; the business figures are illustrative and depend entirely on braces selling.</p>
+<!-- ============ LLC ============ -->
+<section class="view" id="v-llc" role="tabpanel">
+  <header class="h">
+    <div class="eyebrow">Cargill Consulting LLC · Texas</div>
+    <h1>One LLC, three lines under it</h1>
+    <p>The LLC files once ($300), banks once, and carries three assumed names filed with the county. Jeremiah and Jesica are the members; Cooper and Myles start on payroll with a written path to membership after year one.</p>
+  </header>
+
+  <div class="tree">
+    <div class="ent" style="border-top-color:var(--s2)">
+      <div class="lbl">Cargill Consulting LLC</div>
+      <div class="val">Parent · members: Jeremiah, Jesica</div>
+      <p>Holds the bank account, the truck-use agreement, the books, and payroll. Jeremiah's own systems-engineering side work bills through here, so the LLC has revenue and a senior name from day one.</p>
+      <div class="status"><span>Status</span><select class="cell" data-ent="parent"><option>Planned</option><option>Filed</option><option>Operating</option></select></div>
+    </div>
+    <div class="ent" style="border-top-color:var(--s3)">
+      <div class="lbl">Techware Braces</div>
+      <div class="val">DBA · the EARN engine · Jesica</div>
+      <p>Knee and elbow braces sold to clinics, therapists, gyms, marketplaces, and from the truck bed at weekend markets. Two SKUs first, 2x markup, four turns a year.</p>
+      <div class="status"><span>Status</span><select class="cell" data-ent="braces"><option>Planned</option><option>DBA filed</option><option>Selling</option></select></div>
+    </div>
+    <div class="ent" style="border-top-color:var(--s4)">
+      <div class="lbl">Cargill Secure</div>
+      <div class="val">DBA · security + access management · Cooper, Myles</div>
+      <p>Identity side first (M365 / Entra hardening, MFA, conditional access; no state license needed). Physical installs under a licensed partner until the LLC earns its own DPS Class B.</p>
+      <div class="status"><span>Status</span><select class="cell" data-ent="secure"><option>Planned</option><option>DBA filed</option><option>First customer</option><option>Retainers</option></select></div>
+    </div>
+    <div class="ent" style="border-top-color:var(--s1)">
+      <div class="lbl">Cargill Home</div>
+      <div class="val">DBA · home-modernization project management · Jesica</div>
+      <p>Owner's-rep PM for homeowners, landlords, and investors: scope, three bids per trade, permits, schedule, punch list. Client pays the trades; Jesica never holds construction funds.</p>
+      <div class="status"><span>Status</span><select class="cell" data-ent="home"><option>Planned</option><option>DBA filed</option><option>First client</option></select></div>
+    </div>
+  </div>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Formation checklist</h2>
+      <ol class="script" id="llc-list"></ol>
+    </section>
+    <div class="stack">
+      <section class="panel flag">
+        <h2>Licensing gates</h2>
+        <p style="font-size:14px"><b>Security installs:</b> Texas Occupations Code Ch. 1702. Installing or servicing alarm, video-surveillance, or electronic access-control systems for hire needs a DPS Class B security contractor license with a qualified manager, plus individual installer registration (fingerprints, background check). Operating without one is a Class A misdemeanor. IT-side identity work needs no license.</p>
+        <p style="font-size:14px"><b>Home PM:</b> no Texas general-contractor license; a PM coordinating licensed trades needs none. Electrical, plumbing, HVAC must be state-licensed trades; some cities require contractor registration. Buying/selling/leasing for others needs a TREC license; managing a renovation does not.</p>
+        <p style="font-size:14px;margin:0"><b>Braces:</b> Texas sales-tax permit for retail sales; no medical license for non-custom, over-the-counter braces.</p>
+      </section>
+      <section class="panel">
+        <h2>Annual calendar</h2>
+        <div class="tablewrap"><table>
+          <thead><tr><th>When</th><th>What</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Jan</td><td>File LLC (first year only) · new Roth room for every member · start ADD transfer</td></tr>
+            <tr><td class="num">Mar</td><td>Bonus lands: 30 / 30 / 20 / 10 / 10 split · quarterly truck-agreement review</td></tr>
+            <tr><td class="num">Apr 15</td><td>Federal return: Schedule C, truck method locked in year one, Reg CF holdings reported</td></tr>
+            <tr><td class="num">May 15</td><td>Texas franchise tax report: no tax due under ~$2.5M revenue, but it must be filed</td></tr>
+            <tr><td class="num">Jun · Sep · Dec</td><td>Quarterly review: business-use %, Uber net offset, scorecard checkpoint, bet ≤ 10%</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>People and pay</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Who</th><th>Role</th><th>Pay</th><th>Credential path, year one</th></tr></thead>
+      <tbody>
+        <tr><td><b>Jeremiah</b></td><td>Member · architect and reviewer, signs every proposal</td><td>Owner draw; side work billed through the LLC</td><td>—</td></tr>
+        <tr><td><b>Jesica</b></td><td>Member · runs Techware Braces and Cargill Home</td><td>Owner draw</td><td>Google PM Certificate or CAPM; NARI/NAHB remodeling course later</td></tr>
+        <tr><td><b>Cooper</b></td><td>Cargill Secure · physical install side; builds the mileage-logger app</td><td>W-2 hourly or 1099; funds his own Roth</td><td>Security+, manufacturer cert (Verkada / Ubiquiti / Axis), DPS installer registration</td></tr>
+        <tr><td><b>Myles</b></td><td>Cargill Secure · identity and network side</td><td>W-2 hourly or 1099; funds his own Roth</td><td>Microsoft SC-300, Network+, DPS installer registration</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px"><small>Cooper and Myles are 22: members or employees in their own right, not dependents on a family payroll. Membership buy-in is tied to the retainers they bring in, written into the operating agreement.</small></p>
+  </section>
+</section>
+
+<!-- ============ TRUCK ============ -->
+<section class="view" id="v-truck" role="tabpanel">
+  <header class="h">
+    <div class="eyebrow">Cargill Consulting · vehicle strategy</div>
+    <h1>Truck Strategy Board</h1>
+    <p>Change any input and every number recalculates. Defaults: a used F-150 Lightning in Jeremiah's name, Uber ten hours a week, brace deliveries, household use, with the LLC as a documented user. Inputs are saved in this browser.</p>
+  </header>
+
+  <section class="kpis" aria-label="Truck figures">
+    <div class="kpi"><div class="l">Loan payment</div><div class="v num" id="k-pay">—</div><div class="s" id="k-pay-s">—</div></div>
+    <div class="kpi"><div class="l">All-in cost / month</div><div class="v num" id="k-cost">—</div><div class="s">Payment + insurance + charging + upkeep</div></div>
+    <div class="kpi hot"><div class="l">Net out of pocket / month</div><div class="v num" id="k-net">—</div><div class="s">After Uber and the tax saving spread monthly</div></div>
+    <div class="kpi"><div class="l">Business use</div><div class="v num" id="k-bu">—</div><div class="s" id="k-bu-s">—</div></div>
+    <div class="kpi"><div class="l">Year-1 tax saving</div><div class="v num" id="k-tax1">—</div><div class="s" id="k-tax1-s">—</div></div>
+    <div class="kpi"><div class="l">5-year tax saving</div><div class="v num" id="k-tax5">—</div><div class="s" id="k-tax5-s">—</div></div>
+  </section>
+
+  <div class="grid">
+    <aside class="panel inputs" aria-label="Inputs">
+      <h2>Inputs</h2>
+      <fieldset><legend>The truck</legend>
+        <div class="f"><label for="price">Price</label><input id="price" type="number" value="40000" step="500"></div>
+        <div class="f"><label for="down">Down payment</label><input id="down" type="number" value="4000" step="500"></div>
+        <div class="f"><label for="apr">APR %</label><input id="apr" type="number" value="4.41" step="0.1"></div>
+        <div class="f"><label for="term">Term (months)</label><select id="term"><option>48</option><option selected>60</option><option>72</option></select></div>
+        <div class="f"><label for="ev">Powertrain</label><select id="ev"><option value="ev" selected>Electric</option><option value="gas">Gas</option></select></div>
+      </fieldset>
+      <fieldset><legend>Miles per month</legend>
+        <div class="f"><label for="uhrs">Uber hours / week</label><input id="uhrs" type="number" value="10" step="1"></div>
+        <div class="f"><label for="urate">Uber net $ / hour</label><input id="urate" type="number" value="18" step="1"></div>
+        <div class="f"><label for="bizmi">Delivery + consulting miles</label><input id="bizmi" type="number" value="300" step="50"></div>
+        <div class="f"><label for="persmi">Household miles</label><input id="persmi" type="number" value="600" step="50"></div>
+      </fieldset>
+      <fieldset><legend>Running costs / month</legend>
+        <div class="f"><label for="ins">Insurance</label><input id="ins" type="number" value="180" step="10"></div>
+        <div class="f"><label for="rs">Rideshare endorsement</label><input id="rs" type="number" value="25" step="5"></div>
+        <div class="f"><label for="maint">Tires, upkeep, washes</label><input id="maint" type="number" value="60" step="10"></div>
+      </fieldset>
+      <fieldset><legend>Tax</legend>
+        <div class="f"><label for="bracket">Federal bracket %</label><select id="bracket"><option>12</option><option selected>22</option><option>24</option></select></div>
+        <div class="f"><label for="otherbiz">Other LLC net income / yr</label><input id="otherbiz" type="number" value="8000" step="500"></div>
+        <div class="f"><label for="rate">Std mileage ¢ / mile</label><input id="rate" type="number" value="76" step="0.5"></div>
+      </fieldset>
+      <fieldset><legend>Whose name on the loan</legend>
+        <div class="seg" role="group" aria-label="Borrower"><button id="b-j" aria-pressed="true">Jeremiah</button><button id="b-jj" aria-pressed="false">Jeremiah + Jesica</button></div>
+      </fieldset>
+    </aside>
+
+    <div class="stack">
+      <section class="charts">
+        <div class="panel chart">
+          <h2>Monthly: what it costs vs. what comes back</h2>
+          <div class="legend"><span><i style="background:var(--s1)"></i>Cost</span><span><i style="background:var(--s2)"></i>Comes back</span></div>
+          <svg id="c-month" viewBox="0 0 480 230" role="img" aria-label="Monthly cost bars versus offset bars"></svg>
+        </div>
+        <div class="panel chart">
+          <h2>Tax saving by method, five years</h2>
+          <div class="legend"><span><i style="background:var(--s2)"></i>Standard mileage</span><span><i style="background:var(--s3)"></i>Bonus depreciation</span></div>
+          <svg id="c-tax" viewBox="0 0 480 230" role="img" aria-label="Five-year tax savings, mileage versus depreciation"></svg>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Shared business expense: the split</h2>
+        <div class="tablewrap"><table id="t-split">
+          <thead><tr><th>Line</th><th class="r">Monthly</th><th class="r">Business share</th><th class="r">Household share</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p class="callout" id="split-note" style="margin-top:10px"></p>
+      </section>
+      <section class="panel">
+        <h2>Tax saving, year one, both methods</h2>
+        <div class="tablewrap"><table id="t-tax">
+          <thead><tr><th>Step</th><th class="r">Standard mileage</th><th class="r">Bonus depreciation</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <p id="tax-note" style="font-size:13px;color:var(--ink-2);margin-top:8px"></p>
+      </section>
+    </div>
+  </div>
+
+  <section>
+    <h2>Whose credit gets built</h2>
+    <div class="credit" id="credit"></div>
+  </section>
+
+  <section class="panel">
+    <h2>The truck-sharing agreement · terms</h2>
+    <div class="tablewrap"><table>
+      <tbody>
+        <tr><td><b>Title and loan</b></td><td>Titled to Jeremiah, financed personally. The LLC does not own the truck; it has a documented right to use it.</td></tr>
+        <tr><td><b>Cost pool</b></td><td>Loan payment, insurance, registration ($200 EV fee included), charging, tires, maintenance, washes. Tracked monthly in one sheet the logger app feeds.</td></tr>
+        <tr><td><b>Split rule</b></td><td>Costs allocated each month by logged miles. Business miles reimbursed to Jeremiah at the IRS rate, or the LLC pays its actual-cost share, whichever method the CPA chose for the year.</td></tr>
+        <tr><td><b>Uber income</b></td><td>Goes to the household; reported on the driver's Schedule C unless the CPA routes it through the LLC.</td></tr>
+        <tr><td><b>Named drivers</b></td><td>Jeremiah, Jesica, Cooper, Myles, all on the policy. Every trip logged with driver and purpose. Unlogged trips billed to the driver at the standard rate.</td></tr>
+        <tr><td><b>Cooper's path to ownership</b></td><td>He pays his share of the pool from day one; refinances jointly once he has 6–12 months of pay stubs, alone after 12–24 months of on-time payments. Buyout = down payment + principal paid − his contributions.</td></tr>
+        <tr><td><b>Damage</b></td><td>Deductible on any at-fault incident is paid by whoever was driving.</td></tr>
+        <tr><td><b>Review</b></td><td>Quarterly, alongside the scorecard: business-use %, net Uber offset, whether the truck still pays for itself.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <p class="foot">Assumes the truck is over 6,000 lb GVWR (all full-size EV pickups are), the LLC is a real business with the income entered above, and business miles are logged. Self-employment tax saving applies only up to the LLC's net income; deductions beyond that offset W-2 income at the bracket rate. No federal EV purchase credit exists for vehicles acquired after Sept 30, 2025. Recapture applies if business use drops to 50% or below or the truck is sold early. Planning arithmetic, not tax advice; the CPA picks the method in year one and it generally can't be switched to standard mileage afterward.</p>
+</section>
+
+<!-- ============ BENEFITS ============ -->
+<section class="view" id="v-benefits" role="tabpanel">
+  <header class="h">
+    <div class="eyebrow">Cargill family · Texas Mutual benefits · effective Aug 24, 2026</div>
+    <h1>You're covered. Here's what that means.</h1>
+    <p>Dad's job comes with health insurance and a few other perks, and you're on the plan. What to do when you're sick, hurt, need a prescription, or need someone to talk to. Dashed boxes are things Dad fills in from the real card; they save in this browser only and are never written into the file.</p>
+  </header>
+
+  <div class="alert">
+    <div class="eyebrow" style="color:var(--crit)">If it's an actual emergency</div>
+    <h3 style="font-size:18px;margin:4px 0 6px">Call 911 or go to the nearest ER. Don't stop to check anything on this page.</h3>
+    <p style="font-size:14px;margin:0">Trouble breathing, a bad head injury, heavy bleeding, chest pain, a spreading allergic reaction, someone unconscious. Emergencies are covered at any hospital, in-network or not. Then call or text Dad; if you can't reach him, call Mom.</p>
+  </div>
+
+  <div class="two">
+    <section class="panel">
+      <h2>The 30-second version</h2>
+      <ol class="script" style="font-size:14px">
+        <li style="grid-template-columns:1fr"><div class="what"><b>Medical insurance is UnitedHealthcare; pharmacy is OptumRx.</b> When a front desk asks "who's your insurance?", that's the answer.</div></li>
+        <li style="grid-template-columns:1fr"><div class="what"><b>Keep a photo of the card on your phone,</b> front and back, or add it to the UHC app.</div></li>
+        <li style="grid-template-columns:1fr"><div class="what"><b>Not an emergency? Text Dad before you go.</b> He can check who's in-network in two minutes: the difference between $30 and $300.</div></li>
+        <li style="grid-template-columns:1fr"><div class="what"><b>Never pay a big bill at the counter.</b> A copay is normal. Anything else: "please bill my insurance."</div></li>
+        <li style="grid-template-columns:1fr;border-bottom:0"><div class="what"><b>Your head counts too.</b> SupportLinc counseling is free and doesn't go through insurance.</div></li>
+      </ol>
+    </section>
+    <section class="panel">
+      <h2>The card, decoded</h2>
+      <div class="tablewrap"><table>
+        <tbody>
+          <tr><td>Carrier</td><td>UnitedHealthcare · medical</td></tr>
+          <tr><td>Member name</td><td>Jeremiah Cargill (covers dependents too)</td></tr>
+          <tr><td>Member ID</td><td><input class="text" data-fill="memberid" placeholder="Dad fills in" aria-label="Member ID"></td></tr>
+          <tr><td>Group #</td><td><input class="text" data-fill="group" placeholder="Dad fills in" aria-label="Group number"></td></tr>
+          <tr><td>Rx (pharmacy)</td><td>OptumRx · BIN <input class="text" data-fill="bin" placeholder="fill in" style="min-width:80px" aria-label="Rx BIN"></td></tr>
+          <tr><td>Deductible (family / yr)</td><td><input class="text" data-fill="deductible" placeholder="$__" style="min-width:80px" aria-label="Deductible"></td></tr>
+        </tbody>
+      </table></div>
+      <p style="margin-top:8px"><small>Hand the front desk: the card (or the app), your ID, and Dad's number for the "guarantor" line, the person who pays.</small></p>
+    </section>
+  </div>
+
+  <section>
+    <h2>Where do I actually go?</h2>
+    <ol class="ladder">
+      <li class="r1"><h3>Virtual visit</h3><p class="when">Cold, sore throat, rash, pink eye, refills, questions at 11pm.</p><p class="how">Video call with a doctor through the UHC app. Cheapest and fastest.</p><div class="cost">copay<input class="text" data-fill="c-virtual" placeholder="$__" aria-label="Virtual visit copay"></div></li>
+      <li class="r2"><h3>Regular doctor</h3><p class="when">Anything that can wait a day or two: checkups, physicals, a cough that won't quit.</p><p class="how">Our primary care doctor: <input class="text" data-fill="pcp" placeholder="Dad fills in" aria-label="Primary care doctor"></p><div class="cost">copay<input class="text" data-fill="c-pcp" placeholder="$__" aria-label="Doctor copay"></div></li>
+      <li class="r3"><h3>Urgent care</h3><p class="when">Needs to be seen today but you're not in danger: sprains, stitches, fever, strep.</p><p class="how"><b>Text Dad first</b> so he can confirm the location is in-network. Out-of-network is how $75 becomes $400.</p><div class="cost">copay<input class="text" data-fill="c-uc" placeholder="$__" aria-label="Urgent care copay"></div></li>
+      <li class="r4"><h3>Emergency room</h3><p class="when">Real emergencies only. See the red box above.</p><p class="how">The most expensive door in healthcare and a several-hour wait for anything that isn't life-threatening.</p><div class="cost">copay<input class="text" data-fill="c-er" placeholder="$__" aria-label="ER copay"></div></li>
+    </ol>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Pharmacy · OptumRx</h2>
+      <ul class="plain">
+        <li>Tell the doctor which pharmacy: <input class="text" data-fill="pharmacy" placeholder="Dad fills in" aria-label="Pharmacy"></li>
+        <li>Wait 20–30 minutes, go to the pharmacy counter, give your name and birthday.</li>
+        <li>"No insurance on file"? Show the back of the card. Still stuck? Call Dad rather than paying full price.</li>
+        <li>Pay the copay. Ask for the <b>generic</b>: same medicine, much cheaper.</li>
+      </ul>
+    </section>
+    <section class="panel">
+      <h2>Mental health · SupportLinc</h2>
+      <p style="font-size:14px">Dad's job includes SupportLinc, an employee assistance program: free counseling sessions with a real counselor, no claim, no copay, nothing through the insurance company. Family members are usually eligible; Dad gets you the login. Therapists are also covered under UHC like any doctor.</p>
+      <p style="font-size:14px;margin:0"><b>If it's urgent</b> and you or a friend are in crisis, call or text <span class="num">988</span> any time. No insurance needed.</p>
+    </section>
+  </div>
+
+  <div class="two">
+    <section class="panel">
+      <h2>Also covered · identity</h2>
+      <p style="font-size:14px">ID Watchdog identity-theft protection watches for your Social Security number showing up where it shouldn't and helps clean up if it does. Dad can add you. Never type your SSN into a site, form, or app without asking; mail about credit cards or loans you didn't open goes to Dad, not the trash.</p>
+      <p style="font-size:14px;margin:0">You can stay on this plan until you turn <b>26</b>, in school or not, living at home or not. When you compare job offers one day, benefits like these are worth thousands a year on top of salary: health, pharmacy, 2nd.MD second opinions, counseling, identity protection, and a Fidelity retirement plan with company match.</p>
+    </section>
+    <section>
+      <h2>Words you'll hear at the front desk</h2>
+      <details><summary>Copay</summary><div class="body">A small fixed amount you pay at the visit. Insurance pays the rest. Different for a doctor, urgent care, ER, and prescriptions.</div></details>
+      <details><summary>Deductible</summary><div class="body">What the family pays out of pocket each year before insurance pays the bigger share on big things like hospital stays or MRIs. Copay visits usually don't count against it.</div></details>
+      <details><summary>In-network / out-of-network</summary><div class="body">In-network: the doctor has a contract with UHC, we pay the low price. Out-of-network: no contract, we pay most of it. Check before any non-emergency visit.</div></details>
+      <details><summary>Claim / EOB</summary><div class="body">The bill the office sends the insurer. Weeks later an "Explanation of Benefits" arrives. It looks like a bill but it isn't one.</div></details>
+      <details><summary>Prior authorization</summary><div class="body">Insurance saying "check with us before the expensive thing." The doctor's office handles the form.</div></details>
+      <details><summary>Guarantor</summary><div class="body">The person responsible for the bill. That's Dad. Write his name and number, not yours.</div></details>
+      <details><summary>HSA / FSA</summary><div class="body">Pre-tax money set aside for medical costs. If Dad hands you a card that looks like a debit card for a copay, that's this.</div></details>
+    </section>
+  </div>
+
+  <section>
+    <h2>Save these</h2>
+    <div class="contacts">
+      <div class="row"><span class="who">Dad</span><span class="what">First call for anything that isn't 911</span><span class="n"><input class="text" data-fill="p-dad" placeholder="number" style="min-width:130px;text-align:right" aria-label="Dad's number"></span></div>
+      <div class="row"><span class="who">Mom</span><span class="what">Second call</span><span class="n"><input class="text" data-fill="p-mom" placeholder="number" style="min-width:130px;text-align:right" aria-label="Mom's number"></span></div>
+      <div class="row"><span class="who">Emergency</span><span class="what">Police, fire, ambulance</span><span class="n"><a href="tel:911">911</a></span></div>
+      <div class="row"><span class="who">Crisis line</span><span class="what">Call or text, 24/7, free</span><span class="n"><a href="tel:988">988</a></span></div>
+      <div class="row"><span class="who">UnitedHealthcare</span><span class="what">Member Services (back of card) · myuhc.com · UHC app</span><span class="n"><input class="text" data-fill="p-uhc" placeholder="from card" style="min-width:130px;text-align:right" aria-label="UHC number"></span></div>
+      <div class="row"><span class="who">OptumRx</span><span class="what">Pharmacy help (back of card) · optumrx.com</span><span class="n"><input class="text" data-fill="p-rx" placeholder="from card" style="min-width:130px;text-align:right" aria-label="OptumRx number"></span></div>
+      <div class="row"><span class="who">SupportLinc</span><span class="what">Free counseling and support, 24/7</span><span class="n"><input class="text" data-fill="p-eap" placeholder="Dad fills in" style="min-width:130px;text-align:right" aria-label="SupportLinc number"></span></div>
+      <div class="row"><span class="who">2nd.MD</span><span class="what">Second medical opinion for a big diagnosis</span><span class="n"><a href="tel:+18668412575">(866) 841-2575</a></span></div>
+    </div>
+  </section>
+  <p class="foot">Plan details come from Dad's Texas Mutual benefits; anything in a dashed box still needs to be filled in from the real cards and plan documents. Fill-ins are stored only in this browser and are not part of the file in the repo.</p>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section class="view" id="v-links" role="tabpanel">
+  <header class="h">
+    <div class="eyebrow">Where this page came from</div>
+    <h1>Source pages</h1>
+    <p>The four Claude artifacts this board folds together. They carry the full reasoning, rates, and citations; this page carries the tracking.</p>
+  </header>
+  <div class="links">
+    <a href="https://claude.ai/code/artifact/40a1dfc9-b1be-4358-9a2c-706a5b27b960"><b>The 3x Playbook</b><span>Engines, day-one allocation, the 16-step script, scorecard, LLC structure, truck plan</span></a>
+    <a href="https://claude.ai/code/artifact/ad3c5967-e34f-476e-952c-081dc1f20bfa"><b>Settlement Allocation Plan</b><span>Phase 1 / Phase 2 split, 12-month roadmap, tax rules and rates with sources</span></a>
+    <a href="https://claude.ai/code/artifact/d7bcbded-6be1-45bb-8f71-2077d0208e4a"><b>Truck Strategy Board</b><span>The original live calculator, now the Truck tab</span></a>
+    <a href="https://claude.ai/code/artifact/eda6e7ff-fe43-46e1-b50a-2456a6f7e469"><b>Cargill Coverage Guide</b><span>The full benefits explainer for Cooper and Myles, now the Benefits tab</span></a>
+  </div>
+  <section class="panel">
+    <h2>Tracking in the repo</h2>
+    <p style="font-size:14px">This is one self-contained <code>index.html</code>; drop it in a GitHub Pages repo and it serves as-is. Checkmarks, scorecard actuals, entity statuses, and truck inputs live in the browser's local storage. To keep a history in git, click <b>Export</b> and commit the JSON next to the page (for example <code>state/2026-09-14.json</code>); <b>Import</b> loads any saved snapshot back. Benefits fill-ins are deliberately excluded from Export so card numbers never land in a repo.</p>
+  </section>
+  <p class="foot">Planning arithmetic, not financial, tax, legal, or medical advice. Rates and rules as of Sept 2026; a CPA confirms the truck method, the settlement's tax treatment, and the bonus deferral question.</p>
+</section>
+
 </main>
+<div class="tip" id="tip"></div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const fmt=n=>(n<0?'−':'')+'$'+Math.round(Math.abs(n)).toLocaleString();
+  const pct=n=>Math.round(n*100)+'%';
+  const KEY='cargill-board-v1', FILLKEY='cargill-board-fills';
+  const load=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch(e){return {}}};
+  const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+  let S=Object.assign({steps:{},llc:{},ents:{},actual:{},truck:{},joint:false},load(KEY));
+  let F=load(FILLKEY);
+  const persist=()=>save(KEY,S);
+
+  /* ---------- tabs ---------- */
+  const tabs=[...document.querySelectorAll('nav.tabs button')];
+  function show(v){
+    tabs.forEach(b=>b.setAttribute('aria-selected',String(b.dataset.v===v)));
+    document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+    if(location.hash!=='#'+v)history.replaceState(null,'','#'+v);
+    if(v==='board')board();
+  }
+  tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.v)));
+  window.addEventListener('hashchange',()=>show((location.hash||'#board').slice(1)));
+
+  /* ---------- script steps ---------- */
+  const STEPS=[
+    ['This week','Open the three accounts.','High-yield savings, Roth IRA at Fidelity, a second Roth for Jesica. Pull both credit reports and dispute anything wrong.','Jeremiah, Jesica','2026-09'],
+    ['Oct 2026','Check arrives: everything into savings. Wait 14 days.','Then $2,000 to the Roth, tag $4,000 as the down payment, leave the rest.','Jeremiah','2026-10'],
+    ['Oct 2026','Get a credit-union pre-approval','for a half-ton pickup over 6,000 lb GVWR. Super-prime rates ~4.4% new, 6.3% used.','Jeremiah','2026-10'],
+    ['Nov 2026','Buy the truck in Jeremiah\'s name.','$4,000 down, 60 months or shorter. Start the mileage log the day it comes home.','Jeremiah','2026-11'],
+    ['Nov 2026','Place the bet.','$750 across 3–5 Reg CF companies or one small-cap ETF. Don\'t look until May.','Jeremiah','2026-11'],
+    ['Dec 2026','Pick the first two brace SKUs; book the first certification exams.','Cooper: Security+. Myles: SC-300. Both: open the DPS installer-registration conversation with a licensed partner. Jesica: Google PM certificate. Ask HR about 401(k) deferral on the bonus.','Everyone','2026-12'],
+    ['Jan 2027','File the LLC with the Texas SOS ($300).','Jeremiah and Jesica as members; Cooper and Myles on payroll. Business checking the same week. First $1,500 of inventory; first Identity Baseline on the LLC\'s own tenant.','Jeremiah, Jesica','2027-01'],
+    ['Jan 2027','Start the ADD transfer.','$500 every payday-pair into savings until the reserve equals three months of expenses, then redirect to the Roth.','Jeremiah','2027-01'],
+    ['Feb–Mar 2027','Sell the first turn.','Clinics, PTs, gyms, marketplaces, weekend markets from the truck bed. Every business mile logged. Reinvest 100% of gross profit.','Jesica','2027-03'],
+    ['Mar 2027','Bonus lands. Split the net:','30% reserve, 30% Roth, 20% business, 10% bet round two, 10% extra truck principal or a trip.','Jeremiah','2027-03'],
+    ['Apr 2027','First tax return with the business on it.','CPA picks mileage vs. depreciation for the truck. Any refund follows the bonus split.','Jeremiah + CPA','2027-04'],
+    ['Jun 2027','Third inventory turn.','Business funds itself; start paying the household $300–500 a month from profit into ADD.','Jesica','2027-06'],
+    ['Sept 2027 · Mo 12','Scorecard check: ~$22,000 in the plan.','Roth 2027 on pace, reserve nearly full, business profitable on its own books.','Everyone','2027-09'],
+    ['Jan 2028','New Roth room, both accounts.','Business profit and ADD point at the Roths first. Cooper and Myles each fund their own Roth from LLC pay.','Everyone','2028-01'],
+    ['Mar 2028','Second bonus, same split.','Reserve is full, so its 30% goes to the Roth.','Jeremiah','2028-03'],
+    ['Sept 2028 · Mo 24','$40,000.','Rewrite the playbook for the next 3x.','Everyone','2028-09']
+  ];
+  const LLC=[
+    ['Dec 2026','Go / no-go.','A first product, customer, or contract in view for at least one line.','Jeremiah, Jesica'],
+    ['Jan 2027','Draft the operating agreement.','Members, capital, draws, Cooper and Myles\' path to membership, the truck-use terms.','Jeremiah + CPA'],
+    ['Jan 2027','File Certificate of Formation with Texas SOS.','$300. Registered agent named. File in January so the first franchise report isn\'t due until 2028.','Jeremiah'],
+    ['Jan 2027','Get the EIN (IRS, free) and a D-U-N-S number.','Same day as the SOS approval.','Jeremiah'],
+    ['Jan 2027','Open business checking.','Move the $1,500 seed in. Never mix household and business money again.','Jeremiah, Jesica'],
+    ['Jan 2027','File assumed-name certificates with the county.','Techware Braces, Cargill Secure, Cargill Home.','Jesica'],
+    ['Jan 2027','Texas sales-tax permit.','Needed before the first brace sells.','Jesica'],
+    ['Q1 2027','General liability + professional (E&O) insurance.','Required for the DPS license anyway; covers the PM line too.','Jeremiah'],
+    ['Q1 2027','Set up payroll or 1099 for Cooper and Myles.','CPA picks. Earned income opens each of their Roths.','Jeremiah + CPA'],
+    ['Q1 2027','Sign the truck-sharing agreement.','All four adults and the LLC. Mileage log already running.','Everyone'],
+    ['Q1 2027','One net-30 vendor account + a starter business card.','Pay early. This is how the LLC gets a credit file.','Jeremiah'],
+    ['Q2 2027','Cooper and Myles registered as installers under a licensed partner.','Fingerprints, background check, sponsoring company.','Cooper, Myles'],
+    ['May 15, 2028','First Texas franchise tax report.','No tax due at this size, but it must be filed.','Jeremiah + CPA'],
+    ['Q4 2027 → 2028','Own DPS Class B license.','Once one of them has the documented experience; then the partner cut goes away.','Cooper or Myles']
+  ];
+  function renderList(el,items,store,prefix){
+    el.innerHTML=items.map((s,i)=>{
+      const id=prefix+i, done=!!store[id];
+      return `<li class="${done?'done':''}"><input type="checkbox" id="${id}" ${done?'checked':''} aria-label="${s[1]}"><span class="when num">${s[0]}</span><label class="what" for="${id}"><b>${s[1]}</b> ${s[2]}</label><span class="who">${s[3]}</span></li>`;
+    }).join('');
+    el.querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{store[cb.id]=cb.checked;cb.closest('li').classList.toggle('done',cb.checked);persist();board();}));
+  }
+  renderList($('script-list'),STEPS,S.steps,'s');
+  renderList($('llc-list'),LLC,S.llc,'l');
+
+  /* ---------- entity statuses ---------- */
+  document.querySelectorAll('select[data-ent]').forEach(sel=>{
+    if(S.ents[sel.dataset.ent])sel.value=S.ents[sel.dataset.ent];
+    sel.addEventListener('change',()=>{S.ents[sel.dataset.ent]=sel.value;persist();board();});
+  });
+
+  /* ---------- scorecard ---------- */
+  const SCORE=[['Day one · Oct 2026','2026-10',13500,'Accounts open, credit clean, cooling period respected'],
+    ['Month 3 · Dec 2026','2026-12',13000,'Truck bought, bet placed, SKUs chosen'],
+    ['Month 6 · Mar 2027','2027-03',18500,'LLC filed, first turn sold, bonus split applied'],
+    ['Month 12 · Sept 2027','2027-09',22000,'Reserve near 3 months, business paying the household'],
+    ['Month 18 · Mar 2028','2028-03',30000,'Second bonus in, business at 4 turns/yr, ADD $800+/mo'],
+    ['Month 24 · Sept 2028','2028-09',40000,'3x. Reserve full, Roths on pace, business on its own books']];
+  function renderScore(){
+    $('t-score').querySelector('tbody').innerHTML=SCORE.map((r,i)=>{
+      const a=S.actual[i]; const d=(a===undefined||a==='')?'':fmt(+a-r[2]);
+      const cls=(a===undefined||a==='')?'':(+a>=r[2]?'good':'warn');
+      return `<tr><td><b>${r[0]}</b><br><small>${r[3]}</small></td><td class="r">${fmt(r[2])}</td><td class="r"><input class="cell" type="number" step="100" data-i="${i}" value="${a??''}" placeholder="—" aria-label="Actual at ${r[0]}"></td><td class="r"><span class="pill ${cls||'flat'}" style="${cls?'':'visibility:hidden'}">${d||'—'}</span></td></tr>`;
+    }).join('');
+    $('t-score').querySelectorAll('input').forEach(inp=>inp.addEventListener('change',()=>{S.actual[inp.dataset.i]=inp.value;persist();renderScore();board();}));
+  }
+  renderScore();
+
+  /* ---------- board ---------- */
+  function board(){
+    // latest actual
+    let last=null;for(let i=SCORE.length-1;i>=0;i--){if(S.actual[i]!==undefined&&S.actual[i]!==''){last={i,v:+S.actual[i]};break;}}
+    const inplan=last?last.v:13500;
+    $('b-inplan').textContent=fmt(inplan);
+    $('b-inplan-s').textContent=last?`Actual at ${SCORE[last.i][0]}`:'No actuals yet · showing the $13,500 start';
+    $('bar-fill').style.width=Math.min(100,inplan/40000*100)+'%';
+    // plan month
+    const start=new Date(2026,8,1), now=new Date();
+    const m=Math.max(0,(now.getFullYear()-start.getFullYear())*12+now.getMonth()-start.getMonth());
+    $('b-month').textContent=m+' / 24';
+    const next=SCORE.find(r=>r[1]>=now.toISOString().slice(0,7));
+    $('b-month-s').textContent=next?`Next checkpoint: ${next[0]} · ${fmt(next[2])}`:'Plan horizon reached';
+    // steps
+    const done=STEPS.filter((_,i)=>S.steps['s'+i]).length;
+    $('b-steps').textContent=done+' / '+STEPS.length;
+    const overdue=STEPS.filter((s,i)=>!S.steps['s'+i]&&s[4]<now.toISOString().slice(0,7)).length;
+    $('b-steps-s').textContent=overdue?`${overdue} past due`:'On schedule';
+    // llc
+    const ld=LLC.filter((_,i)=>S.llc['l'+i]).length;
+    $('b-llc').textContent=ld+' / '+LLC.length;
+    $('b-llc-s').textContent='Parent: '+(S.ents.parent||'Planned');
+    // next steps
+    const open=STEPS.map((s,i)=>({s,i})).filter(o=>!S.steps['s'+o.i]).slice(0,5);
+    $('next-steps').innerHTML=open.length?open.map(o=>`<li><input type="checkbox" data-i="${o.i}" aria-label="${o.s[1]}"><span class="when num">${o.s[0]}</span><span class="what"><b>${o.s[1]}</b></span><span class="who">${o.s[3]}</span></li>`).join(''):'<li style="grid-template-columns:1fr"><span class="what">Every step is checked. Time to rewrite the playbook.</span></li>';
+    $('next-steps').querySelectorAll('input').forEach(cb=>cb.addEventListener('change',()=>{S.steps['s'+cb.dataset.i]=true;persist();renderList($('script-list'),STEPS,S.steps,'s');board();}));
+  }
+
+  /* ---------- truck ---------- */
+  const ids=['price','down','apr','term','ev','uhrs','urate','bizmi','persmi','ins','rs','maint','bracket','otherbiz','rate'];
+  ids.forEach(i=>{if(S.truck[i]!==undefined)$(i).value=S.truck[i];});
+  let joint=!!S.joint;
+  $('b-j').setAttribute('aria-pressed',String(!joint));$('b-jj').setAttribute('aria-pressed',String(joint));
+  const tip=$('tip');
+  function showTip(e,html){tip.innerHTML=html;tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';}
+  function hideTip(){tip.style.display='none';}
+
+  function calc(){
+    const v={};ids.forEach(i=>v[i]=$(i).value);
+    S.truck=v;S.joint=joint;persist();
+    const price=+v.price, down=+v.down, apr=+v.apr/100, n=+v.term;
+    const P=Math.max(price-down,0), r=apr/12;
+    const pay = r>0 ? P*r/(1-Math.pow(1+r,-n)) : P/n;
+    const yr1Interest=(()=>{let b=P,s=0;for(let i=0;i<Math.min(12,n);i++){const int=b*r;s+=int;b-=pay-int;}return s;})();
+    const uberMi=+v.uhrs*4.33*15;
+    const bizMi=+v.bizmi, persMi=+v.persmi;
+    const totMi=uberMi+bizMi+persMi;
+    const bu=totMi?(uberMi+bizMi)/totMi:0;
+    const cpm = v.ev==='ev'?0.05:0.16;
+    const energy=totMi*cpm;
+    const reg = v.ev==='ev'?(200+75)/12:75/12;
+    const ins=+v.ins, rs=+v.rs, maint=+v.maint;
+    const cost=pay+ins+rs+maint+energy+reg;
+    const uber=+v.uhrs*4.33*+v.urate;
+    const brk=+v.bracket/100, other=+v.otherbiz, rate=+v.rate/100;
+    const uberYr=uber*12;
+    const seIncome=uberYr+other;
+    const seRate=0.9235*0.153;
+    function saving(ded){
+      const seOff=Math.min(ded,Math.max(seIncome,0));
+      const rest=Math.max(ded-seOff,0);
+      return {se:seOff*seRate, inc:seOff*brk+rest*brk, total:seOff*(seRate+brk)+rest*brk};
+    }
+    const bizMiYr=(uberMi+bizMi)*12;
+    const dedMi=bizMiYr*rate;
+    const sMi=saving(dedMi);
+    const opYr=(ins+rs+maint+energy+reg)*12+yr1Interest;
+    const dedDep=price*bu+opYr*bu;
+    const sDep=saving(dedDep);
+    const mi5=[],dep5=[];
+    for(let y=0;y<5;y++){mi5.push(saving(dedMi).total);dep5.push(y===0?sDep.total:saving(opYr*bu).total);}
+    const best=Math.max(sMi.total,sDep.total);
+    const bestName=sDep.total>=sMi.total?'Bonus depreciation':'Standard mileage';
+    const tax5mi=mi5.reduce((a,b)=>a+b,0), tax5dep=dep5.reduce((a,b)=>a+b,0);
+    const best5=Math.max(tax5mi,tax5dep);
+    const net=cost-uber-best5/60;
+
+    $('k-pay').textContent=fmt(pay);
+    $('k-pay-s').textContent=`${fmt(P)} financed · ${n} mo · ${(+v.apr).toFixed(2)}%`;
+    $('k-cost').textContent=fmt(cost);
+    $('k-net').textContent=fmt(net);
+    $('b-truck').textContent=fmt(net);
+    $('k-bu').textContent=pct(bu);
+    $('k-bu-s').textContent=`${Math.round(uberMi+bizMi)} business / ${Math.round(totMi)} total mi`+(bu<=0.5?' · below 50%: no depreciation':'');
+    $('k-tax1').textContent=fmt(best);
+    $('k-tax1-s').textContent=bestName;
+    $('k-tax5').textContent=fmt(best5);
+    $('k-tax5-s').textContent=(tax5dep>=tax5mi?'Bonus depreciation':'Standard mileage')+' · '+fmt(best5/60)+'/mo equivalent';
+
+    const costs=[['Loan',pay],['Insurance',ins+rs],['Charging',energy],['Upkeep',maint],['Registration',reg]];
+    const backs=[['Uber net',uber],['Tax saving ÷ 12',best5/60]];
+    drawBars($('c-month'),costs.map(c=>({l:c[0],v:c[1],c:'var(--s1)'})).concat(backs.map(b=>({l:b[0],v:b[1],c:'var(--s2)'}))),Math.max(cost,uber));
+    drawGrouped($('c-tax'),['Yr 1','Yr 2','Yr 3','Yr 4','Yr 5'],[{name:'Mileage',c:'var(--s2)',vals:mi5},{name:'Depreciation',c:'var(--s3)',vals:dep5}]);
+
+    const rows=[['Loan payment',pay],['Insurance + rideshare',ins+rs],['Charging / fuel',energy],['Tires, upkeep, washes',maint],['Registration',reg]];
+    let tb='';let tc=0,tbz=0,th=0;
+    rows.forEach(([l,m])=>{tb+=`<tr><td>${l}</td><td class="r">${fmt(m)}</td><td class="r">${fmt(m*bu)}</td><td class="r">${fmt(m*(1-bu))}</td></tr>`;tc+=m;tbz+=m*bu;th+=m*(1-bu);});
+    tb+=`<tr class="total"><td>Total</td><td class="r">${fmt(tc)}</td><td class="r">${fmt(tbz)}</td><td class="r">${fmt(th)}</td></tr>`;
+    $('t-split').querySelector('tbody').innerHTML=tb;
+    const reimb=(uberMi+bizMi)*rate;
+    $('split-note').innerHTML=`Under the sharing agreement the LLC's share is settled one of two ways: a mileage reimbursement to Jeremiah of <b>${fmt(reimb)}/mo</b> (${Math.round(uberMi+bizMi)} mi × ${(+v.rate)}¢), or the LLC paying its actual-cost share of <b>${fmt(tbz)}/mo</b>. Both are internal transfers, not new money; the household's true cost is the total minus Uber income minus the tax saving.`;
+
+    $('t-tax').querySelector('tbody').innerHTML=`
+      <tr><td>Deduction</td><td class="r">${fmt(dedMi)}<br><small>${Math.round(bizMiYr).toLocaleString()} mi × ${(+v.rate)}¢</small></td><td class="r">${fmt(dedDep)}<br><small>${fmt(price)} × ${pct(bu)} + ${fmt(opYr)} operating × ${pct(bu)}</small></td></tr>
+      <tr><td>Self-employment tax saved (15.3% on up to ${fmt(seIncome)} of LLC + Uber income)</td><td class="r">${fmt(sMi.se)}</td><td class="r">${fmt(sDep.se)}</td></tr>
+      <tr><td>Income tax saved at ${v.bracket}%</td><td class="r">${fmt(sMi.inc)}</td><td class="r">${fmt(sDep.inc)}</td></tr>
+      <tr class="total"><td>Year-one saving</td><td class="r">${fmt(sMi.total)}</td><td class="r">${fmt(sDep.total)}</td></tr>
+      <tr><td>Years 2–5, each</td><td class="r">${fmt(mi5[1])}</td><td class="r">${fmt(dep5[1])}</td></tr>
+      <tr class="total"><td>Five-year total</td><td class="r">${fmt(tax5mi)}</td><td class="r">${fmt(tax5dep)}</td></tr>`;
+    $('tax-note').textContent = bu<=0.5
+      ? 'Business use is at or below 50%, so bonus depreciation is off the table and standard mileage is the only method. Add business miles or cut household miles to change that.'
+      : (sDep.total>sMi.total
+        ? `Depreciation wins year one by ${fmt(sDep.total-sMi.total)} but drops to operating costs only after that; over five years the gap is ${fmt(Math.abs(tax5dep-tax5mi))} in favor of ${tax5dep>=tax5mi?'depreciation':'mileage'}. An EV makes mileage unusually attractive because ${(+v.rate)}¢ per mile is deductible while it costs about 5¢ to run.`
+        : `Standard mileage wins even in year one here, because the EV runs so far below the ${(+v.rate)}¢ rate. Depreciation only pulls ahead with a pricier truck or higher business use.`);
+
+    $('credit').innerHTML=`
+      <div><div class="who">Jeremiah <span class="pill good">Builds</span></div><p>Borrower of record. The installment loan adds to credit mix and payment history; expect a 5–10 point dip at the hard pull, recovered within a few months, then a slow climb. All ${fmt(P)} of the debt shows on his report.</p></div>
+      <div><div class="who">Jesica <span class="pill ${joint?'good':'flat'}">${joint?'Builds':'Unchanged'}</span></div><p>${joint?'Co-borrower: the same payment history posts to her file. The trade: the full debt appears on her report too, and both are liable for the whole balance. The lender prices off the lower of the two scores.':'Not on the loan, so nothing posts to her file, good or bad. Her credit builds through her own card and any LLC business card she guarantees.'}</p></div>
+      <div><div class="who">Cargill Consulting LLC <span class="pill flat">Not via truck</span></div><p>A months-old LLC has no credit file, and the truck is personally financed anyway. Business credit gets built separately: EIN, D-U-N-S, business checking, one net-30 vendor account, a starter business card, every invoice paid early.</p></div>
+      <div><div class="who">Cooper &amp; Myles <span class="pill flat">Indirect</span></div><p>Both 22 and eligible to drive for Uber now. Cooper's route to the title is the refinance path in the agreement once he has 6–12 months of pay stubs. Their credit starts as authorized users on a parent's card and with their own secured or starter cards funded from LLC pay.</p></div>`;
+  }
+
+  function drawBars(svg,items,maxV){
+    const W=480,H=230,ml=90,mr=50,mt=10,mb=10;
+    const bh=(H-mt-mb)/items.length;
+    const x=v=>ml+(W-ml-mr)*(v/(maxV||1));
+    let s='';
+    for(let i=0;i<=4;i++){const gx=x(maxV*i/4);s+=`<line x1="${gx}" x2="${gx}" y1="${mt}" y2="${H-mb}" stroke="var(--grid)" stroke-width="1"/>`;}
+    items.forEach((it,i)=>{
+      const y=mt+i*bh+bh*0.2,h=bh*0.6,w=Math.max(x(it.v)-ml,0);
+      s+=`<text x="${ml-8}" y="${y+h/2+4}" text-anchor="end" font-size="11" fill="var(--ink-2)">${it.l}</text>`;
+      s+=`<rect data-l="${it.l}" data-v="${it.v}" x="${ml}" y="${y}" width="${w}" height="${h}" fill="${it.c}"/>`;
+      s+=`<text x="${ml+w+6}" y="${y+h/2+4}" font-size="11" fill="var(--ink)" font-weight="600">${fmt(it.v)}</text>`;
+    });
+    svg.innerHTML=s;
+    svg.querySelectorAll('rect').forEach(r=>{r.addEventListener('mousemove',e=>showTip(e,`<b>${r.dataset.l}</b> ${fmt(+r.dataset.v)} / mo`));r.addEventListener('mouseleave',hideTip);});
+  }
+  function drawGrouped(svg,cats,series){
+    const W=480,H=230,ml=56,mr=10,mt=14,mb=28;
+    const maxV=Math.max(1,...series.flatMap(s=>s.vals));
+    const nice=Math.pow(10,Math.floor(Math.log10(maxV)));
+    const top=Math.ceil(maxV/nice)*nice;
+    const y=v=>mt+(H-mt-mb)*(1-v/top);
+    const gw=(W-ml-mr)/cats.length, bw=(gw*0.7)/series.length;
+    let s='';
+    for(let i=0;i<=4;i++){const v=top*i/4,gy=y(v);s+=`<line x1="${ml}" x2="${W-mr}" y1="${gy}" y2="${gy}" stroke="var(--grid)"/><text x="${ml-6}" y="${gy+4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt(v)}</text>`;}
+    cats.forEach((c,i)=>{
+      const gx=ml+i*gw+gw*0.15;
+      series.forEach((se,j)=>{
+        const v=se.vals[i],bx=gx+j*bw+(j?2:0),by=y(v),bh=y(0)-by;
+        s+=`<rect data-l="${se.name} · ${c}" data-v="${v}" x="${bx}" y="${by}" width="${bw-2}" height="${Math.max(bh,0)}" fill="${se.c}"/>`;
+        if(i===0)s+=`<text x="${bx+(bw-2)/2}" y="${by-4}" text-anchor="middle" font-size="10" fill="var(--ink)" font-weight="600">${fmt(v)}</text>`;
+      });
+      s+=`<text x="${ml+i*gw+gw/2}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--ink-2)">${c}</text>`;
+    });
+    s+=`<line x1="${ml}" x2="${W-mr}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink-2)"/>`;
+    svg.innerHTML=s;
+    svg.querySelectorAll('rect').forEach(r=>{r.addEventListener('mousemove',e=>showTip(e,`<b>${r.dataset.l}</b> ${fmt(+r.dataset.v)}`));r.addEventListener('mouseleave',hideTip);});
+  }
+  ids.forEach(i=>$(i).addEventListener('input',calc));
+  $('b-j').addEventListener('click',()=>{joint=false;$('b-j').setAttribute('aria-pressed','true');$('b-jj').setAttribute('aria-pressed','false');calc();});
+  $('b-jj').addEventListener('click',()=>{joint=true;$('b-jj').setAttribute('aria-pressed','true');$('b-j').setAttribute('aria-pressed','false');calc();});
+
+  /* ---------- benefits fill-ins (local only, never exported) ---------- */
+  document.querySelectorAll('input[data-fill]').forEach(inp=>{
+    if(F[inp.dataset.fill])inp.value=F[inp.dataset.fill];
+    inp.addEventListener('input',()=>{F[inp.dataset.fill]=inp.value;save(FILLKEY,F);});
+  });
+
+  /* ---------- export / import ---------- */
+  $('exportBtn').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify({exported:new Date().toISOString(),...S},null,2)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`cargill-board-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);
+  });
+  $('importFile').addEventListener('change',e=>{
+    const f=e.target.files[0];if(!f)return;
+    f.text().then(t=>{try{const d=JSON.parse(t);delete d.exported;S=Object.assign({steps:{},llc:{},ents:{},actual:{},truck:{},joint:false},d);persist();location.reload();}catch(err){alert('That file is not a board export.');}});
+  });
+
+  /* ---------- boot ---------- */
+  calc();
+  show((location.hash||'#board').slice(1));
+})();
+</script>
 </body>
 </html>
