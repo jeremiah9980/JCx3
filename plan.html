@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settlement Allocation Plan</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Karla:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+:root{
+  --bg:#f3f1eb; --ink:#1c2a24; --muted:#5f6b66; --rule:#d5d2c8; --panel:#fbfaf6;
+  --accent:#9a6a1f; --accent-ink:#7a5218;
+  --c1:#1f6f5b; --c2:#3d8f78; --c3:#9a6a1f; --c4:#c2492f; --c5:#8a8f8c; --c6:#5c6e9a;
+  --flag-bg:#efe6d2; --flag-ink:#5d4210;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#151a18; --ink:#e6e4dd; --muted:#9aa39e; --rule:#2c3532; --panel:#1c2320;
+    --accent:#d3a253; --accent-ink:#e2b76c;
+    --c1:#3fa287; --c2:#6fc2a8; --c3:#d3a253; --c4:#e0704f; --c5:#7f8783; --c6:#8ea0d0;
+    --flag-bg:#33291a; --flag-ink:#e8c88a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#151a18; --ink:#e6e4dd; --muted:#9aa39e; --rule:#2c3532; --panel:#1c2320;
+  --accent:#d3a253; --accent-ink:#e2b76c;
+  --c1:#3fa287; --c2:#6fc2a8; --c3:#d3a253; --c4:#e0704f; --c5:#7f8783; --c6:#8ea0d0;
+  --flag-bg:#33291a; --flag-ink:#e8c88a;
+}
+body{background:var(--bg);color:var(--ink);font-family:Karla,system-ui,sans-serif;font-size:16px;line-height:1.55;padding:0 20px;padding-block:36px 64px;}
+main{max-width:680px;margin:0 auto;display:grid;gap:36px;}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+h1{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:clamp(30px,5.5vw,40px);line-height:1.1;margin:6px 0 10px;text-wrap:balance;}
+h2{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:24px;margin:0 0 10px;text-wrap:balance;}
+h2 small{display:block;font-family:Karla,system-ui,sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:4px;}
+h3{font-size:16px;font-weight:600;margin:0 0 4px;}
+p{margin:0 0 12px;}
+.lede{font-size:18px;}
+.flag{background:var(--flag-bg);color:var(--flag-ink);border-radius:6px;padding:12px 16px;font-size:15px;}
+.flag strong{font-weight:600;}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;gap:2px;margin:8px 0 14px;}
+.bar span{display:block;height:100%;}
+.legend{display:grid;grid-template-columns:14px 1fr auto auto;gap:6px 12px;align-items:center;font-size:15px;}
+.legend i{display:block;width:14px;height:14px;border-radius:3px;}
+.legend .pct,.legend .amt{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;color:var(--muted);}
+.phase{border-top:2px solid var(--ink);padding-top:20px;display:grid;gap:22px;}
+.bucket{border-top:1px solid var(--rule);padding-top:16px;display:grid;gap:6px;}
+.bucket header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.bucket header .amt{font-family:"JetBrains Mono",ui-monospace,monospace;color:var(--muted);font-size:14px;}
+.tag{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:middle;}
+ul{margin:4px 0 8px;padding-left:20px;display:grid;gap:6px;}
+table{border-collapse:collapse;width:100%;font-size:15px;}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top;}
+th{font-weight:600;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+td.num,th.num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;text-align:right;}
+.tablewrap{overflow-x:auto;}
+.honest{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:6px;padding:14px 16px;}
+.timeline{display:grid;gap:0;}
+.timeline .row{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:10px 0;border-bottom:1px solid var(--rule);}
+.timeline .when{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;color:var(--muted);padding-top:3px;}
+@media (max-width:480px){.timeline .row{grid-template-columns:1fr;gap:2px;}}
+a{color:var(--accent-ink);text-decoration-color:var(--accent);}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.foot{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px;}
+</style>
+<style>body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Jeremiah &amp; Jesica · Draft, Sept 14, 2026</div>
+    <h1>Settlement now, bonus next</h1>
+    <p class="lede">A twelve-month plan in two phases. The <span class="mono">$12–15K</span> from the medical claims builds the base and buys the car cleanly this fall. The Q1 bonus from Texas Mutual lands on that base and pushes the growth, venture, and business pieces that a five-figure settlement can't fund by itself.</p>
+    <div class="flag"><strong>Assumptions:</strong> no credit-card or other high-interest debt outstanding, the Fidelity 401(k) match is already being captured, the emergency fund is under three months of expenses, and the bonus is shown at a placeholder <span class="mono">$5,000</span> gross (about <span class="mono">$3,500</span> after withholding). Swap in the real bonus figure and everything in Phase 2 scales with it.</div>
+  </header>
+
+  <section class="phase">
+    <h2><small>Phase 1 · Fall 2026</small>The settlement: <span class="mono">$13,500</span> midpoint</h2>
+    <div class="bar" aria-hidden="true">
+      <span style="width:33.3%;background:var(--c1)"></span>
+      <span style="width:29.6%;background:var(--c3)"></span>
+      <span style="width:14.8%;background:var(--c2)"></span>
+      <span style="width:11.1%;background:var(--c5)"></span>
+      <span style="width:5.6%;background:var(--c4)"></span>
+      <span style="width:5.6%;background:var(--c6)"></span>
+    </div>
+    <div class="legend">
+      <i style="background:var(--c1)"></i><span>Reserve savings (HYSA)</span><span class="pct">33%</span><span class="amt">$4,500</span>
+      <i style="background:var(--c3)"></i><span>Vehicle down payment</span><span class="pct">30%</span><span class="amt">$4,000</span>
+      <i style="background:var(--c2)"></i><span>Roth IRA index funds</span><span class="pct">15%</span><span class="amt">$2,000</span>
+      <i style="background:var(--c5)"></i><span>LLC / business seed (parked)</span><span class="pct">11%</span><span class="amt">$1,500</span>
+      <i style="background:var(--c4)"></i><span>Venture slice</span><span class="pct">5.5%</span><span class="amt">$750</span>
+      <i style="background:var(--c6)"></i><span>Family breathing room</span><span class="pct">5.5%</span><span class="amt">$750</span>
+    </div>
+    <p>If the check comes in at $12,000, trim the venture and breathing-room slices to $500 each and the LLC seed to $1,000; the reserve and the down payment hold. At $15,000, the extra $1,500 goes entirely to the reserve.</p>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c1)"></span>Reserve savings</h3><span class="amt">$4,500</span></header>
+      <p>Open a high-yield savings account (top online banks are paying 4.00–4.21% APY; the national average is 0.38%) and this is the first dollar in. It is what keeps a car repair or a surprise EMS bill off a credit card, and it is the account the LLC seed and the breathing-room money also sit in until they're used, so the balance on day one is closer to $6,750 earning interest.</p>
+    </div>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c3)"></span>Vehicle down payment</h3><span class="amt">$4,000</span></header>
+      <p>The excellent-credit rate is earned before the dealership, not at it. Current averages (Experian, Q2 2026):</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Credit tier</th><th class="num">New</th><th class="num">Used</th></tr></thead>
+        <tbody>
+          <tr><td>Super prime (781+)</td><td class="num">4.41%</td><td class="num">6.29%</td></tr>
+          <tr><td>Prime (661–780)</td><td class="num">6.15%</td><td class="num">8.81%</td></tr>
+          <tr><td>Near prime (601–660)</td><td class="num">9.71%</td><td class="num">13.93%</td></tr>
+        </tbody>
+      </table></div>
+      <ul>
+        <li>Pull both credit reports now (free weekly at annualcreditreport.com) and dispute anything wrong; a lender pull in October should see clean files.</li>
+        <li>Get pre-approved at a credit union first, then let the dealer beat it. Price and financing are two separate negotiations.</li>
+        <li>$4,000 down is 20% on a $20,000 used vehicle or 10% on a $40,000 new one. Stay in that range so the loan is never larger than the car is worth.</li>
+        <li>60 months or shorter. Longer terms carry higher rates and years of negative equity.</li>
+        <li>Don't raid the reserve for a bigger down payment. Against a 4.4% loan, cash earning 4% in savings is doing nearly the same job while staying available. Phase 2 has a slot for extra principal if you want it.</li>
+      </ul>
+    </div>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c2)"></span>Roth IRA index funds</h3><span class="amt">$2,000</span></header>
+      <p>Open a Roth IRA at Fidelity alongside the 401(k) and put this in a low-cost total-market or S&amp;P 500 index fund. This is the long-horizon growth half of "savings"; the 2026 limit is $7,500 per person under 50, so there's $5,500 of room left for the bonus to fill.</p>
+      <div class="honest"><strong>On "heavy revenue gains":</strong> $6,500 in safe savings earns about $260 a year at today's rates, and nothing safe pays materially more. Anything advertising 8–10% on cash has strings or isn't cash. The return on this money comes from years in index funds, which is why the Roth exists in Phase 1 even at a small size.</div>
+    </div>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c5)"></span>LLC / business seed, parked</h3><span class="amt">$1,500</span></header>
+      <p>Earmarked, sitting in the HYSA, not spent. A Texas LLC costs $300 to file and has no annual state fee (the franchise tax report owes nothing below about $2.5M revenue), so cost isn't the reason to wait; purpose is. Form it when there is a first product, customer, or contract in view, whether that's Cargill Techware Braces or something Jesica runs. Cooper is a minor, so the workable structure is Jesica as member and Cooper as a paid helper, which lets his earnings fund a Roth in his name. Don't form an LLC just to hold savings; it protects nothing at this size and forfeits the Roth's tax treatment.</p>
+    </div>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c4)"></span>Venture slice</h3><span class="amt">$750</span></header>
+      <p>Real VC funds require accredited-investor status and five-figure minimums, so at this scale the options are Regulation Crowdfunding platforms (Wefunder, Republic, StartEngine, $100–$1,000 per company), a small-cap or thematic ETF, or your own business. Spread it across a few names, expect most to go to zero, and treat the slice as tuition. It grows in Phase 2.</p>
+    </div>
+
+    <div class="bucket">
+      <header><h3><span class="tag" style="background:var(--c6)"></span>Family breathing room</h3><span class="amt">$750</span></header>
+      <p>Spent on purpose, no guilt. A plan with zero slack gets abandoned; this is what keeps the other 94% intact.</p>
+    </div>
+  </section>
+
+  <section class="phase">
+    <h2><small>Phase 2 · Q1 2027</small>The bonus: springboard, not restart</h2>
+    <p>Bonuses are withheld at the 22% federal supplemental rate plus FICA, so plan on roughly 70% of the gross reaching the account. Shown at a <span class="mono">$5,000</span> gross / <span class="mono">$3,500</span> net placeholder; every line is a percentage of net.</p>
+    <div class="bar" aria-hidden="true">
+      <span style="width:30%;background:var(--c1)"></span>
+      <span style="width:30%;background:var(--c2)"></span>
+      <span style="width:20%;background:var(--c5)"></span>
+      <span style="width:10%;background:var(--c4)"></span>
+      <span style="width:10%;background:var(--c3)"></span>
+    </div>
+    <div class="legend">
+      <i style="background:var(--c1)"></i><span>Top up reserve toward 3 months of expenses</span><span class="pct">30%</span><span class="amt">$1,050</span>
+      <i style="background:var(--c2)"></i><span>Roth IRA (finish the year's room)</span><span class="pct">30%</span><span class="amt">$1,050</span>
+      <i style="background:var(--c5)"></i><span>LLC launch: filing, bank account, first inventory or tooling</span><span class="pct">20%</span><span class="amt">$700</span>
+      <i style="background:var(--c4)"></i><span>Venture slice, second round</span><span class="pct">10%</span><span class="amt">$350</span>
+      <i style="background:var(--c3)"></i><span>Extra principal on the car loan, or a family trip</span><span class="pct">10%</span><span class="amt">$350</span>
+    </div>
+    <ul>
+      <li><strong>Reserve first, until it hits three months.</strong> Once it does, this 30% redirects to the Roth and the LLC in later years. The reserve is the only bucket with a finish line.</li>
+      <li><strong>The Roth is the compounding engine.</strong> Settlement plus bonus gets $3,050 in for the year with a placeholder bonus; a larger bonus should push toward the full $7,500 before anything else grows.</li>
+      <li><strong>The LLC gets funded when it gets a reason.</strong> By Q1 the parked $1,500 plus this $700 is enough to file, open a business account, and buy a first run of product. If there's still no concrete business by then, this slice goes to the Roth instead and nothing is lost.</li>
+      <li><strong>One 401(k) move at bonus time:</strong> ask HR whether you can set a separate deferral percentage on the bonus check. Diverting part of the gross into the 401(k) avoids the 22% withholding on that portion and is the cheapest way to "invest" bonus money.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><small>Sept 2026 → Sept 2027</small>The twelve-month roadmap</h2>
+    <p>Phase 1 is months 1–3, Phase 2 is months 6–7, and the months between and after are where the plan either holds or leaks. Each month has one job.</p>
+    <div class="timeline">
+      <div class="row"><span class="when">Sept 2026<br>Month 1</span><span><strong>Set the table.</strong> Confirm which part of the settlement is taxable (physical-injury amounts are generally excluded under IRC §104(a)(2); interest or punitive portions are not). Pull both credit reports at annualcreditreport.com and dispute errors. Open the HYSA and the Roth IRA so they're ready to receive.</span></div>
+      <div class="row"><span class="when">Oct 2026<br>Month 2</span><span><strong>Check arrives, everything into the HYSA.</strong> Two-week cooling period, then fund the Roth ($2,000) and set the $4,000 down payment aside in a separate savings bucket. Get the credit-union pre-approval letter. Start the car shortlist.</span></div>
+      <div class="row"><span class="when">Nov 2026<br>Month 3</span><span><strong>Buy the vehicle.</strong> $4,000 down, 60 months or shorter, dealer must beat the pre-approval or you use the pre-approval. Set the loan to autopay from the household budget. Place the first $750 venture round across a few Reg CF names.</span></div>
+      <div class="row"><span class="when">Dec 2026<br>Month 4</span><span><strong>LLC go / no-go.</strong> Does Jesica have a product, first customer, or contract in hand? If yes, file with the Texas SOS in January (so the first franchise report isn't due until 2028). If no, the $1,500 seed stays parked and earning. Ask HR now about setting a separate 401(k) deferral on the bonus check.</span></div>
+      <div class="row"><span class="when">Jan 2027<br>Month 5</span><span><strong>New tax year, new Roth room.</strong> Both Roth IRAs reset to a fresh $7,500 limit. File the LLC if December said yes; open its business checking account the same week. Finish the 2026 Roth contribution if any settlement money is still uncommitted (you have until the April filing deadline).</span></div>
+      <div class="row"><span class="when">Feb 2027<br>Month 6</span><span><strong>Hold.</strong> No new moves. Check the HYSA balance against three months of expenses and write down the gap; that number decides how much of the bonus goes to the reserve.</span></div>
+      <div class="row"><span class="when">Mar 2027<br>Month 7</span><span><strong>Bonus lands. Apply the Phase 2 split against the net.</strong> Reserve gap first, then Roth, then LLC launch costs (first inventory or tooling), then venture round two, then the car-principal-or-trip slice. Replace the placeholder figures on this page with real ones.</span></div>
+      <div class="row"><span class="when">Apr 2027<br>Month 8</span><span><strong>Tax filing.</strong> Report any taxable settlement portion and the Reg CF holdings. If the LLC exists, its first income and expenses flow onto Schedule C. Any refund follows the Phase 2 split.</span></div>
+      <div class="row"><span class="when">May 2027<br>Month 9</span><span><strong>Texas franchise report</strong> due May 15 if the LLC was formed; at this size it's a no-tax-due filing, but it must be filed. First quarterly look at the venture slice: don't add, just record what each position is worth.</span></div>
+      <div class="row"><span class="when">Jun–Jul 2027<br>Months 10–11</span><span><strong>Automate the leftovers.</strong> Whatever monthly surplus the household budget shows, split it: reserve until it's full, then Roth, then LLC. Set these as recurring transfers on payday so the plan runs without decisions. If Cooper is earning from the LLC, open his Roth and contribute up to what he earned.</span></div>
+      <div class="row"><span class="when">Sept 2027<br>Month 12</span><span><strong>Annual review.</strong> Targets to check against: reserve at three months of expenses, both 2027 Roths on pace for the limit, car loan a year into a ≤60-month term with no negative equity, LLC either running with its own books or deliberately not formed, venture slice under 10% of total invested. Then rewrite this page for year two.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where you should be at 6 and 12 months</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Bucket</th><th class="num">Month 6 (Feb 2027)</th><th class="num">Month 12 (Sept 2027)</th></tr></thead>
+      <tbody>
+        <tr><td>HYSA reserve</td><td class="num">$4,500 + interest</td><td class="num">3 months of expenses</td></tr>
+        <tr><td>Roth IRA (Jeremiah)</td><td class="num">$2,000 + growth</td><td class="num">$3,000–7,500 depending on bonus</td></tr>
+        <tr><td>Vehicle</td><td class="num">Bought, 3 payments in</td><td class="num">10 payments in, equity positive</td></tr>
+        <tr><td>LLC</td><td class="num">Filed or deliberately parked</td><td class="num">Operating with own books, or seed rolled into Roth</td></tr>
+        <tr><td>Venture slice</td><td class="num">$750 placed</td><td class="num">$1,100 placed, marked to market</td></tr>
+      </tbody>
+    </table></div>
+    <p>Figures assume the $13,500 midpoint and the $5,000 placeholder bonus; the shape of the targets holds at any amount.</p>
+  </section>
+
+  <section class="phase">
+    <h2><small>The 3x question</small>Turning ~$17,000 into $40,000</h2>
+    <p>Settlement midpoint plus the placeholder net bonus is about <span class="mono">$17,000</span>. Tripling it means reaching roughly <span class="mono">$40,000</span>. There are four ways money triples, and they differ mostly in how long they take and what they cost you.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Path</th><th class="num">Time to 3x</th><th>Odds</th><th>What it costs</th></tr></thead>
+      <tbody>
+        <tr><td>Index funds in the Roth, left alone</td><td class="num">11–16 yrs</td><td>High</td><td>Patience. Rule of 114: at 7% average returns money triples in ~16 years, at 10% in ~11.</td></tr>
+        <tr><td>Adding cash flow every month</td><td class="num">2–4 yrs</td><td>High</td><td>Discipline. The bonus and the household surplus do the work; the market only helps.</td></tr>
+        <tr><td>Running the LLC as a real business</td><td class="num">1–2 yrs</td><td>Medium</td><td>Labor. Capital turns over several times a year, but Jesica and Cooper's hours are the input.</td></tr>
+        <tr><td>Speculation (options, crypto, single stocks, Reg CF)</td><td class="num">Months, or never</td><td>Low</td><td>Most of the stake. Capped at 10% because the median outcome is a loss.</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="honest"><strong>The plain version:</strong> no investment turns $17,000 into $40,000 in a year without a real chance of turning it into $5,000 instead. In a 6–12 month window, tripling comes from either adding money or running a business. The safe money compounds in the background and gets you the rest of the way over the following years.</div>
+
+    <h3>Path 2 in numbers: months to reach $40,000</h3>
+    <p>Starting from $17,000, adding a fixed amount every month, at a blended return of 4% (all savings) or 7% (mostly index funds):</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th class="num">Added per month</th><th class="num">At 4%</th><th class="num">At 7%</th></tr></thead>
+      <tbody>
+        <tr><td class="num">$0</td><td class="num">21½ yrs</td><td class="num">12⅓ yrs</td></tr>
+        <tr><td class="num">$300</td><td class="num">59 mo</td><td class="num">50 mo</td></tr>
+        <tr><td class="num">$500</td><td class="num">39 mo</td><td class="num">35 mo</td></tr>
+        <tr><td class="num">$750</td><td class="num">28 mo</td><td class="num">26 mo</td></tr>
+        <tr><td class="num">$1,000</td><td class="num">22 mo</td><td class="num">20 mo</td></tr>
+        <tr><td class="num">$1,500</td><td class="num">15 mo</td><td class="num">14 mo</td></tr>
+      </tbody>
+    </table></div>
+    <p>The return rate barely matters at this horizon; the monthly number is everything. A second bonus in Q1 2028 counts as roughly $300/month on its own. Find $750 a month in the household budget and the money is tripled by the end of 2028 with almost no risk taken.</p>
+
+    <h3>Path 3 in numbers: the brace business as the accelerator</h3>
+    <p>This is the only bucket where 3x inside twelve months is plausible, because you're converting hours into return rather than waiting on a rate. Illustrative, using the $1,500 seed plus the $700 bonus launch money:</p>
+    <ul>
+      <li>$2,200 of inventory bought at wholesale, priced at roughly 2x cost (typical for durable medical goods sold direct).</li>
+      <li>Turn the inventory four times in a year and the seed produces about $17,600 in revenue and roughly $8,800 gross profit before fees, shipping, and the $300 filing.</li>
+      <li>Reinvest the first two turns' profit into inventory and the business alone can put $6,000–7,000 of new money into the household in year one, on top of the $17,000. Combined with $500/month of surplus, that lands within reach of $40,000 by roughly month 24.</li>
+      <li>The failure mode isn't losing the $2,200; it's inventory that doesn't move. Start with one or two SKUs that already have demand, not the full five-product line.</li>
+    </ul>
+
+    <h3>Path 4: the speculation slice, rules of engagement</h3>
+    <ul>
+      <li>Never more than 10% of total invested money, rebalanced down if it grows past that.</li>
+      <li>Only money already written off in the plan; a total loss changes nothing above.</li>
+      <li>If a position does 3x, sell two-thirds and move it to the Roth. The slice is a lottery ticket that funds the boring engine when it hits, not a strategy that gets bigger when it wins.</li>
+    </ul>
+
+    <h3>The free 3x most people skip</h3>
+    <p>Every dollar of 401(k) contribution that the Texas Mutual match covers is an instant 50–100% return before the market does anything, and Roth growth is never taxed. If the match isn't fully captured yet, raising the deferral is a better use of the bonus than any investment on this page, and it's why the assumption at the top matters.</p>
+  </section>
+
+  <section class="phase">
+    <h2><small>The vehicle, revisited</small>A truck through the LLC: what the tax benefit really is</h2>
+    <p>The rules are generous right now, and a truck can be the smartest asset the business owns. But the deduction is earned by business use, not by the LLC's name on the title, and a new LLC changes how the loan gets priced. Here is how to make it work.</p>
+
+    <h3>What the 2026 rules allow</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Rule</th><th>2026</th><th>What it means for a truck</th></tr></thead>
+      <tbody>
+        <tr><td>Bonus depreciation</td><td>100%, permanent for property placed in service after Jan 19, 2025</td><td>The business-use share of the truck's cost can be written off in year one, and this one is <em>not</em> limited to business income.</td></tr>
+        <tr><td>Section 179</td><td>$2.56M limit; $32,000 first-year cap on SUVs 6,000–14,000 lb GVWR</td><td>Pickups with a 6-foot-plus bed are exempt from the SUV cap. 179 is limited to the business's net income; excess carries forward.</td></tr>
+        <tr><td>Weight threshold</td><td>Over 6,000 lb GVWR</td><td>Escapes the "luxury auto" depreciation caps that hit cars and light SUVs. Most half-ton pickups (F-150, Silverado 1500, Ram 1500, Tundra) qualify on GVWR; check the door-jamb sticker.</td></tr>
+        <tr><td>Business use</td><td>Must exceed 50%, documented</td><td>Deduction equals cost × business %. A mileage log is not optional; if use later drops to 50% or below, the deduction is recaptured.</td></tr>
+        <tr><td>Standard mileage (alternative)</td><td>72.5¢/mile Jan–Jun, 76¢/mile Jul–Dec 2026</td><td>Skip depreciation entirely and deduct per business mile. Simpler, and better for a truck that mostly drives the family.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>What it's worth, honestly</h3>
+    <ul>
+      <li>A $40,000 truck at 60% business use gives a $24,000 first-year deduction under bonus depreciation. In the 22% bracket that's about <span class="mono">$5,300</span> of federal tax back, more if it also reduces self-employment tax. At 100% business use the number roughly doubles. Real money, but it's a discount on the truck, not a way to pay for it.</li>
+      <li>Taking 100% in year one means nothing to deduct in years two through five, and if you sell or trade the truck early, the gain is taxed as ordinary income (recapture). The deduction is timing, not free money.</li>
+      <li>The IRS looks hardest at a brand-new business whose first big expense is a vehicle. The brace business needs real sales, its own bank account, and a log showing the truck hauling inventory to markets, clinics, or shipping drops. Deliveries, trade shows, and supplier runs are business miles; commuting to Texas Mutual is not.</li>
+      <li>Texas has no state income tax, so the deduction is federal only. Sales tax (6.25% + local) is owed on the purchase either way.</li>
+    </ul>
+
+    <h3>The sequencing that gets both the rate and the deduction</h3>
+    <ul>
+      <li><strong>Buy in your name, not the LLC's, for the loan.</strong> A months-old LLC has no credit file. A commercial auto loan will be personally guaranteed anyway and priced 1–3 points higher than the super-prime 4.41% you can get personally. The tax rules don't require the LLC to hold title; a sole proprietor's or single-member LLC's vehicle used in the business qualifies the same way.</li>
+      <li><strong>Choose the method by how the truck will actually be used.</strong> If it's the family's daily driver that also does business runs, take standard mileage and keep the plan's $4,000-down, 60-month structure as written. If it will be more than 50% business, take bonus depreciation on the business share and keep a log from day one; you must pick a method in year one and generally can't switch to standard mileage later.</li>
+      <li><strong>Time the purchase to the business's first real year.</strong> Placed in service in December 2026 with no 2026 sales looks like a hobby. Placed in service in early 2027 with inventory moving and the LLC filed in January is a business asset. That means the Phase 1 vehicle purchase either waits until the LLC decision in December, or Phase 1 buys a modest personal vehicle now and the truck becomes a Phase 2 / year-two purchase once the business has revenue to justify it.</li>
+      <li><strong>Insurance follows use.</strong> Once the truck carries inventory for sale, the personal auto policy may exclude the loss. A business-use endorsement is usually cheaper than a full commercial policy and is what the log will point to anyway.</li>
+      <li><strong>Down payment stays at $4,000 to $6,000.</strong> The deduction doesn't change the cash-flow argument from Phase 1: at 4.4% financing against 4% savings, extra cash down buys little. Let the tax refund from the first business year go to the reserve or to extra principal.</li>
+    </ul>
+
+    <div class="honest"><strong>Bottom line:</strong> the LLC is a liability shield, not a tax benefit; the truck deduction belongs to whoever runs the business, LLC or not. Make the brace business real first, buy the truck on your own excellent credit, log every business mile, and let a CPA pick between mileage and depreciation the first year it's on the return. Done in that order, the truck is a legitimately subsidized purchase. Done in reverse, it's a personal vehicle with an audit flag on it.</div>
+  </section>
+
+  <p class="foot">Rates from <a href="https://www.nerdwallet.com/banking/best/high-yield-online-savings-accounts">NerdWallet, best HYSAs Sept 2026</a> and <a href="https://www.experian.com/blogs/ask-experian/average-car-loan-interest-rates-by-credit-score/">Experian, auto loan rates by credit score, Q2 2026</a>; depreciation rules from <a href="https://www.section179.org/section_179_deduction/">Section179.org, 2026 limits</a>; mileage rates from the <a href="https://www.irs.gov/newsroom/irs-sets-2026-business-standard-mileage-rate-at-725-cents-per-mile-up-25-cents">IRS 2026 standard mileage announcement</a> and the <a href="https://www.irs.gov/irb/2026-29_irb">midyear increase (IRB 2026-29)</a>. General information to plan from, not legal, tax, or investment advice; a CPA can confirm the settlement's tax treatment and the bonus deferral question.</p>
+</main>
+</body>
+</html>

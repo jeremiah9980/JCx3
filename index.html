@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 3x Playbook</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Archivo+Narrow:wght@400;500&family=JetBrains+Mono:wght@500;700&display=swap"><style>
+:root{
+  --bg:#f6f4ee; --ink:#14201b; --muted:#5c6862; --rule:#d8d4c9; --panel:#ffffff;
+  --go:#1c7a5e; --go-ink:#ffffff; --earn:#b8741a; --add:#2f5f9e; --bet:#b9432c; --keep:#1c7a5e;
+  --flag-bg:#efe6d0; --flag-ink:#5a4110;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121715; --ink:#e9e7e0; --muted:#98a39d; --rule:#2b332f; --panel:#1a211e;
+    --go:#2e9d7c; --go-ink:#0f1a15; --earn:#dba24f; --add:#6f9bd8; --bet:#e0765d; --keep:#2e9d7c;
+    --flag-bg:#33291a; --flag-ink:#eacb8e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121715; --ink:#e9e7e0; --muted:#98a39d; --rule:#2b332f; --panel:#1a211e;
+  --go:#2e9d7c; --go-ink:#0f1a15; --earn:#dba24f; --add:#6f9bd8; --bet:#e0765d; --keep:#2e9d7c;
+  --flag-bg:#33291a; --flag-ink:#eacb8e;
+}
+body{background:var(--bg);color:var(--ink);font-family:"Archivo Narrow","Arial Narrow",system-ui,sans-serif;font-size:17px;line-height:1.5;padding:0 20px;padding-block:36px 64px;}
+main{max-width:720px;margin:0 auto;display:grid;gap:40px;}
+h1,h2,h3{font-family:Archivo,system-ui,sans-serif;text-wrap:balance;}
+h1{font-weight:800;font-size:clamp(34px,6vw,50px);line-height:1;margin:6px 0 12px;letter-spacing:-.01em;}
+h2{font-weight:700;font-size:22px;margin:0 0 12px;text-transform:uppercase;letter-spacing:.04em;}
+h3{font-weight:700;font-size:17px;margin:0 0 4px;}
+p{margin:0 0 10px;}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+.thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;border-radius:8px;overflow:hidden;}
+.thesis div{padding:14px 16px;color:#fff;}
+.thesis .n{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:26px;font-weight:700;display:block;line-height:1;}
+.thesis small{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-top:6px;}
+.engines{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.engine{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:16px;border-top:4px solid var(--rule);}
+.engine .lbl{font-family:Archivo,system-ui,sans-serif;font-weight:800;font-size:20px;}
+.engine .val{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:15px;color:var(--muted);margin-bottom:8px;}
+.engine p{font-size:15px;margin:0;}
+.flag{background:var(--flag-bg);color:var(--flag-ink);border-radius:6px;padding:12px 16px;font-size:15px;}
+ol.script{list-style:none;padding:0;margin:0;display:grid;gap:0;counter-reset:step;}
+ol.script li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--rule);counter-increment:step;}
+ol.script li::before{content:counter(step);font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:700;font-size:20px;color:var(--go);line-height:1.2;}
+ol.script .when{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+ol.script b{font-family:Archivo,system-ui,sans-serif;font-weight:700;}
+table{border-collapse:collapse;width:100%;font-size:16px;}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top;}
+th{font-family:Archivo,system-ui,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;}
+td.num,th.num{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+.tablewrap{overflow-x:auto;}
+.rhythm{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.rhythm div{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px;font-size:15px;}
+.rhythm b{display:block;font-family:Archivo,system-ui,sans-serif;font-size:16px;margin-bottom:4px;}
+.rules{display:grid;gap:8px;padding-left:0;list-style:none;margin:0;}
+.rules li{padding-left:22px;position:relative;}
+.rules li::before{content:"";position:absolute;left:0;top:9px;width:10px;height:10px;border-radius:2px;background:var(--bet);}
+.foot{font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px;}
+a{color:var(--add);}
+a:focus-visible{outline:2px solid var(--add);outline-offset:2px;}
+</style>
+<style>body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Cargill household · Sept 2026 → Sept 2028</div>
+    <h1>The 3x Playbook</h1>
+    <p>Start with about <span class="mono">$13,500</span> from the medical claims. Finish 24 months later with <span class="mono">$40,000</span> working for the family. No lottery tickets doing the heavy lifting: three engines run at once, and a fourth stays small on purpose.</p>
+    <div class="thesis" aria-label="Start, target, timeline">
+      <div style="background:var(--keep)"><span class="n">$13.5K</span><small>Day one</small></div>
+      <div style="background:var(--add)"><span class="n">$40K</span><small>Month 24 target</small></div>
+      <div style="background:var(--earn)"><span class="n">3</span><small>Engines + 1 bet</small></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>The four engines</h2>
+    <div class="engines">
+      <div class="engine" style="border-top-color:var(--keep)">
+        <div class="lbl">KEEP</div>
+        <div class="val">Reserve + Roth · $6,500 day one</div>
+        <p>High-yield savings at ~4% and a Roth IRA in index funds. Steady, boring, and never touched for the bet. This is the floor the other engines stand on.</p>
+      </div>
+      <div class="engine" style="border-top-color:var(--earn)">
+        <div class="lbl">EARN</div>
+        <div class="val">Brace business · $1,500 day one</div>
+        <p>Jesica's LLC selling knee and elbow braces. Capital turns four times a year at roughly 2x markup. The only engine that can multiply inside twelve months, because hours are the fuel.</p>
+      </div>
+      <div class="engine" style="border-top-color:var(--add)">
+        <div class="lbl">ADD</div>
+        <div class="val">Cash flow · $500 per month + bonus</div>
+        <p>A fixed transfer every payday plus the Q1 bonus each year. Does more of the tripling than any rate of return possibly can at this horizon.</p>
+      </div>
+      <div class="engine" style="border-top-color:var(--bet)">
+        <div class="lbl">BET</div>
+        <div class="val">Venture slice · $750 day one, 10% cap</div>
+        <p>Reg CF startups or a small-cap ETF. Written off the day it's placed. If it hits, two-thirds moves to KEEP.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Day-one allocation</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Where</th><th class="num">Amount</th><th>Engine</th><th>Job</th></tr></thead>
+      <tbody>
+        <tr><td>High-yield savings (reserve)</td><td class="num">$4,500</td><td>KEEP</td><td>Emergency floor; also parks the business seed until it's used</td></tr>
+        <tr><td>Vehicle down payment</td><td class="num">$4,000</td><td>—</td><td>Buys the truck at the excellent-credit rate; becomes equity, not spending</td></tr>
+        <tr><td>Roth IRA, index fund</td><td class="num">$2,000</td><td>KEEP</td><td>Long-horizon growth, tax-free forever</td></tr>
+        <tr><td>Brace business seed</td><td class="num">$1,500</td><td>EARN</td><td>First inventory once the LLC is filed</td></tr>
+        <tr><td>Venture slice</td><td class="num">$750</td><td>BET</td><td>Placed once, across 3–5 names</td></tr>
+        <tr><td>Family</td><td class="num">$750</td><td>—</td><td>Spent on purpose; keeps the other 94% intact</td></tr>
+        <tr><th>Total</th><th class="num">$13,500</th><th></th><th></th></tr>
+      </tbody>
+    </table></div>
+    <p class="flag">If the check is $12,000: family and venture drop to $500 each, seed to $1,000. If it's $15,000: the extra $1,500 goes straight to the reserve.</p>
+  </section>
+
+  <section>
+    <h2>The script</h2>
+    <ol class="script">
+      <li><div><div class="when">This week</div><b>Open the three accounts.</b> High-yield savings, Roth IRA at Fidelity, and a second Roth for Jesica. Pull both credit reports and dispute anything wrong.</div></li>
+      <li><div><div class="when">Check arrives · Oct 2026</div><b>Everything into savings. Wait 14 days.</b> Then move $2,000 to the Roth, tag $4,000 as the down payment, and leave the rest.</div></li>
+      <li><div><div class="when">Oct 2026</div><b>Get a credit-union pre-approval</b> for a half-ton pickup over 6,000 lb GVWR. Super-prime rates are running 4.4% new, 6.3% used.</div></li>
+      <li><div><div class="when">Nov 2026</div><b>Buy the truck in your own name.</b> $4,000 down, 60 months or shorter, dealer beats the pre-approval or you use the pre-approval. Start a mileage log the day you drive it home.</div></li>
+      <li><div><div class="when">Nov 2026</div><b>Place the bet.</b> $750 across 3–5 Reg CF companies or one small-cap ETF. Then don't look at it until May.</div></li>
+      <li><div><div class="when">Dec 2026</div><b>Pick the first two brace SKUs.</b> Not five. The two with clear demand (post-surgery knee, sports elbow). Price supplier quotes. Ask HR whether part of the bonus can go straight to the 401(k).</div></li>
+      <li><div><div class="when">Jan 2027</div><b>File the LLC with the Texas SOS ($300).</b> Jesica as member, Cooper as paid helper. Open business checking the same week. Buy the first $1,500 of inventory.</div></li>
+      <li><div><div class="when">Jan 2027</div><b>Start the ADD transfer.</b> $500 every payday-pair into savings until the reserve equals three months of expenses, then it redirects to the Roth.</div></li>
+      <li><div><div class="when">Feb–Mar 2027</div><b>Sell the first turn.</b> Local clinics, physical therapists, gyms, marketplace listings, and the truck bed at weekend markets. Every business mile in the log. Reinvest 100% of gross profit into inventory.</div></li>
+      <li><div><div class="when">Mar 2027</div><b>Bonus lands. Split the net:</b> 30% reserve, 30% Roth, 20% business (second inventory buy), 10% bet round two, 10% extra truck principal or a trip.</div></li>
+      <li><div><div class="when">Apr 2027</div><b>First tax return with the business on it.</b> CPA picks mileage vs. depreciation for the truck. Any refund follows the bonus split.</div></li>
+      <li><div><div class="when">Jun 2027</div><b>Third inventory turn.</b> Business now funds itself; start paying the household $300–500 a month from profit. That money joins ADD.</div></li>
+      <li><div><div class="when">Sept 2027 · Month 12</div><b>Scorecard check.</b> Target: about $22,000 in the plan (see below). Roth 2027 on pace, reserve nearly full, business profitable on its own books.</div></li>
+      <li><div><div class="when">Jan 2028</div><b>New Roth room, both accounts.</b> Business profit and ADD point at the Roths first this year. Open Cooper's Roth with what he earned.</div></li>
+      <li><div><div class="when">Mar 2028</div><b>Second bonus, same split.</b> Reserve is full by now, so its 30% goes to the Roth.</div></li>
+      <li><div><div class="when">Sept 2028 · Month 24</div><b>$40,000.</b> Rewrite the playbook for the next 3x.</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The profit engine, one turn</h2>
+    <p>How $1,500 of braces becomes the accelerator. One "turn" is buying inventory, selling it out, and buying again. Illustrative numbers at a 2x markup:</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Turn</th><th class="num">Inventory in</th><th class="num">Revenue</th><th class="num">Gross profit</th><th class="num">Reinvest</th><th class="num">To household</th></tr></thead>
+      <tbody>
+        <tr><td>1 · Feb–Mar 2027</td><td class="num">$1,500</td><td class="num">$3,000</td><td class="num">$1,300</td><td class="num">$1,300</td><td class="num">$0</td></tr>
+        <tr><td>2 · Apr–May (+ bonus $700)</td><td class="num">$3,500</td><td class="num">$7,000</td><td class="num">$3,100</td><td class="num">$2,100</td><td class="num">$1,000</td></tr>
+        <tr><td>3 · Jun–Aug</td><td class="num">$5,600</td><td class="num">$11,200</td><td class="num">$5,000</td><td class="num">$2,500</td><td class="num">$2,500</td></tr>
+        <tr><td>4 · Sept–Dec</td><td class="num">$8,100</td><td class="num">$16,200</td><td class="num">$7,300</td><td class="num">$3,300</td><td class="num">$4,000</td></tr>
+        <tr><th>Year one</th><th></th><th class="num">$37,400</th><th class="num">$16,700</th><th></th><th class="num">$7,500</th></tr>
+      </tbody>
+    </table></div>
+    <p>Gross profit assumes about 13% of revenue lost to shipping, fees, and returns. Every number above depends on the inventory actually selling; a turn that takes six months instead of two halves the year. That's why it starts with two SKUs and why the truck, the clinics, and the markets matter more than the spreadsheet.</p>
+  </section>
+
+  <section>
+    <h2>Scorecard</h2>
+    <p>"In the plan" counts reserve, Roths, business capital, the bet, and truck equity from the down payment. Illustrative, assuming the $13,500 midpoint, a $3,500 net bonus each March, $500/month ADD from January 2027, and the profit table above landing at roughly half speed.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Checkpoint</th><th class="num">In the plan</th><th>What must be true</th></tr></thead>
+      <tbody>
+        <tr><td>Day one · Oct 2026</td><td class="num">$13,500</td><td>Accounts open, credit clean, cooling period respected</td></tr>
+        <tr><td>Month 3 · Dec 2026</td><td class="num">$13,000</td><td>Truck bought, bet placed, SKUs chosen (family $750 spent, so the number dips)</td></tr>
+        <tr><td>Month 6 · Mar 2027</td><td class="num">$18,500</td><td>LLC filed, first turn sold, bonus split applied</td></tr>
+        <tr><td>Month 12 · Sept 2027</td><td class="num">$22,000</td><td>Reserve near 3 months, business paying the household, both Roths funded</td></tr>
+        <tr><td>Month 18 · Mar 2028</td><td class="num">$30,000</td><td>Second bonus in, business at 4 turns/year, ADD now $800+/month with profit</td></tr>
+        <tr><td>Month 24 · Sept 2028</td><td class="num">$40,000</td><td>3x. Reserve full, Roths on pace, business on its own books</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Payday rhythm</h2>
+    <p>Every other Friday, three transfers, ten minutes, no decisions:</p>
+    <div class="rhythm">
+      <div><b>1 · ADD</b>$250 to high-yield savings (becomes Roth once the reserve is full)</div>
+      <div><b>2 · EARN</b>Business profit for the period: reinvest share to inventory, household share to savings</div>
+      <div><b>3 · LOG</b>Mileage log reconciled, receipts photographed into the business folder</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rules that keep it 3x instead of 0.5x</h2>
+    <ul class="rules">
+      <li>The bet never exceeds 10% of everything in the plan. If it grows past that, sell down to 10% and move the rest to KEEP.</li>
+      <li>The reserve is never inventory money and never bet money. The business grows only from its own profit and its scheduled slices.</li>
+      <li>No third SKU until the first two have sold through twice.</li>
+      <li>The truck stays a personal loan at the excellent-credit rate; the business reimburses miles or takes the depreciation on paper. Never a commercial loan on a months-old LLC.</li>
+      <li>If the LLC has no sales by June 2027, the business capital rolls to the Roth and the plan still reaches 3x by month 30 on ADD alone. Nothing is lost but time.</li>
+      <li>Any windfall not on this page (refund, side job, gift) follows the bonus split. No exceptions, no re-planning.</li>
+    </ul>
+  </section>
+
+  <p class="foot">Companion to the detailed <a href="plan.html">Settlement Allocation Plan</a>, which carries the rates, tax rules, and sources. Planning arithmetic, not financial, tax, or legal advice; the business figures are illustrative and depend entirely on braces selling.</p>
+</main>
+</body>
+</html>
