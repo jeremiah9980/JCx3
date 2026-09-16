@@ -124,6 +124,119 @@ td.mo{font-weight:700;white-space:nowrap}
 .tools button:hover{border-color:var(--accent);color:var(--accent)}
 footer{color:var(--muted);font-size:13px;max-width:76ch;margin-top:12px}
 </style>
+<!-- jc2-theme -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Outfit:wght@400;500;600;700&display=swap">
+<style id="jc2-theme">
+/* ===== JC² theme · light cream ground, coral→cream→mint wash, orange accent, wine headings ===== */
+:root{
+  --jc-orange:#f0862d; --jc-coral:#f26b5b; --jc-red:#d9453a; --jc-wine:#7b1e2e; --jc-plum:#3a1a2c;
+  --jc-yellow:#f6c65b; --jc-mint:#7ec8a0; --jc-green:#2f8f5b; --jc-cream:#fbf6f0;
+  --jc-grad:linear-gradient(90deg,#f26b5b 0%,#f6c65b 50%,#7ec8a0 100%);
+  --jc-text-grad:linear-gradient(92deg,#7b1e2e 0%,#c93d3a 55%,#f0862d 100%);
+
+  /* portal / ledger / runbook / index tokens */
+  --ink:#3a1a2c; --accent:#f0862d;
+  --bg:#fbf6f0; --surface:#fffdfa; --surface-2:#fdefe3; --line:#efdccd; --line-strong:#dcb89e;
+  --text:#3a1a2c; --muted:#6f6272; --good:#2f8f5b; --good-bg:#e3f3ea; --warn:#b5451b; --warn-bg:#fde5d8;
+  --rule:#7b1e2e; --nav-bg:rgba(255,253,250,.92);
+  /* family board tokens */
+  --ink-2:#5a4353; --rule-2:#f1e5da; --on-accent:#ffffff;
+  --s1:#f0862d; --s2:#7b1e2e; --s3:#d9a441; --s4:#2f8f5b; --crit:#c2492f; --grid:#eadbce; --fill:#fdf0d5;
+  /* settlement plan tokens */
+  --panel:#fffdfa; --accent-ink:#c96a1c;
+  --c1:#7b1e2e; --c2:#2f8f5b; --c3:#f0862d; --c4:#d9453a; --c5:#8a8f8c; --c6:#5c6e9a;
+  --flag-bg:#fdefe3; --flag-ink:#7b1e2e;
+  /* playbook tokens */
+  --go:#2f8f5b; --go-ink:#fff; --earn:#f0862d; --add:#7b1e2e; --bet:#d9453a; --keep:#2f8f5b;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#f3e9ee; --bg:#1e1420; --surface:#28192b; --surface-2:#332036; --line:#43303f; --line-strong:#6a4d5e;
+    --text:#f3e9ee; --muted:#b39fac; --good:#7ec8a0; --good-bg:#1f3a2c; --warn:#f5a57a; --warn-bg:#46261c;
+    --rule:#f0862d; --nav-bg:rgba(30,20,32,.92);
+    --ink-2:#d8c8d1; --rule-2:#3a2a38; --on-accent:#1e1420; --s2:#f26b5b; --grid:#3a2a38; --fill:#3d2f14;
+    --panel:#28192b; --accent-ink:#f6c65b; --c1:#f26b5b; --flag-bg:#3a2a38; --flag-ink:#f6c65b;
+    --add:#f26b5b; --go-ink:#1e1420;
+    --jc-text-grad:linear-gradient(92deg,#f6c65b 0%,#f0862d 55%,#f26b5b 100%);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#f3e9ee; --bg:#1e1420; --surface:#28192b; --surface-2:#332036; --line:#43303f; --line-strong:#6a4d5e;
+  --text:#f3e9ee; --muted:#b39fac; --good:#7ec8a0; --good-bg:#1f3a2c; --warn:#f5a57a; --warn-bg:#46261c;
+  --rule:#f0862d; --nav-bg:rgba(30,20,32,.92);
+  --ink-2:#d8c8d1; --rule-2:#3a2a38; --on-accent:#1e1420; --s2:#f26b5b; --grid:#3a2a38; --fill:#3d2f14;
+  --panel:#28192b; --accent-ink:#f6c65b; --c1:#f26b5b; --flag-bg:#3a2a38; --flag-ink:#f6c65b;
+  --add:#f26b5b; --go-ink:#1e1420;
+  --jc-text-grad:linear-gradient(92deg,#f6c65b 0%,#f0862d 55%,#f26b5b 100%);
+  color-scheme:dark;
+}
+
+/* ground: cream with coral→mint wash and a faint grid, fixed so it reads as one sheet */
+html{background:var(--bg)}
+body{
+  font-family:Outfit,"Helvetica Neue",Arial,sans-serif !important;
+  color:var(--text);
+  background:
+    linear-gradient(112deg, rgba(247,170,165,.55) 0%, rgba(251,246,240,0) 42%, rgba(251,246,240,0) 62%, rgba(200,236,214,.55) 100%),
+    linear-gradient(rgba(123,30,46,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123,30,46,.05) 1px, transparent 1px),
+    var(--bg) !important;
+  background-size:auto, 44px 44px, 44px 44px, auto !important;
+  background-attachment:fixed !important;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) body{
+    background:
+      linear-gradient(112deg, rgba(242,107,91,.22) 0%, rgba(30,20,32,0) 45%, rgba(30,20,32,0) 60%, rgba(126,200,160,.18) 100%),
+      linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+      var(--bg) !important;
+  }
+}
+:root[data-theme="dark"] body{
+  background:
+    linear-gradient(112deg, rgba(242,107,91,.22) 0%, rgba(30,20,32,0) 45%, rgba(30,20,32,0) 60%, rgba(126,200,160,.18) 100%),
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+    var(--bg) !important;
+}
+
+/* type: serif display like the Cargill² mark, geometric sans body */
+h1,h2,h3,.lbl,.thesis .n{font-family:Fraunces,Georgia,"Times New Roman",serif !important;font-stretch:100% !important;letter-spacing:-.015em}
+h1{background:var(--jc-text-grad);-webkit-background-clip:text;background-clip:text;color:transparent !important;font-weight:800 !important;padding-bottom:.06em}
+.eyebrow,.who,.status,.pill,th,h4,.script .when,.gatelist .eyebrow{font-family:Outfit,"Helvetica Neue",Arial,sans-serif !important;letter-spacing:.14em}
+.eyebrow{color:var(--jc-wine) !important;opacity:.85}
+:root[data-theme="dark"] .eyebrow, :root:not([data-theme="light"]) .eyebrow{color:var(--jc-yellow) !important}
+
+/* rounded, soft cards instead of square Modernist blocks */
+.card,.acct,.lane,.site,.panel,.rb,.steps,.house,.engine,.rhythm div,.thesis,.stats,.controls input,.subtabs button,.tools button,.chip,.addrow,.callout,.flow,.strip,.progress,.empty,table.matrix,.tablewrap>table{border-radius:14px}
+.card,.acct,.lane,.site,.rb,.steps,.house,.strip,.flow,.panel,.stats{overflow:hidden;box-shadow:0 1px 0 rgba(123,30,46,.04),0 12px 32px -22px rgba(123,30,46,.28)}
+.strip{position:relative}
+.strip::before,.stats::before,nav::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--jc-grad);z-index:1}
+.stats{position:relative}
+nav{position:sticky;border-top:0 !important;overflow:hidden;border-radius:14px 14px 0 0}
+nav a[aria-current="page"]{border-bottom-color:var(--jc-orange) !important}
+.pill,.who,.status,.chip,.subtabs button,.tools button,.open,.script .rbs a{border-radius:999px !important}
+.open{background:var(--jc-orange) !important;color:#fff !important;border-radius:0 0 14px 14px !important}
+.open:hover{background:var(--jc-red) !important}
+.subtabs button[aria-selected="true"],.chip[aria-pressed="true"],.who.b,.rb-head .meta .who.b{background:var(--jc-orange) !important;border-color:var(--jc-orange) !important;color:#fff !important}
+.who.j,.rb-head .meta .who.j{border-color:var(--jc-wine) !important;color:var(--jc-wine) !important}
+.who.s,.rb-head .meta .who.s{border-color:var(--jc-coral) !important;color:var(--jc-coral) !important}
+:root[data-theme="dark"] .who.j, :root:not([data-theme="light"]) .who.j{border-color:var(--jc-yellow) !important;color:var(--jc-yellow) !important}
+.card.her,.lane.s,.site.household,.rb.gate,.card.gate{border-top-color:var(--jc-coral) !important}
+.card.wide,.site.business{border-top-color:var(--jc-wine)}
+.site.benefits{border-top-color:var(--jc-mint) !important}
+input.money:focus,input[type=text]:focus,.controls input:focus{outline-color:var(--jc-orange)}
+input[type=checkbox],input[type=range]{accent-color:var(--jc-orange) !important}
+.progress span,.bar span:first-child{background:var(--jc-grad) !important}
+.flag,.rb-head .id,.script .when{color:var(--jc-red) !important}
+a{color:var(--jc-red)}
+.callout{border-left-color:var(--jc-orange) !important;background:var(--surface-2) !important}
+.legend .flag{color:var(--jc-red) !important}
+header{border-bottom-color:transparent !important}
+</style>
 
 <div class="wrap">
 <header>
