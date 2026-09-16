@@ -1,13 +1,20 @@
-# Cargill 3x Playbook
+# JCx3 — Cargill Family Sites
 
-Static site for GitHub Pages.
+Static site for GitHub Pages. `index.html` is the master index: every page in the repo, what it's for, who uses it, and when to open it.
 
-- `index.html` — The 3x Playbook (the simple game plan)
-- `plan.html` — Settlement Allocation Plan (detailed rates, tax rules, sources)
+| File | Page |
+|---|---|
+| `index.html` | Cargill Family Sites — master index (start here) |
+| `board.html` | Cargill Family Board — progress, script, LLC, truck, benefits, links (views by hash: `#board #script #llc #truck #benefits #links`) |
+| `plan.html` | Settlement Allocation Plan |
+| `cargill-budget-site/index.html` | Cargill Household Budget — payday deposits, personal bills, 401(k), Q1 bonus, reimbursements, checklist |
+| `cargill-budget-site/llc.html` | Cargill Consulting Ledger |
+| `cargill-llc-ledger/index.html` | Consulting Ledger, stand-alone copy for sharing on its own |
 
 ## Publish
-1. Create a repo (e.g. `3x-playbook`), upload these files to the root of the `main` branch.
-2. Settings → Pages → Source: Deploy from a branch → `main` / `/ (root)` → Save.
-3. Site appears at `https://<username>.github.io/3x-playbook/` within a minute or two.
+Upload everything to the root of `main`. Settings → Pages → Deploy from a branch → `main` / `/ (root)`. The site appears at `https://<username>.github.io/JCx3/`.
 
-Fonts load from Google Fonts; everything else is self-contained. `noindex` is set so search engines skip it, but the repo must be **private with Pages enabled (GitHub Pro) or the page is public to anyone with the link** — it contains household financial figures.
+## Editing
+Budget and ledger pages save edits in each viewer's own browser (localStorage). To change the shared plan, edit the `D = {...}` defaults in the page script and re-upload.
+
+`noindex` is set on every page, but a public repo is public to anyone with the link — these pages hold household financial figures.
