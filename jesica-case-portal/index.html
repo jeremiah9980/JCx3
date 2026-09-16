@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Jesica's Case Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F3F5F3; --surface:#FFFFFF; --surface-2:#EDF1EE; --line:#D3DAD5; --line-strong:#AEB9B2;
+  --ink:#1C2622; --ink-2:#48554F; --ink-3:#73817A;
+  --accent:#1F6E68; --accent-soft:#DDEEEC; --accent-ink:#FFFFFF;
+  --warn:#8A5A00; --warn-bg:#FBF0D6; --alert:#9C3A2B; --alert-bg:#F8E4E0; --ok:#2C6B3F; --ok-bg:#DFF0E4; --muted-bg:#E7EBE8;
+  --serif:"Literata",Georgia,"Times New Roman",serif;
+  --sans:"Public Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 1px 2px rgba(28,38,34,.06),0 8px 24px -14px rgba(28,38,34,.25);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#131917; --surface:#1B2320; --surface-2:#212B27; --line:#2E3B36; --line-strong:#465650;
+    --ink:#ECF1EE; --ink-2:#B6C2BC; --ink-3:#83918A;
+    --accent:#6FC2BA; --accent-soft:#1E3532; --accent-ink:#0F1A18;
+    --warn:#F0BE5F; --warn-bg:#3A2F14; --alert:#EE8A78; --alert-bg:#3E2320; --ok:#7BCF97; --ok-bg:#1B3325; --muted-bg:#27302C;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 24px -14px rgba(0,0,0,.7);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px}
+
+/* header */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:10px 24px;padding-block:22px 0}
+.eyebrow{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,36px);line-height:1.1;margin:4px 0 2px;letter-spacing:-.01em;text-wrap:balance}
+.caseline{color:var(--ink-2);font-size:14px;margin:0 0 14px}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+nav.tabs button{background:transparent;border:0;border-bottom:3px solid transparent;padding:10px 12px;color:var(--ink-2);font-weight:600;font-size:14.5px;border-radius:4px 4px 0 0}
+nav.tabs button:hover{color:var(--ink);background:var(--surface-2)}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.asof{font-size:12.5px;color:var(--ink-3);padding-bottom:12px}
+
+/* panels */
+.panel{display:none;padding-block:28px 64px}
+.panel.active{display:block}
+h2{font-family:var(--serif);font-weight:600;font-size:24px;margin:0 0 10px;line-height:1.2;text-wrap:balance}
+h3{font-family:var(--serif);font-weight:600;font-size:18.5px;margin:0 0 6px;line-height:1.3}
+p{margin:0 0 12px;max-width:70ch}
+.lede{font-size:17.5px;color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:20px 22px}
+.stack>*+*{margin-top:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+/* status banner */
+.banner{border-left:5px solid var(--warn);background:var(--warn-bg);color:var(--ink);padding:16px 18px 14px;border-radius:6px}
+.banner h2{font-size:20px;margin-bottom:6px}
+.banner p{max-width:78ch}
+
+/* next dates */
+.dates{list-style:none;margin:0;padding:0}
+.dates li{display:grid;grid-template-columns:130px 1fr;gap:6px 16px;padding:12px 0;border-top:1px solid var(--line)}
+.dates li:first-child{border-top:0;padding-top:0}
+.dates .d{font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.dates .d small{display:block;font-weight:500;color:var(--ink-3);font-size:12px}
+.dates .what{color:var(--ink-2)}
+.dates .what b{color:var(--ink)}
+@media (max-width:520px){.dates li{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--muted-bg);color:var(--ink-2);vertical-align:middle;margin-left:6px}
+.tag.past{background:var(--muted-bg);color:var(--ink-3)}
+.tag.soon{background:var(--warn-bg);color:var(--warn)}
+.tag.key{background:var(--alert-bg);color:var(--alert)}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+
+/* people */
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.person{padding:14px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2)}
+.person .role{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.person .name{font-weight:600;margin:2px 0 4px}
+.person .c{font-size:14px;color:var(--ink-2);line-height:1.45}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;background:var(--line-strong)}
+.tl li{position:relative;padding:0 0 22px 40px}
+.tl li::before{content:"";position:absolute;left:5px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--accent)}
+.tl li.court::before{border-color:var(--ink-3)}
+.tl li.you::before{border-color:var(--accent);background:var(--accent)}
+.tl li.creditor::before{border-color:var(--warn)}
+.tl li.future::before{border-style:dashed;border-color:var(--line-strong)}
+.tl .when{font-size:13px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.tl .title{font-weight:600;font-size:16.5px;margin:2px 0 4px}
+.tl .title .who{font-weight:500;color:var(--ink-3);font-size:13.5px}
+.tl .body{color:var(--ink-2);max-width:72ch}
+.tl .links{margin-top:6px;font-size:14px}
+.tl .links a+a{margin-left:12px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-3);margin:0 0 18px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:2px solid var(--ink-3)}
+.legend .l-you::before{border-color:var(--accent);background:var(--accent)}
+.legend .l-court::before{border-color:var(--ink-3)}
+.legend .l-cred::before{border-color:var(--warn)}
+.legend .l-fut::before{border-style:dashed;border-color:var(--line-strong)}
+
+/* documents */
+.doclayout{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+@media (max-width:900px){.doclayout{grid-template-columns:1fr}}
+.doclist{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.doclist li{border-top:1px solid var(--line)}
+.doclist li:first-child{border-top:0}
+.doclist button{width:100%;text-align:left;background:transparent;border:0;padding:12px 14px;display:block;color:var(--ink)}
+.doclist button:hover{background:var(--surface-2)}
+.doclist li.sel button{background:var(--accent-soft);box-shadow:inset 4px 0 0 var(--accent)}
+.doclist .n{font-size:12px;color:var(--ink-3);font-weight:600;letter-spacing:.04em}
+.doclist .t{font-weight:600;font-size:14.5px;line-height:1.35}
+.doclist .m{font-size:12.5px;color:var(--ink-3)}
+.viewer{position:sticky;top:12px}
+.viewer .card{padding:0;overflow:hidden}
+.vhead{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;align-items:flex-start}
+.vhead h3{margin:0}
+.vhead .m{font-size:13px;color:var(--ink-3)}
+.vhead .acts a{display:inline-block;font-size:13.5px;font-weight:600;text-decoration:none;border:1px solid var(--line-strong);border-radius:4px;padding:6px 10px;color:var(--ink);white-space:nowrap}
+.vhead .acts a:hover{border-color:var(--accent);color:var(--accent)}
+.vhead .acts a+a{margin-left:6px}
+.vsum{padding:14px 18px;background:var(--surface-2);border-bottom:1px solid var(--line);font-size:14.5px;color:var(--ink-2)}
+.vsum p:last-child{margin:0}
+.vsum b{color:var(--ink)}
+iframe.pdf{display:block;width:100%;height:min(78vh,900px);border:0;background:#525659}
+.nopdf{padding:18px;font-size:14px;color:var(--ink-2)}
+
+/* glossary */
+dl.gloss{margin:0}
+dl.gloss dt{font-weight:600;margin-top:14px}
+dl.gloss dd{margin:2px 0 0;color:var(--ink-2);max-width:72ch}
+
+.note{font-size:13.5px;color:var(--ink-3);max-width:76ch}
+.hr{height:1px;background:var(--line);margin:22px 0}
+footer{border-top:1px solid var(--line);padding-block:18px 32px;font-size:13px;color:var(--ink-3)}
+footer p{max-width:80ch}
+@media (prefers-reduced-motion:no-preference){.doclist button,nav.tabs button{transition:background .12s}}
+@media print{nav.tabs,.viewer{display:none}.panel{display:block!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Your bankruptcy case, in plain English</div>
+      <h1>Jesica's Case Portal</h1>
+      <p class="caseline">In re Jesica Ann Green · Chapter 13 · Case No. 26-80641 · U.S. Bankruptcy Court, Southern District of Texas (Galveston) · Judge Alfredo R. Perez</p>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button role="tab" aria-selected="true" data-tab="now">Where things stand</button>
+        <button role="tab" aria-selected="false" data-tab="timeline">Timeline</button>
+        <button role="tab" aria-selected="false" data-tab="docs">Documents</button>
+        <button role="tab" aria-selected="false" data-tab="dates">Dates &amp; deadlines</button>
+        <button role="tab" aria-selected="false" data-tab="people">People &amp; contacts</button>
+        <button role="tab" aria-selected="false" data-tab="words">What the words mean</button>
+      </nav>
+    </div>
+    <div class="asof">Docket last pulled <b>Sept 16, 2026</b> · 12 entries, 2 claims</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ NOW ============ -->
+<section class="panel active" id="tab-now" role="tabpanel">
+  <div class="stack">
+    <div class="banner">
+      <h2>You asked the court to dismiss the case on the day you filed it. That request is still waiting on the judge.</h2>
+      <p>On <b>September 1</b> you filed the Chapter 13 petition and, the same day, a <b>Motion to Voluntarily Dismiss</b> (Document 6). The docket shows no order on that motion yet. Until a judge signs a dismissal order, the case is <b>open</b>: the automatic stay is protecting you from collection, and the court is treating the case as if it will go forward — that's why the deficiency order, the trustee's notice, and the meeting date all arrived anyway.</p>
+      <p style="margin:0">Creditors had until about <b>September 22</b> to object to your motion. If nobody objects, the court can rule without a hearing. Watch the docket (or call the clerk) for an <i>Order Dismissing Case</i>.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>If you still want the case dismissed</h3>
+        <p>You generally don't need to file anything else — a Chapter 13 debtor has a right to dismiss her own case (11 U.S.C. §1307(b)) as long as the case was never converted from another chapter. The order should come in due course.</p>
+        <p>Even so, the court has a second path to dismissal running in parallel: the <b>Order: Possible Future Dismissal</b> (Document 8) says the case is dismissed automatically on about <b>October 16</b> if the missing schedules aren't filed. Either path ends in the same place.</p>
+        <p style="margin:0"><b>What changes when the order is signed:</b> the automatic stay ends, and Freedom Mortgage (and anyone else) can resume normal collection, including foreclosure steps. The $313 filing fee is not refunded.</p>
+      </div>
+      <div class="card">
+        <h3>If you've changed your mind and want to keep the case</h3>
+        <p>Then time matters a great deal. You would need to <b>withdraw the motion to dismiss</b> and file everything listed in Document 8 — the schedules (A/B through J), Statement of Financial Affairs, Form 122C-1, pay stubs or the no-pay-advice declaration — plus a <b>Chapter 13 plan</b> and a payment order, and start paying the trustee. The first trustee payment was due by <b>October 1</b>.</p>
+        <p style="margin:0">Doing this pro se is hard. Before deciding, talk to a bankruptcy attorney — see <a href="#" data-goto="people">People &amp; contacts</a> for free and low-cost options in Galveston County.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Next dates that matter</h3>
+      <ul class="dates" id="nextdates"></ul>
+      <p class="note" style="margin-top:12px">Dates come straight from the court's Notice (Document 12) and orders (Documents 8 and 9). If the case is dismissed first, the later dates fall away. Full list under <a href="#" data-goto="dates">Dates &amp; deadlines</a>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Who is in the case so far</h3>
+      <p>You listed one creditor: <b>Freedom Mortgage</b> (your home loan on 14 Prairie Oaks Dr). The court also notified the <b>IRS</b>, and the <b>Texas Workforce Commission</b> filed a claim for <b>$366</b> — an unemployment overpayment from November 2014. HUD is on the mailing list, which usually means the mortgage is FHA-insured. Nobody has filed anything against you: no objections, no motion for relief from stay, no mortgage claim yet.</p>
+      <p class="note" style="margin:0">Heads-up on a mix-up: another Chapter 13 debtor in Louisiana has the same case number, 26-80641. When you search PACER, make sure the court says <b>Texas Southern (Galveston)</b> — a Louisiana petition was pulled by mistake and is not included here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section class="panel" id="tab-timeline" role="tabpanel">
+  <h2>Everything that has happened, in order</h2>
+  <p class="lede">Each entry is a line on the court's docket. Click a document link to read the actual paper.</p>
+  <div class="legend"><span class="l-you">Filed by you</span><span class="l-court">Court / clerk</span><span class="l-cred">Creditor or trustee</span><span class="l-fut">Scheduled</span></div>
+  <ol class="tl" id="timeline"></ol>
+</section>
+
+<!-- ============ DOCUMENTS ============ -->
+<section class="panel" id="tab-docs" role="tabpanel">
+  <h2>Documents</h2>
+  <p class="lede">Every paper filed in the case that has been downloaded, plus the docket sheet and the county appraisal record for the house. Select one to read it here or download it.</p>
+  <div class="doclayout">
+    <ul class="doclist" id="doclist"></ul>
+    <div class="viewer">
+      <div class="card">
+        <div class="vhead">
+          <div><h3 id="v-title">—</h3><div class="m" id="v-meta"></div></div>
+          <div class="acts"><a id="v-open" href="#" target="_blank" rel="noopener">Open in new tab</a><a id="v-dl" href="#" download>Download</a></div>
+        </div>
+        <div class="vsum" id="v-sum"></div>
+        <iframe class="pdf" id="v-frame" title="Document viewer" src="about:blank"></iframe>
+        <div class="nopdf">If the pages don't show above (some phones won't display PDFs inline), use <b>Open in new tab</b> or <b>Download</b>.</div>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:16px">Not yet downloaded from PACER: Document 1 (your 9-page petition), 3 (Statement of Social Security Number — sealed from the public), 4 (Pro Se Filer Identification) and 7 (fee receipt). They can be added to the <code>docs/</code> folder later.</p>
+</section>
+
+<!-- ============ DATES ============ -->
+<section class="panel" id="tab-dates" role="tabpanel">
+  <h2>Dates &amp; deadlines</h2>
+  <p class="lede">Everything the court has set, whether it's behind you or ahead. "If the case continues" means the date only matters if the dismissal doesn't happen first.</p>
+  <div class="card"><ul class="dates" id="alldates"></ul></div>
+  <p class="note" style="margin-top:14px">Rule of thumb from the court's own orders: the schedules and plan were due 14–15 days after filing; the first trustee payment 30 days after; the debtor-education course 45 days after; the §521(i) automatic dismissal kicks in on the 46th day. Petition date was September 1, 2026.</p>
+</section>
+
+<!-- ============ PEOPLE ============ -->
+<section class="panel" id="tab-people" role="tabpanel">
+  <h2>People &amp; contacts</h2>
+  <p class="lede">Who's who on the docket, and where to get help.</p>
+  <div class="people">
+    <div class="person"><div class="role">Judge</div><div class="name">Hon. Alfredo R. Perez</div><div class="c">U.S. Bankruptcy Judge, Southern District of Texas. Case suffix "-arp". Sits at Galveston, 7th-floor courtroom, 601 Rosenberg St.</div></div>
+    <div class="person"><div class="role">Chapter 13 Trustee</div><div class="name">Tiffany D. Castro</div><div class="c">1220 Augusta Dr, Ste 500, Houston, TX 77057<br>713-722-1200 · ecf@ch13hou.com<br>Runs the Oct 19 meeting of creditors and would receive plan payments.</div></div>
+    <div class="person"><div class="role">Clerk of Court</div><div class="name">Nathan Ochsner, Clerk · Galveston Division</div><div class="c">601 Rosenberg St, Rm 411, Galveston, TX 77550<br>(409) 766-3530 · Mon–Fri 8:00–5:00<br>Where paper filings go; can tell you if an order has been entered.</div></div>
+    <div class="person"><div class="role">U.S. Trustee (Region 7)</div><div class="name">Office of the U.S. Trustee</div><div class="c">515 Rusk Ave, Ste 3516, Houston, TX 77002 · 713-718-4650<br>Government watchdog for the bankruptcy system; can move to dismiss for missing papers.</div></div>
+    <div class="person"><div class="role">Creditor — home loan</div><div class="name">Freedom Mortgage</div><div class="c">Customer Care, P.O. Box 50485, Indianapolis, IN 46250-0485 · 855-690-5900<br>Bankruptcy notices go to Bankruptcy@Freedommortgage.com. The only creditor you listed.</div></div>
+    <div class="person"><div class="role">Creditor — filed Claim 2-1</div><div class="name">Texas Workforce Commission</div><div class="c">Collections &amp; Civil Actions, 101 E. 15th St, Rm 556, Austin, TX 78778<br>512-463-2872 · collections.bankruptcy@twc.texas.gov<br>$366.00 unemployment overpayment (2014). Examiner: Barbara Wolfshohl, 512-936-3993.</div></div>
+    <div class="person"><div class="role">Noticed government parties</div><div class="name">IRS · HUD</div><div class="c">IRS, P.O. Box 7346, Philadelphia, PA 19101 (must send the trustee your tax transcripts before Oct 12).<br>HUD Office of General Counsel, Region VI, Fort Worth — noticed because the mortgage appears to be FHA-insured.</div></div>
+    <div class="person"><div class="role">Credit counseling</div><div class="name">Access Counseling, Inc.</div><div class="c">Completed Aug 28, 2026 by internet · counselor Marvin Dela Cruz · Certificate 15317-TXS-CC-041380803. This satisfied the pre-filing requirement.</div></div>
+  </div>
+  <div class="hr"></div>
+  <h3>Getting legal help (free or low-cost)</h3>
+  <p><b>Lone Star Legal Aid</b> serves Galveston County residents who qualify by income — 1-800-733-8394, lonestarlegal.org. <b>State Bar of Texas Lawyer Referral</b> — 1-800-252-9690 — connects you with a bankruptcy attorney for a low-cost first consultation. The <b>court's own pro se page</b> at txs.uscourts.gov/bankruptcy lists forms, local rules and the pro se clinic schedule. The clerk's staff can explain procedure but are not allowed to give legal advice.</p>
+  <p class="note">Nothing on this page is legal advice. It is a reading guide to the public record of your case, built to make the papers easier to follow.</p>
+</section>
+
+<!-- ============ GLOSSARY ============ -->
+<section class="panel" id="tab-words" role="tabpanel">
+  <h2>What the words mean</h2>
+  <p class="lede">Terms that appear in your documents, explained.</p>
+  <div class="card">
+  <dl class="gloss">
+    <dt>Chapter 13</dt><dd>A repayment plan bankruptcy for people with regular income. Debts are paid over 3–5 years through a trustee; you keep your property while the plan runs. Compare Chapter 7, which sells non-exempt property and wipes out debts faster.</dd>
+    <dt>Petition</dt><dd>The form that starts the case (Document 1). The moment it is stamped, the automatic stay begins and you are a "debtor."</dd>
+    <dt>Pro se</dt><dd>Representing yourself, without a lawyer. The docket shows you as "represented by Jesica Ann Green, PRO SE."</dd>
+    <dt>Automatic stay</dt><dd>An immediate legal freeze on most collection: no calls, letters, lawsuits, garnishments, repossessions or foreclosure sales while the case is open. It ends when the case is dismissed or closed.</dd>
+    <dt>Voluntary dismissal (§1307(b))</dt><dd>A Chapter 13 debtor's right to end her own case by asking the court. Your Document 6 is that request. Dismissal is different from discharge — a dismissed case wipes out nothing; the debts remain as they were.</dd>
+    <dt>Discharge</dt><dd>The court order that legally erases debts covered by the plan. In Chapter 13 it comes only after all plan payments are made. It will not happen in a dismissed case.</dd>
+    <dt>Schedules (A/B, C, D, E/F, G, H, I, J)</dt><dd>The detailed lists the court requires: what you own (A/B), what you claim as exempt (C), who holds liens on your property (D), other creditors (E/F), leases and contracts (G), co-debtors (H), income (I) and expenses (J). Document 8 says none were filed.</dd>
+    <dt>Statement of Financial Affairs (Form 107)</dt><dd>A questionnaire about your finances over the last few years — income, payments, lawsuits, transfers.</dd>
+    <dt>Form 122C-1</dt><dd>The "means test" for Chapter 13: compares your income to the Texas median to set how long the plan must run (3 or 5 years).</dd>
+    <dt>Payment advices</dt><dd>Pay stubs from the 60 days before filing. If you had no employer income, you sign the one-paragraph declaration attached to Document 8 instead.</dd>
+    <dt>§521(i) automatic dismissal</dt><dd>A rule that a case is dismissed on its own on the 46th day if the required schedules and statements still aren't filed. For a September 1 petition that is about October 16, 2026.</dd>
+    <dt>Chapter 13 plan</dt><dd>Your proposal for how much you'll pay the trustee each month and how that money is split among creditors. The court must approve ("confirm") it at a confirmation hearing.</dd>
+    <dt>Confirmation hearing</dt><dd>The court date where the judge decides whether to approve the plan. Set for December 3, 2026 at 9:00 AM in Galveston — only relevant if the case continues and a plan is filed.</dd>
+    <dt>Meeting of creditors (§341 meeting)</dt><dd>A short sworn Q&amp;A run by the trustee, not the judge. Creditors may attend but rarely do. Yours is set for October 19, 2026 at 10:00 AM by Zoom. You would need photo ID and proof of your Social Security number.</dd>
+    <dt>Trustee</dt><dd>Tiffany Castro — the person appointed to collect plan payments, review your paperwork, and pay creditors. Not your lawyer and not the judge.</dd>
+    <dt>U.S. Trustee</dt><dd>A Justice Department office that oversees bankruptcy cases and trustees. Different from the Chapter 13 trustee.</dd>
+    <dt>Proof of claim</dt><dd>A creditor's form saying how much it is owed and why. TWC filed Claim 2-1 for $366. Claim 1-1 exists on the register but hasn't been downloaded yet. The deadline for most creditors to file is November 10, 2026.</dd>
+    <dt>Secured vs. unsecured</dt><dd>Secured debt is backed by property the lender can take (your mortgage — the house). Unsecured debt has no collateral (the TWC overpayment). Priority unsecured debts, like recent taxes, get paid before general unsecured ones.</dd>
+    <dt>Adequate protection</dt><dd>Payments or conditions that protect a lender's collateral while the case is pending. Document 9's vehicle order sets automatic adequate-protection terms for any car loan — it's a standard form that goes in every case, whether or not you have a car loan.</dd>
+    <dt>Wage order / EFT order / ACH order</dt><dd>The way plan payments would reach the trustee: deducted from wages, or pulled electronically from your bank. One would have to be filed with the plan.</dd>
+    <dt>BNC — Bankruptcy Noticing Center</dt><dd>The mail service that sends court notices. Documents 10 and 11 are its certificates saying who was mailed what and when.</dd>
+    <dt>Dischargeability complaint (§523)</dt><dd>A lawsuit by a creditor arguing a particular debt should survive the bankruptcy (e.g., fraud). Deadline December 18, 2026. None filed.</dd>
+    <dt>Debtor education / financial management course</dt><dd>A second, post-filing class (different from the pre-filing credit counseling you completed Aug 28). Required before any discharge; due December 18, 2026 if the case continues.</dd>
+    <dt>Homestead exemption</dt><dd>Texas law protects your primary residence from most creditors in bankruptcy, regardless of value (with an acreage cap). The appraisal district record shows the homestead ("HS") exemption on 14 Prairie Oaks. This does not stop the mortgage lender, whose lien you agreed to.</dd>
+    <dt>PACER</dt><dd>The federal courts' online records system (pacer.uscourts.gov). Most documents cost $0.10 per page to view. The clerk's office can also print them for a fee.</dd>
+  </dl>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <p>Built from the public docket of Case 26-80641 (Bankr. S.D. Tex.) as pulled on September 16, 2026, and the Galveston CAD record for Property ID 421328. The documents in the <code>docs/</code> folder are the court's own PDFs, unaltered. Anything not in the docket — what to do next, whether to keep or dismiss the case — is a decision to make with a lawyer, not from this page.</p>
+</div></footer>
+
+<script>
+(function(){
+  // ---------- data ----------
+  const DOCS = [
+    {id:"d02", n:"Doc 2", date:"2026-09-01", who:"you", title:"Certificate of Credit Counseling", file:"docs/doc-02_2026-09-01_certificate-of-credit-counseling.pdf", pages:1,
+     sum:"Proof that you completed the required pre-filing credit counseling on <b>Aug 28, 2026</b> (11:08 AM PDT, by internet) with Access Counseling, Inc. Certificate 15317-TXS-CC-041380803. No debt repayment plan was prepared. This box is checked — nothing more is needed on it."},
+    {id:"d05", n:"Doc 5", date:"2026-09-01", who:"you", title:"Creditor Mailing List", file:"docs/doc-05_2026-09-01_creditor-mailing-list.pdf", pages:1,
+     sum:"Your one-line list of creditors: <b>Freedom Mortgage</b>, Customer Care, P.O. Box 50485, Indianapolis, IN 46250-0485, 855-690-5900. Everyone on this list gets every court notice. The court added the IRS, TWC and HUD on its own, as it does in every case."},
+    {id:"d06", n:"Doc 6", date:"2026-09-01", who:"you", title:"Debtor's Motion to Voluntarily Dismiss Chapter 13 Case", file:"docs/doc-06_2026-09-01_motion-to-voluntarily-dismiss.pdf", pages:1,
+     sum:"<b>The most important paper in the file.</b> You asked the court to dismiss the case under 11 U.S.C. §1307(b) because you \"no longer wish to pursue Chapter 13 relief,\" acknowledging that dismissal ends the automatic stay. The clerk docketed it as \"Motion to Dismiss Case for Other Cause — Objections/Request for Hearing Due in 21 days\" (about Sept 22). <b>No order has been entered on it as of Sept 16.</b>"},
+    {id:"d08", n:"Doc 8", date:"2026-09-03", who:"court", title:"Order: Possible Future Dismissal of Case", file:"docs/doc-08_2026-09-03_order-possible-future-dismissal.pdf", pages:2,
+     sum:"The clerk's checklist of what was <b>not</b> filed with the petition: Schedules A/B, C, D, E/F, G, H, I, J; the Statement of Financial Affairs (Form 107); Form 122C-1; and 60 days of pay stubs. Page 2 is a fill-in declaration you can sign instead of pay stubs if you had no employer income. The order warns the case is <b>dismissed automatically under §521(i)</b> if these aren't filed — that clock runs out about Oct 16. If you want the case dismissed anyway, this order is simply a second route to the same result."},
+    {id:"d09", n:"Doc 9", date:"2026-09-03", who:"court", title:"Initial Case Management Order · Debtor's Responsibilities · Vehicle Order", file:"docs/doc-09_2026-09-03_initial-case-management-order.pdf", pages:4,
+     sum:"Three standard orders the court issues in every Chapter 13. <b>Pages 1–2:</b> how the case is managed — extensions capped at 25 days, how a trustee's motion to dismiss works, confirmation-hearing rules. <b>Page 3 (Debtor's Initial Responsibilities):</b> first trustee payment within 30 days (Oct 1); plan, schedules and SOFA within 15 days (Sept 16); a wage/EFT/ACH payment order; attend the 341 meeting; debtor-education course within 45 days (Oct 16); file any late tax returns. <b>Page 4:</b> permission to keep using any financed vehicle if you keep it insured and pay the trustee — boilerplate whether or not you have a car loan."},
+    {id:"d10", n:"Doc 10", date:"2026-09-05", who:"court", title:"BNC Certificate of Mailing — Order 9", file:"docs/doc-10_2026-09-05_bnc-certificate-of-mailing-order-9.pdf", pages:6,
+     sum:"The Bankruptcy Noticing Center's receipt showing Document 9 was mailed to you on Sept 5 and emailed to Freedom Mortgage and the IRS on Sept 3, with electronic notice to the trustee and U.S. Trustee. Pages 1–4 are a copy of Order 9; pages 5–6 are the mailing certificate. Informational only."},
+    {id:"d11", n:"Doc 11", date:"2026-09-05", who:"court", title:"BNC Certificate of Mailing — Order 8", file:"docs/doc-11_2026-09-05_bnc-certificate-of-mailing-order-8.pdf", pages:3,
+     sum:"Same as Doc 10 but for the deficiency order (Doc 8): mailed to you at 14 Prairie Oaks Dr on Sept 5; electronic notice to the trustee and U.S. Trustee. Informational only."},
+    {id:"d12", n:"Doc 12", date:"2026-09-15", who:"creditor", title:"Notice of Chapter 13 Bankruptcy Case (Official Form 309I)", file:"docs/doc-12_2026-09-15_notice-of-chapter-13-case-form-309i.pdf", pages:2,
+     sum:"Filed by the trustee. This is the official notice every creditor gets, and the source of the main dates: <b>341 meeting Oct 19, 2026, 10:00 AM by Zoom</b> (Meeting ID 223 248 9512, passcode 1291903731, or call 1-346-205-0870); <b>proof-of-claim deadline Nov 10, 2026</b> (government: Mar 1, 2027); <b>Dec 18, 2026</b> for dischargeability complaints and your financial-management certificate; exemption objections 30 days after the 341 meeting. It notes \"The debtor has not filed a plan as of this date.\" The docket text adds a <b>confirmation hearing Dec 3, 2026, 9:00 AM</b>, Galveston 7th-floor courtroom."},
+    {id:"c21", n:"Claim 2-1", date:"2026-09-15", who:"creditor", title:"Proof of Claim — Texas Workforce Commission, $366.00", file:"docs/claim-2-1_2026-09-15_texas-workforce-commission.pdf", pages:4,
+     sum:"TWC says you owe <b>$366.00</b> for an <b>unemployment-benefit overpayment</b> for the benefit week ending <b>Nov 15, 2014</b>, established Dec 16, 2014 (claim ID 09-21-14), still open with $0 recovered. Unsecured, non-priority, but TWC reserves the right to offset it against any state payment or refund due to you. Signed by account examiner Barbara Wolfshohl. Page 4 is the itemized certification. Nothing to do unless you dispute it; if the case is dismissed, TWC can pursue it as before."},
+    {id:"dkt", n:"Docket", date:"2026-09-16", who:"court", title:"Docket Report (PACER) as of Sept 16, 2026", file:"docs/docket-report_2026-09-16.pdf", pages:2,
+     sum:"The court's index of the whole case: parties, judge, key dates and all 12 docket entries with dates and page counts. The flags at the top — <b>PlnDue, DEF22c, DEFb7, DEFsch</b> — are the clerk's shorthand for plan due, Form 122C deficient, Form B7 (SOFA) deficient, schedules deficient. Entries 1, 3, 4 and 7 are listed here but their PDFs haven't been downloaded."},
+    {id:"cad", n:"County record", date:"2026-09-16", who:"court", title:"Galveston CAD — 14 Prairie Oaks (Property ID 421328)", file:"docs/galveston-cad_2026-09-16_property-421328.pdf", pages:2,
+     sum:"Not a court filing — the appraisal district's record of your house, useful when filling out Schedule A/B or C. Owner <b>Green Jesica A</b>, 100%. Legal description <b>Prairie Knoll Estates Phase 2 (2004), Abst 161, Lot 14, 0.152 acres</b>; Geo ID 5971-2000-0014-000. <b>Homestead exemption on file.</b> 2026 market value <b>$242,500</b> (improvements $212,800, land $29,700); estimated 2026 property tax $3,655.80 across seven taxing units. Agent of record: Texas Tax Protest."}
+  ];
+
+  const TIMELINE = [
+    {date:"2026-08-28", who:"you", title:"Credit counseling completed", body:"Online session with Access Counseling, Inc. — the class the law requires before filing. Certificate issued the same day.", docs:["d02"]},
+    {date:"2026-09-01", who:"you", title:"Chapter 13 petition filed · Case 26-80641 opens", body:"Voluntary petition (9 pages, Doc 1), $313 fee paid (Doc 7), Statement of SSN (Doc 3, sealed), Pro Se Filer ID (Doc 4), creditor list (Doc 5) and the counseling certificate (Doc 2). The automatic stay began the moment the clerk stamped the petition.", docs:["d02","d05"], extra:"Docs 1, 3, 4, 7 not downloaded"},
+    {date:"2026-09-01", who:"you", title:"Motion to Voluntarily Dismiss filed", body:"Same day as the petition. You asked the court to end the case under §1307(b). Clerk set a 21-day objection window (to about Sept 22). Still pending.", docs:["d06"]},
+    {date:"2026-09-03", who:"court", title:"Judge Perez signs two orders", body:"Order: Possible Future Dismissal (lists the missing schedules; warns of automatic dismissal) and the Initial Case Management Order with the Debtor's Responsibilities and the standard vehicle order.", docs:["d08","d09"]},
+    {date:"2026-09-05", who:"court", title:"Orders mailed to you and creditors", body:"Bankruptcy Noticing Center mails both orders to 14 Prairie Oaks Dr; Freedom Mortgage and the IRS get electronic notice.", docs:["d10","d11"]},
+    {date:"2026-09-15", who:"creditor", title:"Trustee issues the Notice of Chapter 13 Case", body:"Tiffany Castro is appointed trustee and files Form 309I, setting the 341 meeting, claim deadlines and the Dec 3 confirmation hearing. It records that no plan has been filed.", docs:["d12"]},
+    {date:"2026-09-15", who:"creditor", title:"Texas Workforce Commission files Claim 2-1 — $366.00", body:"A 2014 unemployment overpayment. Claim 1-1 also exists on the claims register but has not been pulled yet.", docs:["c21"]},
+    {date:"2026-09-16", who:"court", title:"Docket pulled for this portal", body:"12 docket entries, no order yet on the motion to dismiss, no creditor objections, no mortgage claim.", docs:["dkt","cad"]},
+    {date:"2026-09-22", who:"future", title:"Objection window on your motion to dismiss closes (approx.)", body:"21 days after Sept 1. After this the court can rule on Doc 6 without a hearing."},
+    {date:"2026-10-01", who:"future", title:"First trustee payment would be due", body:"30 days after the petition (Order 9). Only matters if the case continues."},
+    {date:"2026-10-16", who:"future", title:"§521(i) automatic-dismissal date (approx.) · debtor-education deadline", body:"46th day after filing. If the schedules still aren't on file, the case is dismissed by operation of law — the second route to the same outcome as your motion."},
+    {date:"2026-10-19", who:"future", title:"Meeting of creditors — 10:00 AM by Zoom", body:"Run by the trustee. Meeting ID 223 248 9512 · passcode 1291903731 · phone 1-346-205-0870. If the case is still open you must attend with photo ID and Social Security card."},
+    {date:"2026-11-10", who:"future", title:"Proof-of-claim deadline (non-government creditors)", body:"Freedom Mortgage would need to file by this date to be paid through a plan."},
+    {date:"2026-12-03", who:"future", title:"Confirmation hearing — 9:00 AM, Galveston, 7th floor", body:"Only if a plan has been filed."},
+    {date:"2026-12-18", who:"future", title:"Dischargeability complaints due · financial-management certificate due", body:"Last day for a creditor to argue a debt should survive; last day for you to file the post-filing course certificate."},
+    {date:"2027-03-01", who:"future", title:"Government proof-of-claim deadline", body:"IRS and TWC have until this date to file or amend claims."}
+  ];
+
+  const DATES = [
+    {date:"2026-09-01", what:"<b>Petition filed.</b> Automatic stay begins. Filing fee $313 paid.", cond:false},
+    {date:"2026-09-15", what:"Schedules, Statement of Financial Affairs, Form 122C-1 and pay stubs due (14 days, Rule 1007(c)). <b>Not filed</b> per Doc 8.", cond:false},
+    {date:"2026-09-16", what:"Plan, schedules and payment order due under the Initial Order (15 days). <b>Not filed</b> as of the Sept 15 notice.", cond:false},
+    {date:"2026-09-22", what:"Approximate end of the 21-day objection period on <b>your motion to dismiss</b> (Doc 6). Court may rule any time after.", cond:false, key:true},
+    {date:"2026-10-01", what:"First payment to the Chapter 13 trustee due (30 days after petition).", cond:true},
+    {date:"2026-10-12", what:"IRS must deliver tax transcripts to the trustee (7 days before the 341 meeting).", cond:true},
+    {date:"2026-10-16", what:"<b>§521(i) automatic dismissal</b> if schedules still not filed (approx. 46th day). Also the 45-day deadline to complete the debtor-education course.", cond:false, key:true},
+    {date:"2026-10-19", what:"<b>§341 meeting of creditors</b>, 10:00 AM, Zoom ID 223 248 9512 / passcode 1291903731 / 1-346-205-0870.", cond:true},
+    {date:"2026-11-10", what:"Proof-of-claim deadline for non-government creditors.", cond:true},
+    {date:"2026-11-18", what:"Approximate deadline to object to exemptions (30 days after the 341 meeting concludes).", cond:true},
+    {date:"2026-12-03", what:"<b>Confirmation hearing</b>, 9:00 AM, Galveston 7th-floor courtroom.", cond:true},
+    {date:"2026-12-18", what:"Deadline for §523 dischargeability complaints and for filing your financial-management course certificate.", cond:true},
+    {date:"2027-03-01", what:"Proof-of-claim deadline for governmental units (IRS, TWC).", cond:true}
+  ];
+
+  // ---------- helpers ----------
+  const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+  const fmt = iso => { const [y,m,d]=iso.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); };
+  const isPast = iso => { const [y,m,d]=iso.split("-").map(Number); return new Date(y,m-1,d) < TODAY; };
+  const daysOut = iso => { const [y,m,d]=iso.split("-").map(Number); return Math.round((new Date(y,m-1,d)-TODAY)/86400000); };
+  const byId = Object.fromEntries(DOCS.map(d=>[d.id,d]));
+
+  // ---------- tabs ----------
+  const tabs = document.querySelectorAll('nav.tabs button');
+  function show(name){
+    tabs.forEach(b=>b.setAttribute("aria-selected", String(b.dataset.tab===name)));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active", p.id==="tab-"+name));
+    try{ history.replaceState(null,"","#"+name); }catch(e){}
+    window.scrollTo({top:0});
+  }
+  tabs.forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
+  document.querySelectorAll("[data-goto]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault(); show(a.dataset.goto);}));
+
+  // ---------- dates ----------
+  function dateRow(d, compact){
+    const li=document.createElement("li");
+    const past=isPast(d.date), n=daysOut(d.date);
+    let tag="";
+    if (past) tag='<span class="tag past">Passed</span>';
+    else if (d.key) tag='<span class="tag key">Key date</span>';
+    else if (n===0) tag='<span class="tag soon">Today</span>';
+    else if (n<=14) tag='<span class="tag soon">In '+n+' day'+(n===1?"":"s")+'</span>';
+    const cond = d.cond ? '<small>if the case continues</small>' : '';
+    li.innerHTML = `<div class="d">${fmt(d.date)}${cond}</div><div class="what">${d.what}${tag}</div>`;
+    return li;
+  }
+  const all=document.getElementById("alldates"); DATES.forEach(d=>all.append(dateRow(d)));
+  const next=document.getElementById("nextdates");
+  DATES.filter(d=>!isPast(d.date)).slice(0,5).forEach(d=>next.append(dateRow(d)));
+  if (!next.children.length) next.innerHTML='<li><div class="what">All scheduled dates have passed. Check the docket for the current status.</div></li>';
+
+  // ---------- timeline ----------
+  const tl=document.getElementById("timeline");
+  TIMELINE.forEach(t=>{
+    const li=document.createElement("li"); li.className=t.who;
+    const whoLabel={you:"Filed by you",court:"Court",creditor:"Trustee / creditor",future:"Scheduled"}[t.who];
+    let links="";
+    if (t.docs) links = t.docs.map(id=>`<a href="#" data-doc="${id}">${byId[id].n} — ${byId[id].title}</a>`).join("");
+    if (t.extra) links += `<span class="note" style="display:inline-block;margin-left:10px">${t.extra}</span>`;
+    li.innerHTML = `<div class="when">${fmt(t.date)}${t.who==="future"&&!isPast(t.date)?" · upcoming":""}</div>
+      <div class="title">${t.title} <span class="who">· ${whoLabel}</span></div>
+      <div class="body">${t.body}</div>${links?`<div class="links">${links}</div>`:""}`;
+    tl.append(li);
+  });
+
+  // ---------- documents ----------
+  const list=document.getElementById("doclist");
+  DOCS.forEach(d=>{
+    const li=document.createElement("li"); li.id="li-"+d.id;
+    li.innerHTML=`<button type="button" data-doc="${d.id}"><div class="n">${d.n} · ${fmt(d.date)}</div><div class="t">${d.title}</div><div class="m">${d.pages} page${d.pages===1?"":"s"}</div></button>`;
+    list.append(li);
+  });
+  function openDoc(id, jump){
+    const d=byId[id]; if(!d) return;
+    document.querySelectorAll(".doclist li").forEach(li=>li.classList.toggle("sel", li.id==="li-"+id));
+    document.getElementById("v-title").textContent=d.n+" — "+d.title;
+    document.getElementById("v-meta").textContent="Filed "+fmt(d.date)+" · "+d.pages+" page"+(d.pages===1?"":"s")+" · "+d.file.split("/").pop();
+    document.getElementById("v-sum").innerHTML="<p>"+d.sum+"</p>";
+    document.getElementById("v-open").href=d.file;
+    document.getElementById("v-dl").href=d.file;
+    const f=document.getElementById("v-frame"); if (f.getAttribute("src")!==d.file) f.src=d.file;
+    if (jump){ show("docs"); const v=document.querySelector(".viewer"); if (window.innerWidth<900) v.scrollIntoView({behavior:"smooth",block:"start"}); }
+  }
+  document.addEventListener("click",e=>{
+    const el=e.target.closest("[data-doc]"); if(!el) return;
+    e.preventDefault(); openDoc(el.dataset.doc, el.tagName==="A");
+  });
+  openDoc("d06", false);
+
+  // ---------- boot from hash ----------
+  const h=(location.hash||"").replace("#","");
+  if (["now","timeline","docs","dates","people","words"].includes(h)) show(h);
+})();
+</script>
+</body>
+</html>
