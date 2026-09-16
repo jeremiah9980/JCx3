@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Cargill Household Budget</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap">
+<style>
+:root{
+  --ink:#201e1d; --accent:#ec3013;
+  --bg:#f6f3ee; --surface:#fdfcfa; --surface-2:#efeae2; --line:#d8d1c6; --line-strong:#b9b0a2;
+  --text:#201e1d; --muted:#6f6860; --good:#2e6b3a; --good-bg:#e4efe3; --warn:#9a3b0e; --warn-bg:#f7e6dc;
+  --rule:#201e1d; --nav-bg:#fdfcfa;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+    --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519;
+    --rule:#57524b; --nav-bg:#1a1917;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+  --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519;
+  --rule:#57524b; --nav-bg:#1a1917;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45;padding-block:24px 56px;padding-inline:clamp(16px,4vw,40px)}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,38px);font-stretch:90%;line-height:1.05}
+h3{font-size:15px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 16px;padding-bottom:16px}
+header p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+.cycle{font-size:13px;color:var(--muted);text-align:right}
+.cycle b{color:var(--text)}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--nav-bg);border-top:2px solid var(--rule);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:0;margin-bottom:22px}
+nav a{font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;padding:12px 16px;border-bottom:3px solid transparent;margin-bottom:-1px}
+nav a:hover{color:var(--text)}
+nav a[aria-current="page"]{color:var(--text);border-bottom-color:var(--accent)}
+nav a.ext{margin-left:auto;color:var(--accent)}
+nav a.ext::after{content:" ↗"}
+nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:640px){nav a{padding:10px 11px;font-size:13px}nav a.ext{margin-left:0}}
+
+/* strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);margin:0 0 22px;border:1px solid var(--line);background:var(--surface)}
+.strip>div{padding:14px 18px;border-left:1px solid var(--line)}
+.strip>div:first-child{border-left:0}
+.strip .big{font-size:26px;font-weight:700;line-height:1;margin-top:6px}
+.strip small{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.strip .result{background:var(--surface-2)}
+@media (max-width:820px){.strip{grid-template-columns:1fr 1fr}.strip>div:nth-child(3){border-left:0}.strip>div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;align-items:start}
+.grid.three{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){.grid.three{grid-template-columns:1fr}}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--rule)}
+.card.her{border-top-color:var(--accent)}
+.card.wide{grid-column:1/-1}
+.card-head{padding:14px 18px 12px;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:baseline;border-bottom:1px solid var(--line)}
+.card-head h2{font-size:17px}
+.card-head .owner{color:var(--muted);font-size:13px}
+.card-head .dep{text-align:right}
+.card-head .dep .eyebrow{font-size:10px}
+.card-head .dep .big{font-size:24px;font-weight:700;line-height:1.1}
+.card-body{padding:12px 18px 16px;color:var(--muted);font-size:13px}
+.card-body p{margin:0 0 8px}
+.card-body p:last-child{margin-bottom:0}
+.card-body b{color:var(--text)}
+
+/* inputs */
+input[type=text],select{font:inherit;color:var(--text);background:transparent;border:0;border-bottom:1px dashed var(--line-strong);padding:2px 0}
+input[type=text]:focus{border-bottom-color:transparent}
+input.money{font-variant-numeric:tabular-nums;text-align:right;width:100%}
+input.empty{border-bottom-color:var(--accent)}
+input::placeholder{color:var(--line-strong)}
+.big input.money{font-weight:700;font-size:24px;width:6.5ch;border-bottom:2px dashed var(--accent)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin:0;display:block;cursor:pointer}
+input[type=range]{accent-color:var(--accent);width:100%}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:baseline;padding:0 18px}
+.kv>div{display:contents}
+.kv .k{padding:9px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}
+.kv .v{padding:9px 0;border-bottom:1px solid var(--line);text-align:right;font-weight:600;min-width:120px}
+.kv .v input.money{width:9ch}
+.kv .v.total{font-size:18px;font-weight:700}
+.kv .k.total{color:var(--text);font-weight:600}
+.kv .last .k,.kv .last .v{border-bottom:0}
+.kv .sub{font-size:12px;color:var(--muted);display:block;font-weight:400}
+
+/* tables */
+table{width:100%;border-collapse:collapse}
+tbody tr{border-bottom:1px solid var(--line)}
+tbody tr:last-child{border-bottom:0}
+td,th{padding:8px 12px;vertical-align:middle;text-align:left}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line)}
+td.chk{width:38px;padding-right:0}
+td.amt,th.amt{text-align:right;width:110px}
+td.cat{color:var(--muted);font-size:12px;width:26%}
+td.cat input{font-size:12px;width:100%}
+td.item input{width:100%}
+td.x{width:30px;padding-left:0;padding-right:8px;text-align:right}
+td.x button{border:0;background:none;color:var(--line-strong);cursor:pointer;font-size:16px;line-height:1;padding:2px 4px}
+td.x button:hover{color:var(--accent)}
+tr.paid td.item, tr.paid td.amt{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-strong)}
+.item .note{display:block;font-size:12px;color:var(--muted);text-decoration:none}
+.flag{color:var(--accent);font-weight:700}
+.group td{padding-top:12px;padding-bottom:2px}
+.group .eyebrow{font-size:10px}
+tfoot td{padding:10px 12px;border-top:2px solid var(--line-strong);font-weight:700}
+tfoot tr.sub td{font-weight:400;color:var(--muted);border-top:0;padding-top:0;padding-bottom:6px}
+tfoot tr.left td{border-top:1px solid var(--line);padding-top:10px}
+.addrow{display:block;width:100%;text-align:left;font:inherit;font-size:13px;font-weight:600;color:var(--muted);background:transparent;border:0;border-top:1px dashed var(--line);padding:9px 12px;cursor:pointer}
+.addrow:hover{color:var(--accent)}
+.pill{display:inline-block;padding:3px 9px;font-size:12px;font-weight:700;letter-spacing:.02em}
+.pill.good{background:var(--good-bg);color:var(--good)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.remaining{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tablewrap{overflow-x:auto}
+
+/* person tabs */
+.subtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.subtabs button{font:inherit;font-weight:600;font-size:13px;border:1px solid var(--line-strong);background:transparent;color:var(--muted);padding:7px 14px;cursor:pointer}
+.subtabs button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+:root[data-theme="dark"] .subtabs button[aria-selected="true"], :root:not([data-theme="light"]) .subtabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent)}
+
+/* steps */
+.steps ol{margin:0;padding:6px 18px 16px;list-style:none;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:2px 10px;padding:10px 0;border-bottom:1px solid var(--line);counter-increment:s}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);font-weight:700;color:var(--accent);font-size:15px;line-height:1.4;grid-column:1;grid-row:1/span 2}
+.steps li b,.steps li span{grid-column:2}
+
+/* checklist */
+.who{display:inline-block;min-width:64px;text-align:center;padding:3px 8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line-strong);color:var(--muted)}
+.who.j{border-color:var(--ink);color:var(--ink)}
+.who.s{border-color:var(--accent);color:var(--accent)}
+.who.b{background:var(--ink);border-color:var(--ink);color:#fff}
+:root[data-theme="dark"] .who.j, :root:not([data-theme="light"]) .who.j{border-color:var(--text);color:var(--text)}
+:root[data-theme="dark"] .who.b, :root:not([data-theme="light"]) .who.b{background:var(--text);border-color:var(--text);color:var(--bg)}
+td.whocell{width:90px}
+td.whocell select{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;width:100%;border-bottom:1px dashed var(--line-strong)}
+tr.done td.task{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-strong)}
+td.task .hint{display:block;font-size:12px;color:var(--muted);text-decoration:none}
+td.task input{width:100%}
+.progress{height:6px;background:var(--surface-2);margin:0}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .2s}
+.matrix td:first-child{font-weight:600}
+.matrix td{font-size:14px}
+.matrix td.cat{width:auto}
+.steps li span{color:var(--muted);font-size:13px}
+
+/* bars */
+.bar{display:flex;height:14px;margin:8px 18px 4px;background:var(--surface-2);overflow:hidden}
+.bar span{display:block;height:100%}
+.legendrow{display:flex;flex-wrap:wrap;gap:6px 16px;padding:6px 18px 12px;font-size:12px;color:var(--muted)}
+.legendrow i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+
+.tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-top:22px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.tools button{font:inherit;font-weight:600;font-size:13px;border:1px solid var(--line-strong);background:transparent;color:var(--text);padding:7px 12px;cursor:pointer}
+.tools button:hover{border-color:var(--accent);color:var(--accent)}
+.legend{font-size:13px;color:var(--muted);margin-top:12px;max-width:72ch}
+.legend b{color:var(--text)}
+.callout{background:var(--surface-2);padding:12px 18px;font-size:13px;color:var(--muted);border-left:3px solid var(--accent);margin:0 0 20px}
+.callout b{color:var(--text)}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">Operating budget · per paycheck</div>
+    <h1>Cargill Household Budget</h1>
+    <p>Payday splits the check into fixed deposits first; what's left runs each person's own bills. Every number with a dashed underline is editable and every total recalculates.</p>
+  </div>
+  <div class="cycle">Paycheck every <b>2 weeks</b> · plan updated <b>Sep 16, 2026</b><br>Tick a bill when it's paid; untick when the new check lands.</div>
+</header>
+
+<nav aria-label="Sections">
+  <a href="#household" data-tab="household">Household</a>
+  <a href="#personal" data-tab="personal">Personal bills</a>
+  <a href="#retirement" data-tab="retirement">401(k)</a>
+  <a href="#bonus" data-tab="bonus">Q1 bonus</a>
+  <a href="#claims" data-tab="claims">Reimbursements</a>
+  <a href="#checklist" data-tab="checklist">Checklist</a>
+  <a class="ext" id="llc-link" href="#" target="_blank" rel="noopener">LLC ledger</a>
+</nav>
+
+<!-- ================= HOUSEHOLD ================= -->
+<section id="tab-household" data-panel="household">
+  <div class="strip" aria-label="Paycheck waterfall">
+    <div><div class="eyebrow">Take-home</div><div class="big num">$<input class="money" id="in-pay" type="text" inputmode="numeric" aria-label="Take-home per paycheck" style="font-size:26px;font-weight:700;width:6ch;border-bottom:2px dashed var(--accent)"></div><small>per paycheck, after 401(k) and taxes</small></div>
+    <div><div class="eyebrow">Deposits on payday</div><div class="big num" id="s-dep">—</div><small>household + bills + savings + LLC</small></div>
+    <div><div class="eyebrow">Left for Jeremiah's bills</div><div class="big num" id="s-daily">—</div><small>stays in his checking · see Personal</small></div>
+    <div class="result"><div class="eyebrow">After his bills</div><div class="big num" id="s-left">—</div><small id="s-left-note"></small></div>
+  </div>
+
+  <div class="grid">
+    <section class="card her">
+      <div class="card-head">
+        <div><h2>Household account</h2><div class="owner">Jesica · account #1 · <input type="text" id="acct-household" placeholder="bank / last 4" aria-label="Household account name" style="width:12ch;font-size:13px"></div></div>
+        <div class="dep"><div class="eyebrow">Deposit</div><div class="big num">$<input class="money" id="dep-household" type="text" inputmode="numeric" aria-label="Household deposit"></div></div>
+      </div>
+      <div data-list="household"></div>
+      <table><tfoot>
+        <tr><td colspan="3">Utilities to pay</td><td class="amt num" id="tot-household">—</td></tr>
+        <tr class="left"><td colspan="3"><div class="remaining"><span>Cushion left in account</span><span class="pill" id="pill-household"></span></div></td><td class="amt num" id="left-household">—</td></tr>
+      </tfoot></table>
+      <div class="card-body"><p>Jesica pays gas, electric, water and internet from this account. Water has no amount yet — type it in when the first bill comes.</p></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div><h2>Bills account</h2><div class="owner">Jeremiah · phone, insurance, car loan</div></div>
+        <div class="dep"><div class="eyebrow">Deposit</div><div class="big num" id="dep-bills">—</div></div>
+      </div>
+      <div data-list="bills"></div>
+      <div class="card-body"><p>Deposit equals the bills, so the account lands at zero each cycle. Change a bill and the deposit follows.</p></div>
+    </section>
+
+    <section class="card her">
+      <div class="card-head">
+        <div><h2>Savings</h2><div class="owner">Jesica · account #2 · <input type="text" id="acct-savings" placeholder="bank / last 4" aria-label="Savings account name" style="width:12ch;font-size:13px"></div></div>
+        <div class="dep"><div class="eyebrow">Deposit</div><div class="big num">$<input class="money" id="dep-savings" type="text" inputmode="numeric" placeholder="set" aria-label="Savings deposit"></div></div>
+      </div>
+      <div class="card-body"><p>Not for spending. At <b class="num" id="save-pc">—</b> per paycheck this grows <b class="num" id="save-yr">—</b> a year over 26 checks. Third-paycheck months (two a year) are a natural extra deposit.</p></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div><h2>LLC set-aside</h2><div class="owner">Cargill Consulting · tracked on the <a id="llc-link-2" href="#" target="_blank" rel="noopener" style="color:var(--accent)">LLC ledger</a></div></div>
+        <div class="dep"><div class="eyebrow">Set aside</div><div class="big num">$<input class="money" id="dep-llc" type="text" inputmode="numeric" placeholder="set" aria-label="LLC set-aside"></div></div>
+      </div>
+      <div class="card-body"><p>At <b class="num" id="llc-pc">—</b> per paycheck that's <b class="num" id="llc-yr">—</b> a year, before the bonus slice. Kept separate from personal money from day one.</p></div>
+    </section>
+  </div>
+
+  <section class="card steps" style="margin-top:20px">
+    <div class="card-head"><div><h2>Before the deposits start</h2><div class="owner">In this order — account setup follows the agreement</div></div></div>
+    <ol>
+      <li><b>Agree the numbers on this page</b><span>Household deposit, savings deposit, LLC set-aside — and what happens to the flagged <span class="flag">?</span> items so Jeremiah's personal column isn't in the red.</span></li>
+      <li><b>Jesica commits to the LLC</b><span>Her role in Cargill Consulting (Cargill Home, project management) is agreed and written down before any recurring deposit to her accounts is set up. Money moving to her accounts and her stake in the business are decided together.</span></li>
+      <li><b>Open or designate the accounts</b><span>Household (Jesica #1), Savings (Jesica #2), Bills (Jeremiah), LLC fund (separate). One account, one job. Write the bank names in the card headers above.</span></li>
+      <li><b>Schedule the payday transfers</b><span>Four automatic transfers the day the check lands. Utilities go on autopay from the household account.</span></li>
+      <li><b>Review after two paychecks</b><span>Untick the bills, compare each account's cushion to the plan, adjust here.</span></li>
+    </ol>
+  </section>
+</section>
+
+<!-- ================= PERSONAL ================= -->
+<section data-panel="personal" hidden>
+  <div class="subtabs" role="tablist" aria-label="Person">
+    <button role="tab" data-person="jeremiah" aria-selected="true">Jeremiah</button>
+    <button role="tab" data-person="jesica" aria-selected="false">Jesica</button>
+    <button role="tab" data-person="cooper" aria-selected="false">Cooper</button>
+  </div>
+
+  <section class="card wide" data-personcard="jeremiah">
+    <div class="card-head">
+      <div><h2>Jeremiah's bills</h2><div class="owner">Paid from his checking after the four deposits</div></div>
+      <div class="dep"><div class="eyebrow">Available</div><div class="big num" id="avail-jeremiah">—</div></div>
+    </div>
+    <div data-list="jeremiah" data-groups="1"></div>
+    <table><tfoot>
+      <tr><td colspan="3">Total bills</td><td class="amt num" id="tot-jeremiah">—</td></tr>
+      <tr class="left"><td colspan="3"><div class="remaining"><span>Left over</span><span class="pill" id="pill-jeremiah"></span></div></td><td class="amt num" id="left-jeremiah">—</td></tr>
+    </tfoot></table>
+    <div class="card-body"><p>Items marked <span class="flag">?</span> still need a label. Remove a line with ×, add one at the bottom.</p></div>
+  </section>
+
+  <section class="card wide her" data-personcard="jesica" hidden>
+    <div class="card-head">
+      <div><h2>Jesica's bills</h2><div class="owner">Her own income and her own list — separate from the household account</div></div>
+      <div class="dep"><div class="eyebrow">Her income / period</div><div class="big num">$<input class="money" id="inc-jesica" type="text" inputmode="numeric" placeholder="set" aria-label="Jesica income per period"></div></div>
+    </div>
+    <div data-list="jesica"></div>
+    <table><tfoot>
+      <tr><td colspan="3">Total bills</td><td class="amt num" id="tot-jesica">—</td></tr>
+      <tr class="left"><td colspan="3"><div class="remaining"><span>Left over</span><span class="pill" id="pill-jesica"></span></div></td><td class="amt num" id="left-jesica">—</td></tr>
+    </tfoot></table>
+    <div class="card-body"><p>Starter lines are placeholders — rename, reprice or remove them. Nothing here touches the household or savings deposits.</p></div>
+  </section>
+
+  <section class="card wide" data-personcard="cooper" hidden>
+    <div class="card-head">
+      <div><h2>Cooper's bills</h2><div class="owner">His own numbers to manage</div></div>
+      <div class="dep"><div class="eyebrow">His income / period</div><div class="big num">$<input class="money" id="inc-cooper" type="text" inputmode="numeric" placeholder="set" aria-label="Cooper income per period"></div></div>
+    </div>
+    <div data-list="cooper"></div>
+    <table><tfoot>
+      <tr><td colspan="3">Total bills</td><td class="amt num" id="tot-cooper">—</td></tr>
+      <tr class="left"><td colspan="3"><div class="remaining"><span>Left over</span><span class="pill" id="pill-cooper"></span></div></td><td class="amt num" id="left-cooper">—</td></tr>
+    </tfoot></table>
+    <div class="card-body"><p>The $100 from Jeremiah's list shows up here as income support. Once the LLC pays him, his LLC wages replace it.</p></div>
+  </section>
+</section>
+
+<!-- ================= 401K ================= -->
+<section data-panel="retirement" hidden>
+  <div class="callout"><b>Pre-tax, so it never touches the paycheck plan above.</b> The $4,500 take-home is already after the 10% goes in. This tab shows what that 10% plus the match is building.</div>
+  <div class="grid">
+    <section class="card">
+      <div class="card-head"><div><h2>Inputs</h2><div class="owner">Texas Mutual 401(k)</div></div></div>
+      <div class="kv">
+        <div><span class="k">Gross annual salary</span><span class="v num">$<input class="money" id="k-salary" type="text" inputmode="numeric" placeholder="enter" aria-label="Gross annual salary"></span></div>
+        <div><span class="k">Your contribution <span class="sub">of salary, pre-tax</span></span><span class="v num"><input class="money" id="k-rate" type="text" inputmode="decimal" style="width:5ch" aria-label="Contribution percent">%</span></div>
+        <div><span class="k">Employer match <span class="sub" id="k-match-label">5% · slide between 4 and 6</span></span><span class="v" style="min-width:160px"><input type="range" id="k-match" min="4" max="6" step="0.5" value="5" aria-label="Employer match percent"></span></div>
+        <div><span class="k">Expected return <span class="sub">annual, editable</span></span><span class="v num"><input class="money" id="k-ret" type="text" inputmode="decimal" style="width:5ch" aria-label="Expected annual return">%</span></div>
+        <div><span class="k">Balance today <span class="sub">if any</span></span><span class="v num">$<input class="money" id="k-bal" type="text" inputmode="numeric" placeholder="0" aria-label="Current balance"></span></div>
+        <div class="last"><span class="k">IRS employee limit <span class="sub">2026 · check with HR</span></span><span class="v num">$<input class="money" id="k-limit" type="text" inputmode="numeric" aria-label="IRS limit"></span></div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h2>One year from now</h2><div class="owner">26 paychecks, contributions mid-year on average</div></div><div class="dep"><div class="eyebrow">Projected balance</div><div class="big num" id="k-fv">—</div></div></div>
+      <div class="kv">
+        <div><span class="k">Your contributions <span class="sub" id="k-pc">— per paycheck</span></span><span class="v num" id="k-you">—</span></div>
+        <div><span class="k">Employer match</span><span class="v num" id="k-emp">—</span></div>
+        <div><span class="k">Growth on balance + contributions</span><span class="v num" id="k-growth">—</span></div>
+        <div><span class="k total">Added this year</span><span class="v num total" id="k-added">—</span></div>
+        <div class="last"><span class="k">Federal tax deferred <span class="sub">at your marginal rate · <input class="money" id="k-marg" type="text" inputmode="decimal" style="width:4ch;font-size:12px" aria-label="Marginal rate">%</span></span><span class="v num" id="k-tax">—</span></div>
+      </div>
+      <div class="bar" id="k-bar" aria-hidden="true"></div>
+      <div class="legendrow"><span><i style="background:var(--ink)"></i>You</span><span><i style="background:var(--accent)"></i>Match</span><span><i style="background:var(--line-strong)"></i>Growth</span></div>
+      <div class="card-body"><p id="k-note">Enter the salary to see the numbers. The match is free money — the plan is written so the 10% never drops below the match threshold.</p></div>
+    </section>
+  </div>
+</section>
+
+<!-- ================= BONUS ================= -->
+<section data-panel="bonus" hidden>
+  <div class="grid">
+    <section class="card">
+      <div class="card-head"><div><h2>Q1 2027 bonus</h2><div class="owner">Texas Mutual · expected March 2027</div></div><div class="dep"><div class="eyebrow">Gross</div><div class="big num">$<input class="money" id="b-gross" type="text" inputmode="numeric" aria-label="Bonus gross"></div></div></div>
+      <div class="kv">
+        <div><span class="k">Take-home share <span class="sub">after supplemental withholding, FICA, any 401(k) deferral</span></span><span class="v num"><input class="money" id="b-net-pct" type="text" inputmode="decimal" style="width:5ch" aria-label="Net percent">%</span></div>
+        <div class="last"><span class="k total">Net to split</span><span class="v num total" id="b-net">—</span></div>
+      </div>
+      <div class="card-body"><p>Ask HR in December whether part of the bonus can go straight into the 401(k) — that raises the deferral and lowers the withholding.</p></div>
+    </section>
+    <section class="card">
+      <div class="card-head"><div><h2>How it splits</h2><div class="owner">Percentages editable · must total 100</div></div><div class="dep"><div class="eyebrow">Allocated</div><div class="big num" id="b-sum">—</div></div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Destination</th><th class="amt">%</th><th class="amt">Dollars</th></tr></thead>
+        <tbody id="b-rows"></tbody>
+      </table></div>
+      <div class="bar" id="b-bar" aria-hidden="true"></div>
+      <div class="card-body"><p>The <b>LLC / business</b> line is the number that carries to the LLC ledger's funding table. The playbook's default is 30 / 30 / 20 / 10 / 10; since this bonus is meant to fund the LLC effort, raise that line and the others shrink to match.</p></div>
+    </section>
+  </div>
+</section>
+
+<!-- ================= CHECKLIST ================= -->
+<section data-panel="checklist" hidden>
+  <div class="callout"><b>Ten minutes on payday, together, one device.</b> Ticks save on the device they're made on — so the payday and monthly lists are meant to be run side by side, and the "Reset" buttons at the bottom of each card start the next cycle.</div>
+  <div class="grid">
+    <section class="card wide matrix">
+      <div class="card-head"><div><h2>Who owns what</h2><div class="owner">One owner per account and per bill — the other person can see everything, but only one person acts</div></div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Account / area</th><th>Owner</th><th>The job</th><th>Backup</th></tr></thead>
+        <tbody>
+          <tr><td>Paycheck &amp; payday transfers</td><td><span class="who j">Jeremiah</span></td><td class="cat">Four transfers the day the check lands; keep the amounts matching this page</td><td class="cat">Jesica checks they arrived</td></tr>
+          <tr><td>Household account · utilities</td><td><span class="who s">Jesica</span></td><td class="cat">Gas, electric, water, internet on autopay; log the water bill; watch the cushion</td><td class="cat">Jeremiah</td></tr>
+          <tr><td>Bills account · phone, insurance, car</td><td><span class="who j">Jeremiah</span></td><td class="cat">Verizon, car insurance, CarMax on autopay; account lands at zero each cycle</td><td class="cat">Jesica</td></tr>
+          <tr><td>Savings account</td><td><span class="who s">Jesica</span></td><td class="cat">Receives the deposit; not for spending; balance noted monthly</td><td class="cat">—</td></tr>
+          <tr><td>Personal bills</td><td><span class="who b">Each</span></td><td class="cat">Own list on the Personal tab, own money, no questions unless the pill goes red</td><td class="cat">—</td></tr>
+          <tr><td>401(k), bonus, LLC fund</td><td><span class="who j">Jeremiah</span></td><td class="cat">Contribution stays at 10%; bonus split applied the week it lands; LLC ledger kept current</td><td class="cat">Reviewed together quarterly</td></tr>
+          <tr><td>Medical reimbursements</td><td><span class="who b">Both</span></td><td class="cat">Claims tracked on the Reimbursements tab; allocation applied only after the 14-day hold</td><td class="cat">—</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="card" data-ck="payday">
+      <div class="card-head"><div><h2>Every payday</h2><div class="owner">Every other Friday · sit down together</div></div><div class="dep"><div class="eyebrow">Done</div><div class="big num" data-ck-count>—</div></div></div>
+      <div class="progress"><span data-ck-bar style="width:0%"></span></div>
+      <div data-ck-list></div>
+    </section>
+    <section class="card" data-ck="monthly">
+      <div class="card-head"><div><h2>Monthly</h2><div class="owner">First weekend of the month</div></div><div class="dep"><div class="eyebrow">Done</div><div class="big num" data-ck-count>—</div></div></div>
+      <div class="progress"><span data-ck-bar style="width:0%"></span></div>
+      <div data-ck-list></div>
+    </section>
+    <section class="card" data-ck="quarterly">
+      <div class="card-head"><div><h2>Quarterly</h2><div class="owner">Jan · Apr · Jul · Oct — the money meeting</div></div><div class="dep"><div class="eyebrow">Done</div><div class="big num" data-ck-count>—</div></div></div>
+      <div class="progress"><span data-ck-bar style="width:0%"></span></div>
+      <div data-ck-list></div>
+    </section>
+    <section class="card" data-ck="annual">
+      <div class="card-head"><div><h2>Once a year</h2><div class="owner">Dated — the month is in the hint</div></div><div class="dep"><div class="eyebrow">Done</div><div class="big num" data-ck-count>—</div></div></div>
+      <div class="progress"><span data-ck-bar style="width:0%"></span></div>
+      <div data-ck-list></div>
+    </section>
+  </div>
+</section>
+
+<!-- ================= CLAIMS ================= -->
+<section data-panel="claims" hidden>
+  <div class="grid">
+    <section class="card wide">
+      <div class="card-head"><div><h2>Medical reimbursements</h2><div class="owner">Expected vs received, claim by claim</div></div><div class="dep"><div class="eyebrow">Still expected</div><div class="big num" id="c-outstanding">—</div></div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Claim</th><th>Status</th><th class="amt">Expected</th><th class="amt">Received</th><th></th></tr></thead>
+        <tbody id="c-rows"></tbody>
+        <tfoot><tr><td colspan="2">Totals</td><td class="amt num" id="c-exp">—</td><td class="amt num" id="c-rec">—</td><td></td></tr></tfoot>
+      </table></div>
+      <button class="addrow" id="c-add" type="button">+ Add a claim</button>
+    </section>
+    <section class="card wide">
+      <div class="card-head"><div><h2>Where the settlement goes</h2><div class="owner">Day-one allocation from the 3x Playbook · applied when the money lands</div></div><div class="dep"><div class="eyebrow">Allocated</div><div class="big num" id="a-sum">—</div></div></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Destination</th><th>Engine</th><th class="amt">Amount</th><th></th></tr></thead>
+        <tbody id="a-rows"></tbody>
+      </table></div>
+      <button class="addrow" id="a-add" type="button">+ Add a destination</button>
+      <div class="card-body"><p id="a-note">—</p><p>Playbook rule: if the check is $12,000, family and venture drop to $500 each and seed to $1,000; at $15,000 the extra $1,500 goes to the reserve. Wait 14 days in savings before moving anything.</p></div>
+    </section>
+  </div>
+</section>
+
+<div class="tools">
+  <span>Everything you type or tick is saved on <b>this device only</b> — you each see your own. Jeremiah updates the shared plan itself.</span>
+  <span><button id="reset-paid" type="button">Untick all (new paycheck)</button> <button id="reset-plan" type="button">Reset everything to plan</button></span>
+</div>
+<p class="legend">Source figures: Sep 12 sheet (bills), 3x Playbook (bonus split, settlement allocation), Texas Mutual paycheck. Planning arithmetic, not tax or investment advice — the 401(k) projection is a straight-line estimate at the return you enter.</p>
+</div>
+
+<script>
+(function(){
+  var LLC_URL = "llc.html";
+  document.getElementById("llc-link").href = LLC_URL;
+  document.getElementById("llc-link-2").href = LLC_URL;
+
+  /* ---------- defaults ---------- */
+  var D = {
+    pay:4500, dep:{household:1000, savings:null, llc:null},
+    lists:{
+      household:[
+        {id:"centerpoint",cat:"Gas & electric",item:"CenterPoint",amt:165},
+        {id:"water",cat:"Water",item:"Water",amt:null,note:"amount not set yet"},
+        {id:"frontier",cat:"Internet",item:"Frontier",amt:105}],
+      bills:[
+        {id:"verizon",cat:"Phone",item:"Verizon",amt:775},
+        {id:"carins",cat:"Insurance",item:"Car insurance",amt:200},
+        {id:"carmax",cat:"Car loan",item:"CarMax",amt:600}],
+      jeremiah:[
+        {id:"mypay",cat:"Payments",item:"Mypay",amt:700,flag:true},
+        {id:"visa",cat:"Payments",item:"Visa",amt:100},
+        {id:"pawn",cat:"Payments",item:"Pawn",amt:160},
+        {id:"gas",cat:"Auto",item:"Fuel",amt:80},
+        {id:"cooper",cat:"Family",item:"Cooper (support)",amt:100},
+        {id:"wade",cat:"People",item:"Wade",amt:740,flag:true},
+        {id:"scott",cat:"People",item:"Scott",amt:350,flag:true},
+        {id:"brian",cat:"People",item:"Brian",amt:100,flag:true},
+        {id:"kelsie",cat:"People",item:"Kelsie",amt:50,flag:true},
+        {id:"kass",cat:"People",item:"Kass",amt:20,flag:true},
+        {id:"chipotle",cat:"Food",item:"Chipotle",amt:50},
+        {id:"dq",cat:"Food",item:"DQ",amt:20},
+        {id:"food",cat:"Food",item:"Other food",amt:20},
+        {id:"apple1",cat:"Subscriptions",item:"Apple (JCx2)",amt:45},
+        {id:"apple2",cat:"Subscriptions",item:"Apple",amt:50},
+        {id:"squares",cat:"Subscriptions",item:"Squares",amt:75,flag:true}],
+      jesica:[
+        {id:"j-phone",cat:"Phone",item:"Phone",amt:null,ph:true},
+        {id:"j-car",cat:"Auto",item:"Car / insurance",amt:null,ph:true},
+        {id:"j-personal",cat:"Personal",item:"Personal spending",amt:null,ph:true},
+        {id:"j-subs",cat:"Subscriptions",item:"Subscriptions",amt:null,ph:true}],
+      cooper:[
+        {id:"c-phone",cat:"Phone",item:"Phone",amt:null,ph:true},
+        {id:"c-car",cat:"Auto",item:"Car / gas",amt:null,ph:true},
+        {id:"c-certs",cat:"Career",item:"Certification study / exams",amt:null,ph:true,note:"LLC may expense these once filed"},
+        {id:"c-personal",cat:"Personal",item:"Personal spending",amt:null,ph:true}]
+    },
+    k:{salary:null, rate:10, match:5, ret:7, bal:null, limit:24500, marg:22},
+    b:{gross:23000, netPct:70, rows:[
+        {id:"reserve",name:"Reserve (high-yield savings)",pct:30},
+        {id:"roth",name:"Roth IRA",pct:30},
+        {id:"llc",name:"LLC / business",pct:20,llc:true},
+        {id:"bet",name:"Venture slice",pct:10},
+        {id:"truck",name:"Extra truck principal / trip",pct:10}]},
+    claims:[{id:"settle",name:"Medical claims settlement",status:"Expected Oct 2026",exp:13500,rec:0,note:"range $12–15K"}],
+    alloc:[
+        {id:"reserve",name:"High-yield savings (reserve)",engine:"KEEP",amt:4500},
+        {id:"truck",name:"Vehicle down payment",engine:"—",amt:4000},
+        {id:"roth",name:"Roth IRA, index fund",engine:"KEEP",amt:2000},
+        {id:"seed",name:"LLC seed (Cargill Consulting)",engine:"EARN",amt:1500},
+        {id:"bet",name:"Venture slice",engine:"BET",amt:750},
+        {id:"family",name:"Family",engine:"—",amt:750}]
+  };
+
+  /* ---------- state ---------- */
+  var KEY="cargill-budget-v4";
+  var S; function blank(){ return {pay:null,dep:{},acct:{},inc:{},lists:{},k:{},b:{},claims:null,alloc:null,person:"jeremiah"}; }
+  try{ var raw=localStorage.getItem(KEY); S = raw?JSON.parse(raw):blank(); if(!S||typeof S!=="object") S=blank(); }catch(e){ S=blank(); }
+  ["dep","acct","inc","lists","k","b"].forEach(function(k){ if(!S[k]||typeof S[k]!=="object") S[k]={}; });
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+  function fmt(n){ if(n===null||n===undefined||isNaN(n)) return "—"; var neg=n<0, s="$"+Math.round(Math.abs(n)).toLocaleString("en-US"); return neg?"("+s+")":s; }
+  function fmtIn(n){ return (n===null||n===undefined||isNaN(n))?"":Math.round(n).toLocaleString("en-US"); }
+  function parse(v){ var n=parseFloat(String(v).replace(/[^0-9.\-]/g,"")); return isNaN(n)?null:n; }
+  function pill(id,val,ok,bad){ var p=document.getElementById(id); if(!p) return; p.className="pill "+(val>=0?"good":"warn"); p.textContent=val>=0?ok:bad+" "+fmt(-val); }
+  function val(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+
+  /* money input helper: id, getter, setter */
+  function bindMoney(id, get, set, opts){
+    var el=val(id); if(!el) return;
+    opts=opts||{};
+    function paint(){ var v=get(); el.classList.toggle("empty", v===null||v===undefined); if(document.activeElement!==el) el.value = opts.raw ? (v===null||v===undefined?"":String(v)) : fmtIn(v); }
+    el.addEventListener("change",function(){ var n=parse(el.value); set(n); save(); render(); });
+    el._paint=paint; paint();
+  }
+  var painters=[];
+  function money(id,get,set,opts){ bindMoney(id,get,set,opts); var el=val(id); if(el&&el._paint) painters.push(el._paint); }
+
+  /* ---------- generic list engine ---------- */
+  function L(key){ if(!S.lists[key]) S.lists[key]={amts:{},names:{},cats:{},paid:{},removed:{},custom:[]}; var l=S.lists[key]; ["amts","names","cats","paid","removed"].forEach(function(k){ if(!l[k]) l[k]={}; }); if(!l.custom) l.custom=[]; return l; }
+  function rowsOf(key){
+    var l=L(key), out=[];
+    (D.lists[key]||[]).forEach(function(r){ if(l.removed[r.id]) return; out.push({id:r.id,cat:(r.id in l.cats)?l.cats[r.id]:r.cat,item:(r.id in l.names)?l.names[r.id]:r.item,amt:(r.id in l.amts)?l.amts[r.id]:r.amt,flag:r.flag,note:r.note,ph:r.ph}); });
+    l.custom.forEach(function(r){ out.push({id:r.id,cat:r.cat||"",item:r.item||"",amt:(r.id in l.amts)?l.amts[r.id]:(r.amt===undefined?null:r.amt),custom:true}); });
+    return out;
+  }
+  function sumList(key){ var t=0,missing=false; rowsOf(key).forEach(function(r){ if(r.amt===null||r.amt===undefined){ missing=true; return;} t+=r.amt; }); return {t:t,missing:missing}; }
+  function buildList(key, host, groups){
+    var l=L(key); host.innerHTML="";
+    var table=document.createElement("table"); var tb=document.createElement("tbody"); table.appendChild(tb); host.appendChild(table);
+    var last=null;
+    rowsOf(key).forEach(function(r){
+      if(groups && r.cat!==last && !r.custom){ var g=document.createElement("tr"); g.className="group"; g.innerHTML='<td colspan="5"><span class="eyebrow">'+esc(r.cat)+'</span></td>'; tb.appendChild(g); last=r.cat; }
+      var tr=document.createElement("tr");
+      var nameCell = r.custom ? '<input type="text" value="'+esc(r.item)+'" placeholder="what is it" aria-label="Item name">' : esc(r.item)+(r.flag?' <span class="flag" title="Jeremiah: what is this one?">?</span>':'')+(r.note?'<span class="note">'+esc(r.note)+'</span>':'');
+      var catCell = r.custom ? '<input type="text" value="'+esc(r.cat)+'" placeholder="category" aria-label="Category">' : (groups?'':esc(r.cat));
+      tr.innerHTML='<td class="chk"><input type="checkbox" aria-label="'+esc(r.item)+' paid"></td><td class="item">'+nameCell+'</td><td class="cat">'+catCell+'</td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.amt)+'" placeholder="—" aria-label="'+esc(r.item)+' amount"></td><td class="x"><button type="button" title="Remove line" aria-label="Remove '+esc(r.item)+'">×</button></td>';
+      tb.appendChild(tr);
+      var cb=tr.querySelector('input[type=checkbox]'); cb.checked=!!l.paid[r.id]; tr.classList.toggle("paid",cb.checked);
+      cb.addEventListener("change",function(){ l.paid[r.id]=cb.checked; tr.classList.toggle("paid",cb.checked); save(); });
+      var amt=tr.querySelector('.amt input'); amt.classList.toggle("empty",r.amt===null||r.amt===undefined);
+      amt.addEventListener("change",function(){ var n=parse(amt.value); if(n===null) delete l.amts[r.id]; else l.amts[r.id]=n; if(n===null && r.custom){ /* keep null */ } save(); render(); amt.classList.toggle("empty",n===null); });
+      if(r.custom){
+        tr.querySelector('.item input').addEventListener("change",function(e){ var c=l.custom.filter(function(x){return x.id===r.id;})[0]; if(c){ c.item=e.target.value; save(); } });
+        tr.querySelector('.cat input').addEventListener("change",function(e){ var c=l.custom.filter(function(x){return x.id===r.id;})[0]; if(c){ c.cat=e.target.value; save(); } });
+      }
+      tr.querySelector('.x button').addEventListener("click",function(){ if(r.custom){ l.custom=l.custom.filter(function(x){return x.id!==r.id;}); } else { l.removed[r.id]=true; } delete l.amts[r.id]; save(); buildList(key,host,groups); render(); });
+    });
+    var add=document.createElement("button"); add.type="button"; add.className="addrow"; add.textContent="+ Add a line";
+    add.addEventListener("click",function(){ l.custom.push({id:"c"+Date.now().toString(36),item:"",cat:"",amt:null}); save(); buildList(key,host,groups); render(); var inp=host.querySelector('tbody tr:last-child .item input'); if(inp) inp.focus(); });
+    host.appendChild(add);
+  }
+  function buildLists(){ document.querySelectorAll("[data-list]").forEach(function(h){ buildList(h.dataset.list,h,!!h.dataset.groups); }); }
+
+  /* ---------- simple row tables: bonus / claims / alloc ---------- */
+  function bRows(){ if(!S.b.rows) S.b.rows=JSON.parse(JSON.stringify(D.b.rows)); return S.b.rows; }
+  function buildBonus(){
+    var tb=val("b-rows"); tb.innerHTML="";
+    bRows().forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td class="item">'+(r.llc?'<b>':'')+'<input type="text" value="'+esc(r.name)+'" aria-label="Destination" style="width:100%;'+(r.llc?'font-weight:700':'')+'">'+(r.llc?'</b>':'')+'</td><td class="amt num"><input class="money" type="text" inputmode="decimal" value="'+r.pct+'" style="width:5ch" aria-label="Percent"></td><td class="amt num" data-dollars>—</td>';
+      tb.appendChild(tr);
+      tr.querySelector('.item input').addEventListener("change",function(e){ r.name=e.target.value; save(); });
+      tr.querySelector('.amt input').addEventListener("change",function(e){ var n=parse(e.target.value); r.pct=n===null?0:n; save(); render(); });
+      r._cell=tr.querySelector('[data-dollars]');
+    });
+  }
+  function claims(){ if(!S.claims) S.claims=JSON.parse(JSON.stringify(D.claims)); return S.claims; }
+  function buildClaims(){
+    var tb=val("c-rows"); tb.innerHTML="";
+    claims().forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td class="item"><input type="text" value="'+esc(r.name)+'" aria-label="Claim" style="width:100%">'+(r.note?'<span class="note">'+esc(r.note)+'</span>':'')+'</td><td class="cat"><input type="text" value="'+esc(r.status||"")+'" placeholder="status / date" aria-label="Status"></td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.exp)+'" placeholder="—" aria-label="Expected"></td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.rec)+'" placeholder="0" aria-label="Received"></td><td class="x"><button type="button" aria-label="Remove claim">×</button></td>';
+      tb.appendChild(tr);
+      var ins=tr.querySelectorAll("input");
+      ins[0].addEventListener("change",function(e){ r.name=e.target.value; save(); });
+      ins[1].addEventListener("change",function(e){ r.status=e.target.value; save(); });
+      ins[2].addEventListener("change",function(e){ r.exp=parse(e.target.value); save(); render(); });
+      ins[3].addEventListener("change",function(e){ r.rec=parse(e.target.value)||0; save(); render(); });
+      tr.querySelector("button").addEventListener("click",function(){ S.claims=claims().filter(function(x){return x!==r;}); save(); buildClaims(); render(); });
+    });
+  }
+  val("c-add").addEventListener("click",function(){ claims().push({id:"c"+Date.now().toString(36),name:"",status:"",exp:null,rec:0}); save(); buildClaims(); render(); });
+  function alloc(){ if(!S.alloc) S.alloc=JSON.parse(JSON.stringify(D.alloc)); return S.alloc; }
+  function buildAlloc(){
+    var tb=val("a-rows"); tb.innerHTML="";
+    alloc().forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td class="item"><input type="text" value="'+esc(r.name)+'" aria-label="Destination" style="width:100%"></td><td class="cat"><input type="text" value="'+esc(r.engine||"")+'" aria-label="Engine" style="width:6ch"></td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.amt)+'" placeholder="—" aria-label="Amount"></td><td class="x"><button type="button" aria-label="Remove">×</button></td>';
+      tb.appendChild(tr);
+      var ins=tr.querySelectorAll("input");
+      ins[0].addEventListener("change",function(e){ r.name=e.target.value; save(); });
+      ins[1].addEventListener("change",function(e){ r.engine=e.target.value; save(); });
+      ins[2].addEventListener("change",function(e){ r.amt=parse(e.target.value); save(); render(); });
+      tr.querySelector("button").addEventListener("click",function(){ S.alloc=alloc().filter(function(x){return x!==r;}); save(); buildAlloc(); render(); });
+    });
+  }
+  val("a-add").addEventListener("click",function(){ alloc().push({id:"a"+Date.now().toString(36),name:"",engine:"",amt:null}); save(); buildAlloc(); render(); });
+
+  /* ---------- scalar inputs ---------- */
+  function g(obj,k,def){ return (k in obj)?obj[k]:def; }
+  money("in-pay",function(){return S.pay===null||S.pay===undefined?D.pay:S.pay;},function(n){S.pay=n;});
+  money("dep-household",function(){return g(S.dep,"household",D.dep.household);},function(n){S.dep.household=n;});
+  money("dep-savings",function(){return g(S.dep,"savings",D.dep.savings);},function(n){S.dep.savings=n;});
+  money("dep-llc",function(){return g(S.dep,"llc",D.dep.llc);},function(n){S.dep.llc=n;});
+  money("inc-jesica",function(){return g(S.inc,"jesica",null);},function(n){S.inc.jesica=n;});
+  money("inc-cooper",function(){return g(S.inc,"cooper",null);},function(n){S.inc.cooper=n;});
+  ["household","savings"].forEach(function(k){ var el=val("acct-"+k); el.value=S.acct[k]||""; el.addEventListener("change",function(){ S.acct[k]=el.value; save(); }); });
+  money("k-salary",function(){return g(S.k,"salary",D.k.salary);},function(n){S.k.salary=n;});
+  money("k-rate",function(){return g(S.k,"rate",D.k.rate);},function(n){S.k.rate=n===null?0:n;},{raw:true});
+  money("k-ret",function(){return g(S.k,"ret",D.k.ret);},function(n){S.k.ret=n===null?0:n;},{raw:true});
+  money("k-bal",function(){return g(S.k,"bal",D.k.bal);},function(n){S.k.bal=n;});
+  money("k-limit",function(){return g(S.k,"limit",D.k.limit);},function(n){S.k.limit=n;});
+  money("k-marg",function(){return g(S.k,"marg",D.k.marg);},function(n){S.k.marg=n===null?0:n;},{raw:true});
+  var km=val("k-match"); km.value=g(S.k,"match",D.k.match); km.addEventListener("input",function(){ S.k.match=parseFloat(km.value); save(); render(); });
+  money("b-gross",function(){return g(S.b,"gross",D.b.gross);},function(n){S.b.gross=n;});
+  money("b-net-pct",function(){return g(S.b,"netPct",D.b.netPct);},function(n){S.b.netPct=n===null?0:n;},{raw:true});
+
+  /* ---------- render ---------- */
+  function render(){
+    painters.forEach(function(p){p();});
+    var pay = S.pay===null||S.pay===undefined?D.pay:S.pay;
+    var h=sumList("household"), b=sumList("bills"), j=sumList("jeremiah"), je=sumList("jesica"), co=sumList("cooper");
+    var depH=g(S.dep,"household",D.dep.household)||0, depS=g(S.dep,"savings",null)||0, depL=g(S.dep,"llc",null)||0, depB=b.t;
+    var deposits=depH+depB+depS+depL, avail=pay-deposits, left=avail-j.t;
+
+    val("tot-household").textContent=fmt(h.t)+(h.missing?"+":""); val("left-household").textContent=fmt(depH-h.t); pill("pill-household",depH-h.t,h.missing?"buffer (before water)":"buffer","short by");
+    val("dep-bills").textContent=fmt(depB);
+    val("save-pc").textContent=fmt(depS); val("save-yr").textContent=fmt(depS*26);
+    val("llc-pc").textContent=fmt(depL); val("llc-yr").textContent=fmt(depL*26);
+    val("s-dep").textContent=fmt(deposits); val("s-daily").textContent=fmt(avail); val("s-left").textContent=fmt(left);
+    val("s-left-note").textContent= left>=0?"the plan balances":"over budget — trim bills or lower a deposit";
+    val("s-left").style.color= left>=0?"var(--good)":"var(--warn)";
+
+    val("avail-jeremiah").textContent=fmt(avail); val("tot-jeremiah").textContent=fmt(j.t)+(j.missing?"+":""); val("left-jeremiah").textContent=fmt(left); pill("pill-jeremiah",left,"covered","short by");
+    var incJ=g(S.inc,"jesica",null), incC=g(S.inc,"cooper",null);
+    val("tot-jesica").textContent=fmt(je.t)+(je.missing?"+":""); val("left-jesica").textContent=incJ===null?"—":fmt(incJ-je.t); if(incJ===null){val("pill-jesica").className="pill";val("pill-jesica").textContent="set income";} else pill("pill-jesica",incJ-je.t,"covered","short by");
+    var coIn=(incC||0)+ (function(){ var r=rowsOf("jeremiah").filter(function(x){return x.id==="cooper";})[0]; return r&&r.amt?r.amt:0; })();
+    val("tot-cooper").textContent=fmt(co.t)+(co.missing?"+":""); val("left-cooper").textContent=fmt(coIn-co.t); pill("pill-cooper",coIn-co.t,"covered","short by");
+
+    /* 401k */
+    var sal=g(S.k,"salary",null), rate=g(S.k,"rate",D.k.rate)/100, match=g(S.k,"match",D.k.match)/100, ret=g(S.k,"ret",D.k.ret)/100, bal=g(S.k,"bal",null)||0, lim=g(S.k,"limit",D.k.limit), marg=g(S.k,"marg",D.k.marg)/100;
+    val("k-match-label").textContent=(match*100).toFixed(1).replace(/\.0$/,"")+"% · slide between 4 and 6";
+    if(sal){
+      var you=Math.min(sal*rate, lim||Infinity), emp=sal*match, growth=bal*ret+(you+emp)*ret/2, fv=bal+you+emp+growth;
+      val("k-you").textContent=fmt(you); val("k-pc").textContent=fmt(you/26)+" per paycheck"; val("k-emp").textContent=fmt(emp); val("k-growth").textContent=fmt(growth); val("k-added").textContent=fmt(you+emp+growth); val("k-fv").textContent=fmt(fv); val("k-tax").textContent=fmt(you*marg);
+      var tot=you+emp+Math.max(growth,0); val("k-bar").innerHTML='<span style="width:'+(you/tot*100)+'%;background:var(--ink)"></span><span style="width:'+(emp/tot*100)+'%;background:var(--accent)"></span><span style="width:'+(Math.max(growth,0)/tot*100)+'%;background:var(--line-strong)"></span>';
+      val("k-note").innerHTML="Every dollar you put in earns <b>"+Math.round(match/rate*100)+"¢</b> of match on top at this rate. "+(sal*rate>lim?"Your 10% exceeds the IRS employee limit — contributions are capped at "+fmt(lim)+".":"Raising to "+Math.round(rate*100+2)+"% would add "+fmt(sal*0.02)+" a year pre-tax.");
+    } else { ["k-you","k-emp","k-growth","k-added","k-fv","k-tax"].forEach(function(i){val(i).textContent="—";}); val("k-pc").textContent="— per paycheck"; val("k-bar").innerHTML=""; }
+
+    /* bonus */
+    var gross=g(S.b,"gross",D.b.gross)||0, net=gross*(g(S.b,"netPct",D.b.netPct)/100); val("b-net").textContent=fmt(net);
+    var pctSum=0, colors=["var(--line-strong)","var(--muted)","var(--accent)","var(--ink)","var(--line)"], bar="";
+    bRows().forEach(function(r,i){ pctSum+=r.pct||0; if(r._cell) r._cell.textContent=fmt(net*(r.pct||0)/100); bar+='<span style="width:'+(r.pct||0)+'%;background:'+colors[i%colors.length]+'"></span>'; });
+    val("b-bar").innerHTML=bar; val("b-sum").textContent=pctSum+"%"; val("b-sum").style.color=Math.round(pctSum)===100?"":"var(--warn)";
+
+    /* claims */
+    var ce=0,cr=0; claims().forEach(function(r){ ce+=r.exp||0; cr+=r.rec||0; }); val("c-exp").textContent=fmt(ce); val("c-rec").textContent=fmt(cr); val("c-outstanding").textContent=fmt(ce-cr);
+    var as=0; alloc().forEach(function(r){ as+=r.amt||0; }); val("a-sum").textContent=fmt(as);
+    val("a-note").innerHTML= as===ce ? "Allocation matches the expected total." : "Allocation is <b>"+fmt(as)+"</b> against <b>"+fmt(ce)+"</b> expected — "+(as>ce?"over by ":"unallocated: ")+fmt(Math.abs(ce-as))+".";
+  }
+
+  /* ---------- checklist ---------- */
+  var CK = {
+    payday:[
+      {id:"p1",who:"j",t:"Confirm the four payday transfers went out",h:"Household → Jesica #1, Bills, Savings → Jesica #2, LLC fund"},
+      {id:"p2",who:"s",t:"Confirm the household deposit landed",h:"and utilities are set to clear from it"},
+      {id:"p3",who:"j",t:"Untick last cycle's bills on this page",h:"'Untick all (new paycheck)' at the bottom — then re-tick as things clear"},
+      {id:"p4",who:"s",t:"Log the water bill if it came in",h:"Household card → Water amount"},
+      {id:"p5",who:"b",t:"Read the Left-over pill together",h:"Green: nothing to discuss. Red: decide what moves before the next check, not after"},
+      {id:"p6",who:"b",t:"Anything new? Add it now",h:"A new bill, a one-off, a change in an amount — on the right tab, right person"}],
+    monthly:[
+      {id:"m1",who:"j",t:"Bills account reconciled to zero",h:"Verizon, car insurance, CarMax all cleared; deposit still matches"},
+      {id:"m2",who:"s",t:"Household account cushion noted",h:"What's left after utilities — is it growing toward a summer-electric buffer?"},
+      {id:"m3",who:"s",t:"Savings balance noted",h:"Write the number down; the trend is the point"},
+      {id:"m4",who:"j",t:"Paystub check: 401(k) at 10%, match showing",h:"Per-paycheck contribution matches the 401(k) tab"},
+      {id:"m5",who:"b",t:"Each pull one credit report",h:"AnnualCreditReport.com — free weekly; alternate bureaus month to month"},
+      {id:"m6",who:"b",t:"Resolve one flagged ? item",h:"Mypay, Wade, Scott, Squares… label it or drop it. One a month clears the list by spring"},
+      {id:"m7",who:"b",t:"Fifteen-minute money talk",h:"What went well, what pinched, one adjustment for next month. Then stop"}],
+    quarterly:[
+      {id:"q1",who:"b",t:"Review the four deposit amounts",h:"Household, savings, LLC — raise, lower or hold, and change them on this page together"},
+      {id:"q2",who:"b",t:"Walk the LLC ledger",h:"Dollars in, spend, confidence on each revenue line — is the effort earning its set-aside?"},
+      {id:"q3",who:"s",t:"Shop the electricity plan",h:"Texas retail rates change; compare at powertochoose.org before a contract auto-renews"},
+      {id:"q4",who:"j",t:"401(k) allocation and match check",h:"Statement review; rebalance only if a fund drifted well off target"},
+      {id:"q5",who:"j",t:"Insurance review",h:"Car, home/renters, any LLC policy — coverage and price still right?"},
+      {id:"q6",who:"b",t:"Third-paycheck month coming?",h:"Two a year. Decide now where the extra check goes — savings, LLC, or a debt"},
+      {id:"q7",who:"b",t:"Personal-bills check-in",h:"Each shows the other their Left-over pill. No line-item review — just the pill"}],
+    annual:[
+      {id:"a1",who:"j",t:"Benefits open enrollment",h:"Texas Mutual · November — health, 401(k) rate, HSA/FSA, dependents"},
+      {id:"a2",who:"b",t:"Tax documents gathered",h:"January–February — W-2, 1095, LLC records, mileage log, reimbursement statements"},
+      {id:"a3",who:"j",t:"Bonus split applied the week it lands",h:"March — the Q1 bonus tab's percentages, LLC slice to the ledger"},
+      {id:"a4",who:"b",t:"Annual sit-down: rewrite this page",h:"April, after taxes — new take-home, new deposits, what to retire from the lists"},
+      {id:"a5",who:"b",t:"Grant window for the girls' LLC",h:"September 1–23 — TWU Center for Women Entrepreneurs StartUP grant"},
+      {id:"a6",who:"s",t:"Utility contracts and internet promo dates",h:"Note the renewal dates once a year so the quarterly shop has a target"}]
+  };
+  var WHO={j:"Jeremiah",s:"Jesica",b:"Both"};
+  function ck(k){ if(!S.ck) S.ck={}; if(!S.ck[k]) S.ck[k]={done:{},removed:{},custom:[],who:{},text:{}}; var c=S.ck[k]; ["done","removed","who","text"].forEach(function(x){ if(!c[x]) c[x]={}; }); if(!c.custom) c.custom=[]; return c; }
+  function ckRows(k){ var c=ck(k), out=[]; CK[k].forEach(function(r){ if(c.removed[r.id]) return; out.push({id:r.id,who:c.who[r.id]||r.who,t:(r.id in c.text)?c.text[r.id]:r.t,h:r.h}); }); c.custom.forEach(function(r){ out.push({id:r.id,who:r.who||"b",t:r.t||"",h:"",custom:true}); }); return out; }
+  function buildCk(){
+    document.querySelectorAll("[data-ck]").forEach(function(card){
+      var k=card.dataset.ck, c=ck(k), host=card.querySelector("[data-ck-list]"); host.innerHTML="";
+      var table=document.createElement("table"), tb=document.createElement("tbody"); table.appendChild(tb); host.appendChild(table);
+      var rows=ckRows(k), n=0;
+      rows.forEach(function(r){
+        var tr=document.createElement("tr"); var done=!!c.done[r.id]; if(done) n++; tr.classList.toggle("done",done);
+        var sel='<select aria-label="Owner">'+Object.keys(WHO).map(function(w){return '<option value="'+w+'"'+(w===r.who?' selected':'')+'>'+WHO[w]+'</option>';}).join("")+'</select>';
+        tr.innerHTML='<td class="chk"><input type="checkbox" aria-label="Done"'+(done?' checked':'')+'></td><td class="whocell">'+(r.custom?sel:'<span class="who '+r.who+'" data-cycle title="Click to change owner">'+WHO[r.who]+'</span>')+'</td><td class="task">'+(r.custom?'<input type="text" value="'+esc(r.t)+'" placeholder="what needs doing" aria-label="Task">':esc(r.t)+(r.h?'<span class="hint">'+esc(r.h)+'</span>':''))+'</td><td class="x"><button type="button" aria-label="Remove task">×</button></td>';
+        tb.appendChild(tr);
+        tr.querySelector('input[type=checkbox]').addEventListener("change",function(e){ c.done[r.id]=e.target.checked; save(); buildCk(); });
+        var cyc=tr.querySelector("[data-cycle]"); if(cyc){ cyc.style.cursor="pointer"; cyc.addEventListener("click",function(){ var order=["j","s","b"]; c.who[r.id]=order[(order.indexOf(r.who)+1)%3]; save(); buildCk(); }); }
+        if(r.custom){ var cu=c.custom.filter(function(x){return x.id===r.id;})[0]; tr.querySelector("select").addEventListener("change",function(e){ cu.who=e.target.value; save(); buildCk(); }); tr.querySelector('.task input').addEventListener("change",function(e){ cu.t=e.target.value; save(); }); }
+        tr.querySelector(".x button").addEventListener("click",function(){ if(r.custom) c.custom=c.custom.filter(function(x){return x.id!==r.id;}); else c.removed[r.id]=true; delete c.done[r.id]; save(); buildCk(); });
+      });
+      var add=document.createElement("button"); add.type="button"; add.className="addrow"; add.textContent="+ Add a task";
+      add.addEventListener("click",function(){ c.custom.push({id:"t"+Date.now().toString(36),who:"b",t:""}); save(); buildCk(); var inp=host.querySelector("tbody tr:last-child .task input"); if(inp) inp.focus(); });
+      host.appendChild(add);
+      var reset=document.createElement("button"); reset.type="button"; reset.className="addrow"; reset.textContent="↺ Reset ticks — start the next "+(k==="payday"?"paycheck":k==="monthly"?"month":k==="quarterly"?"quarter":"year");
+      reset.addEventListener("click",function(){ c.done={}; save(); buildCk(); });
+      host.appendChild(reset);
+      card.querySelector("[data-ck-count]").textContent=n+" / "+rows.length;
+      card.querySelector("[data-ck-bar]").style.width=(rows.length?Math.round(n/rows.length*100):0)+"%";
+    });
+  }
+  buildCk();
+
+  /* ---------- tabs ---------- */
+  var tabs=["household","personal","retirement","bonus","claims","checklist"];
+  function showTab(t){ if(tabs.indexOf(t)<0) t="household"; document.querySelectorAll("[data-panel]").forEach(function(p){ p.hidden=p.dataset.panel!==t; }); document.querySelectorAll("nav a[data-tab]").forEach(function(a){ if(a.dataset.tab===t) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); }); }
+  window.addEventListener("hashchange",function(){ showTab(location.hash.slice(1)); });
+  showTab(location.hash.slice(1)||"household");
+  function showPerson(p){ S.person=p; save(); document.querySelectorAll("[data-personcard]").forEach(function(c){ c.hidden=c.dataset.personcard!==p; }); document.querySelectorAll("[data-person]").forEach(function(b){ b.setAttribute("aria-selected", b.dataset.person===p?"true":"false"); }); }
+  document.querySelectorAll("[data-person]").forEach(function(b){ b.addEventListener("click",function(){ showPerson(b.dataset.person); }); });
+  showPerson(S.person||"jeremiah");
+
+  buildLists(); buildBonus(); buildClaims(); buildAlloc(); render();
+
+  val("reset-paid").addEventListener("click",function(){ Object.keys(S.lists).forEach(function(k){ S.lists[k].paid={}; }); save(); buildLists(); render(); });
+  val("reset-plan").addEventListener("click",function(){ var p=S.person; S=blank(); S.person=p; save(); buildLists(); buildBonus(); buildClaims(); buildAlloc(); buildCk(); km.value=D.k.match; render(); });
+})();
+</script>
+
+</body>
+</html>

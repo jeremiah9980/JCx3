@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Cargill Consulting Ledger</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap">
+<style>
+:root{
+  --ink:#201e1d; --accent:#ec3013;
+  --bg:#f6f3ee; --surface:#fdfcfa; --surface-2:#efeae2; --line:#d8d1c6; --line-strong:#b9b0a2;
+  --text:#201e1d; --muted:#6f6860; --good:#2e6b3a; --good-bg:#e4efe3; --warn:#9a3b0e; --warn-bg:#f7e6dc;
+  --rule:#201e1d;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+    --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519; --rule:#57524b;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+  --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519; --rule:#57524b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45;padding-block:24px 56px;padding-inline:clamp(16px,4vw,40px)}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:clamp(26px,4vw,38px);font-stretch:90%;line-height:1.05}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 16px;padding-bottom:16px;border-bottom:2px solid var(--rule);margin-bottom:22px}
+header p{margin:6px 0 0;color:var(--muted);max-width:64ch}
+header a{color:var(--accent);font-weight:600;text-decoration:none;font-size:13px}
+header a::after{content:" ↗"}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);margin:0 0 22px;border:1px solid var(--line);background:var(--surface)}
+.strip>div{padding:14px 18px;border-left:1px solid var(--line)}
+.strip>div:first-child{border-left:0}
+.strip .big{font-size:26px;font-weight:700;line-height:1;margin-top:6px}
+.strip small{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.strip .result{background:var(--surface-2)}
+@media (max-width:820px){.strip{grid-template-columns:1fr 1fr}.strip>div:nth-child(3){border-left:0}.strip>div:nth-child(n+3){border-top:1px solid var(--line)}}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--rule)}
+.card.gate{border-top-color:var(--accent)}
+.card.wide{grid-column:1/-1}
+.card-head{padding:14px 18px 12px;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:baseline;border-bottom:1px solid var(--line)}
+.card-head h2{font-size:17px}
+.card-head .owner{color:var(--muted);font-size:13px}
+.card-head .dep{text-align:right}
+.card-head .dep .eyebrow{font-size:10px}
+.card-head .dep .big{font-size:24px;font-weight:700;line-height:1.1}
+.card-body{padding:12px 18px 16px;color:var(--muted);font-size:13px}
+.card-body p{margin:0 0 8px}.card-body p:last-child{margin-bottom:0}
+.card-body b{color:var(--text)}
+input[type=text]{font:inherit;color:var(--text);background:transparent;border:0;border-bottom:1px dashed var(--line-strong);padding:2px 0}
+input[type=text]:focus{border-bottom-color:transparent}
+input.money{font-variant-numeric:tabular-nums;text-align:right;width:100%}
+input.empty{border-bottom-color:var(--accent)}
+input::placeholder{color:var(--line-strong)}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent);margin:0;display:block;cursor:pointer}
+input[type=range]{accent-color:var(--accent);width:100%}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:0 16px;align-items:baseline;padding:0 18px}
+.kv>div{display:contents}
+.kv .k{padding:9px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}
+.kv .v{padding:9px 0;border-bottom:1px solid var(--line);text-align:right;font-weight:600;min-width:120px}
+.kv .v input.money{width:9ch}
+.kv .total .k{color:var(--text);font-weight:600}
+.kv .total .v{font-size:18px;font-weight:700}
+.kv .last .k,.kv .last .v{border-bottom:0}
+.kv .sub{font-size:12px;color:var(--muted);display:block;font-weight:400}
+table{width:100%;border-collapse:collapse}
+tbody tr{border-bottom:1px solid var(--line)}
+tbody tr:last-child{border-bottom:0}
+td,th{padding:8px 12px;vertical-align:middle;text-align:left}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);white-space:nowrap}
+td.chk,th.chk{width:44px;text-align:center}
+td.chk input{margin:0 auto}
+td.amt,th.amt{text-align:right;width:110px;white-space:nowrap}
+td.cat{color:var(--muted);font-size:12px}
+td.cat input{font-size:12px;width:100%}
+td.item{min-width:220px}
+td.item input{width:100%}
+td.x{width:30px;padding-left:0;padding-right:8px;text-align:right}
+td.x button{border:0;background:none;color:var(--line-strong);cursor:pointer;font-size:16px;line-height:1;padding:2px 4px}
+td.x button:hover{color:var(--accent)}
+tr.done td.item,tr.done td.amt{color:var(--muted)}
+tfoot td{padding:10px 12px;border-top:2px solid var(--line-strong);font-weight:700}
+.addrow{display:block;width:100%;text-align:left;font:inherit;font-size:13px;font-weight:600;color:var(--muted);background:transparent;border:0;border-top:1px dashed var(--line);padding:9px 12px;cursor:pointer}
+.addrow:hover{color:var(--accent)}
+.tablewrap{overflow-x:auto}
+.pill{display:inline-block;padding:3px 9px;font-size:12px;font-weight:700}
+.pill.good{background:var(--good-bg);color:var(--good)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.gatelist{list-style:none;margin:0;padding:6px 18px 12px}
+.gatelist li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);align-items:start}
+.gatelist li:last-child{border-bottom:0}
+.gatelist li b{display:block}
+.gatelist li span{color:var(--muted);font-size:13px}
+.gatelist li.done b{text-decoration:line-through;color:var(--muted)}
+.gatelist li.locked{opacity:.55}
+.callout{background:var(--surface-2);padding:12px 18px;font-size:13px;color:var(--muted);border-left:3px solid var(--accent);margin:0 0 20px}
+.callout b{color:var(--text)}
+.tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-top:22px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.tools button{font:inherit;font-weight:600;font-size:13px;border:1px solid var(--line-strong);background:transparent;color:var(--text);padding:7px 12px;cursor:pointer}
+.tools button:hover{border-color:var(--accent);color:var(--accent)}
+.legend{font-size:13px;color:var(--muted);margin-top:12px;max-width:76ch}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">Cargill Consulting LLC · funding &amp; value ledger</div>
+    <h1>Cargill Consulting Ledger</h1>
+    <p>Cargill Consulting is a consulting shell: it engages small and medium businesses on a project basis, with Cooper and Myles delivering access-control and security-system installs and small-business websites, and Jeremiah as the senior engineer behind every proposal. This ledger tracks every dollar going toward that effort, what it buys, and the value expected back — tax write-offs at your marginal rate, first-year depreciation on the truck's business share, and project revenue weighted by how likely it is.</p>
+  </div>
+  <div></div>
+</header>
+
+<section class="strip" aria-label="Summary">
+  <div><div class="eyebrow">Dollars in · year one</div><div class="big num" id="s-in">—</div><small>payday set-aside + bonus slice + settlement seed</small></div>
+  <div><div class="eyebrow">Planned spend</div><div class="big num" id="s-spend">—</div><small id="s-spend-note">—</small></div>
+  <div><div class="eyebrow">Expected value back</div><div class="big num" id="s-value">—</div><small>tax savings + probability-weighted revenue</small></div>
+  <div class="result"><div class="eyebrow">Value per dollar spent</div><div class="big num" id="s-ratio">—</div><small id="s-ratio-note">—</small></div>
+</section>
+
+<div class="grid">
+  <section class="card gate">
+    <div class="card-head"><div><h2>The gate</h2><div class="owner">Nothing recurring moves until step 1 is ticked</div></div><div class="dep"><div class="eyebrow">Status</div><div class="big" id="gate-status">—</div></div></div>
+    <ul class="gatelist" id="gate"></ul>
+    <div class="card-body"><p>Jesica's commitment to the LLC — her role in Cargill Home and her seat as a member — is agreed and written before the recurring deposits to her accounts are set up. Fiduciary control means the money and the stake are decided together, once.</p></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div><h2>Assumptions</h2><div class="owner">Used by every value calculation below</div></div></div>
+    <div class="kv">
+      <div><span class="k">Marginal federal rate <span class="sub">what a deductible dollar saves you</span></span><span class="v num"><input class="money" id="marg" type="text" inputmode="decimal" style="width:5ch" aria-label="Marginal rate">%</span></div>
+      <div><span class="k">Self-employment tax on LLC profit <span class="sub">15.3% up to the wage base; set 0 if profit flows as wages</span></span><span class="v num"><input class="money" id="se" type="text" inputmode="decimal" style="width:5ch" aria-label="SE tax rate">%</span></div>
+      <div><span class="k">Paychecks per year</span><span class="v num">26</span></div>
+      <div class="last"><span class="k">LLC filed <span class="sub">Texas SOS · first business tax year</span></span><span class="v"><input type="text" id="filed" style="width:10ch;text-align:right" aria-label="Filing date"></span></div>
+    </div>
+    <div class="card-body"><p>Deductions reduce taxable income, so a $1,000 deductible purchase is worth about <b id="marg-ex">$220</b> in tax — it is never a free $1,000. The ledger keeps that distinction visible.</p></div>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head"><div><h2>Funding in</h2><div class="owner">Where the LLC's money comes from in year one</div></div><div class="dep"><div class="eyebrow">Total</div><div class="big num" id="f-total">—</div></div></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Source</th><th>Basis</th><th class="amt">Per event</th><th class="amt">Events / yr</th><th class="amt">Year one</th><th></th></tr></thead>
+      <tbody id="f-rows"></tbody>
+    </table></div>
+    <button class="addrow" id="f-add" type="button">+ Add a source</button>
+    <div class="card-body"><p>The payday set-aside is the same number as the LLC line on the household budget; the bonus slice is the LLC row on its Q1 bonus tab (default 20% of the net). Keep them matching by hand — the two pages don't talk to each other.</p></div>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head"><div><h2>Spend ledger</h2><div class="owner">What the money buys · tick Deductible for business expenses · tick Paid when it's spent</div></div><div class="dep"><div class="eyebrow">Tax value of deductibles</div><div class="big num" id="sp-tax">—</div></div></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th class="chk">Paid</th><th>Item</th><th>Purpose</th><th class="amt">Amount</th><th class="chk">Deductible</th><th class="amt">Tax value</th><th></th></tr></thead>
+      <tbody id="sp-rows"></tbody>
+      <tfoot><tr><td></td><td colspan="2">Planned spend</td><td class="amt num" id="sp-total">—</td><td></td><td class="amt num" id="sp-tax2">—</td><td></td></tr></tfoot>
+    </table></div>
+    <button class="addrow" id="sp-add" type="button">+ Add a purchase</button>
+    <div class="card-body"><p>Start-up costs before the filing date are deductible up to $5,000 in year one under §195; the CPA confirms which lines qualify.</p></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div><h2>Truck</h2><div class="owner">Over 6,000 lb GVWR · business-use share</div></div><div class="dep"><div class="eyebrow">Year-one tax value</div><div class="big num" id="t-value">—</div></div></div>
+    <div class="kv">
+      <div><span class="k">Purchase price</span><span class="v num">$<input class="money" id="t-price" type="text" inputmode="numeric" aria-label="Truck price"></span></div>
+      <div><span class="k">Business use <span class="sub" id="t-pct-label">60% · Uber, deliveries, site visits</span></span><span class="v" style="min-width:160px"><input type="range" id="t-pct" min="0" max="100" step="5" aria-label="Business use percent"></span></div>
+      <div><span class="k">Bonus depreciation deduction <span class="sub">100% of the business share, year one</span></span><span class="v num" id="t-dep">—</span></div>
+      <div><span class="k">— or — mileage method <span class="sub"><input class="money" id="t-miles" type="text" inputmode="numeric" style="width:7ch;font-size:12px" aria-label="Business miles"> business miles × $<input class="money" id="t-rate" type="text" inputmode="decimal" style="width:5ch;font-size:12px" aria-label="Mileage rate">/mi</span></span><span class="v num" id="t-mil">—</span></div>
+      <div class="last total"><span class="k">Better method this year</span><span class="v" id="t-best">—</span></div>
+    </div>
+    <div class="card-body"><p>Pick one method for the life of the vehicle in most cases; the CPA runs both in year one. Business use must stay above 50% or depreciation recaptures. The truck stays a personal loan; the LLC reimburses miles or takes the depreciation on paper.</p></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div><h2>Expected revenue</h2><div class="owner">Year one · weighted by confidence</div></div><div class="dep"><div class="eyebrow">Expected value</div><div class="big num" id="r-ev">—</div></div></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Line</th><th class="amt">If it lands</th><th class="amt">Confidence</th><th class="amt">Expected</th><th></th></tr></thead>
+      <tbody id="r-rows"></tbody>
+    </table></div>
+    <button class="addrow" id="r-add" type="button">+ Add a revenue line</button>
+    <div class="card-body"><p>Project fees net of any partner cut or subcontract cost. Expected value is after self-employment tax at the rate above. Update the confidence as customers sign; that's the number that tells you whether the effort is working.</p></div>
+  </section>
+</div>
+
+<div class="tools">
+  <span>Everything you type or tick is saved on <b>this device only</b>. Share this link separately from the household budget when Jesica's commitment is in.</span>
+  <span><button id="reset" type="button">Reset to playbook defaults</button></span>
+</div>
+<p class="legend">Defaults come from the 3x Playbook (Sep 2026): $300 Texas SOS filing, ~$1,500 certification fees, $800–1,200 demo kit, GL + E&amp;O insurance, $1,500 LLC seed, bonus split 30/30/20/10/10, truck business use via logged miles. The brace line from the playbook is dropped — the LLC is a consulting shell for security, access-control and website projects. Planning arithmetic, not tax or legal advice — the CPA decides §195 treatment, depreciation vs mileage, and whether profit flows as wages.</p>
+</div>
+
+<script>
+(function(){
+  var D={
+    marg:22, se:15.3, filed:"Jan 2027",
+    funding:[
+      {id:"payday",name:"Payday set-aside",basis:"LLC line on the household budget",per:null,n:26},
+      {id:"bonus",name:"Q1 2027 bonus slice",basis:"20% of $16,100 net (of $23,000 gross)",per:3220,n:1},
+      {id:"seed",name:"Settlement seed",basis:"LLC seed set aside from the medical claims",per:1500,n:1},
+      {id:"side",name:"Jeremiah's side-work invoices",basis:"Systems engineering billed through the LLC",per:null,n:1}],
+    spend:[
+      {id:"sos",item:"Texas SOS filing",purpose:"Form the LLC",amt:300,ded:true},
+      {id:"certs",item:"Certification exams",purpose:"Security+, SC-300, Network+, manufacturer cert (Cooper & Myles)",amt:1500,ded:true},
+      {id:"pm",item:"Google PM certificate",purpose:"Jesica · Cargill Home",amt:300,ded:true},
+      {id:"dps",item:"DPS installer registrations",purpose:"Fingerprints + background, under a licensed partner",amt:200,ded:true},
+      {id:"kit",item:"Demo camera / access kit",purpose:"Cargill Secure sales demos",amt:1000,ded:true},
+      {id:"ins",item:"Insurance · GL + E&O",purpose:"Required for DPS license and PM contracts",amt:1500,ded:true},
+      {id:"tools",item:"Tools · drill, label maker, tester",purpose:"Installs",amt:200,ded:true},
+      {id:"m365",item:"Microsoft 365 tenant + software",purpose:"LLC's own tenant = customer #1",amt:300,ded:true},
+      {id:"web",item:"Website tooling",purpose:"Domains, hosting, templates for client sites + our own",amt:400,ded:true},
+      {id:"dba",item:"Assumed-name (DBA) filings",purpose:"Cargill Secure, Cargill Home",amt:50,ded:true}],
+    truck:{price:40000,pct:60,miles:6000,rate:0.76},
+    revenue:[
+      {id:"web",name:"Website builds · 3 small-business sites",amt:4500,conf:60},
+      {id:"consult",name:"Jeremiah consulting projects · 2 engagements",amt:6000,conf:50},
+      {id:"identity",name:"Identity Baseline · 2 fixed-price jobs",amt:3000,conf:70},
+      {id:"retain",name:"Managed-security retainers · 10 × $200 × 6 mo",amt:12000,conf:30},
+      {id:"home",name:"Cargill Home · first PM project fee",amt:2000,conf:50},
+      {id:"install",name:"Camera + Access Starter · 2 installs (net of partner cut)",amt:3000,conf:40}],
+    gate:[
+      {id:"commit",t:"Jesica commits to the LLC",s:"Role (Cargill Home, project management) and membership agreed and written down. Unlocks everything below."},
+      {id:"oa",t:"Operating agreement drafted",s:"Members, capital contributions, the truck-use agreement, path to membership for Cooper and Myles."},
+      {id:"deposits",t:"Recurring deposits to Jesica's accounts scheduled",s:"Household and savings transfers set up on payday — from the household budget page."},
+      {id:"file",t:"LLC filed with Texas SOS",s:"$300 · January 2027 so the truck's first business year is 2027."},
+      {id:"ein",t:"EIN + business checking",s:"Same week as filing. Every LLC dollar moves through this account."},
+      {id:"dbas",t:"DBAs filed with the county",s:"Cargill Secure · Cargill Home."},
+      {id:"ins",t:"Insurance bound",s:"General liability + E&O."}]
+  };
+  var KEY="cargill-llc-v2", S;
+  function blank(){ return {marg:null,se:null,filed:null,funding:null,spend:null,truck:{},revenue:null,gate:{}}; }
+  try{ var raw=localStorage.getItem(KEY); S=raw?JSON.parse(raw):blank(); if(!S||typeof S!=="object") S=blank(); }catch(e){ S=blank(); }
+  if(!S.truck) S.truck={}; if(!S.gate) S.gate={};
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+  function fmt(n){ if(n===null||n===undefined||isNaN(n)) return "—"; var neg=n<0,s="$"+Math.round(Math.abs(n)).toLocaleString("en-US"); return neg?"("+s+")":s; }
+  function fmtIn(n){ return (n===null||n===undefined||isNaN(n))?"":Math.round(n).toLocaleString("en-US"); }
+  function parse(v){ var n=parseFloat(String(v).replace(/[^0-9.\-]/g,"")); return isNaN(n)?null:n; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function val(id){ return document.getElementById(id); }
+  function g(o,k,d){ return (o[k]===null||o[k]===undefined)?d:o[k]; }
+  function copy(x){ return JSON.parse(JSON.stringify(x)); }
+  function funding(){ if(!S.funding) S.funding=copy(D.funding); return S.funding; }
+  function spend(){ if(!S.spend) S.spend=copy(D.spend); return S.spend; }
+  function revenue(){ if(!S.revenue) S.revenue=copy(D.revenue); return S.revenue; }
+
+  var painters=[];
+  function money(id,get,set,raw){ var el=val(id); if(!el) return; function paint(){ var v=get(); el.classList.toggle("empty",v===null||v===undefined); if(document.activeElement!==el) el.value=raw?(v===null||v===undefined?"":String(v)):fmtIn(v); } el.addEventListener("change",function(){ set(parse(el.value)); save(); render(); }); painters.push(paint); paint(); }
+  money("marg",function(){return g(S,"marg",D.marg);},function(n){S.marg=n;},true);
+  money("se",function(){return g(S,"se",D.se);},function(n){S.se=n;},true);
+  money("t-price",function(){return g(S.truck,"price",D.truck.price);},function(n){S.truck.price=n;});
+  money("t-miles",function(){return g(S.truck,"miles",D.truck.miles);},function(n){S.truck.miles=n;});
+  money("t-rate",function(){return g(S.truck,"rate",D.truck.rate);},function(n){S.truck.rate=n;},true);
+  var filed=val("filed"); filed.value=g(S,"filed",D.filed); filed.addEventListener("change",function(){ S.filed=filed.value; save(); });
+  var tp=val("t-pct"); tp.value=g(S.truck,"pct",D.truck.pct); tp.addEventListener("input",function(){ S.truck.pct=parseFloat(tp.value); save(); render(); });
+
+  function textIn(cls,v,ph,label,extra){ return '<input type="text" class="'+cls+'" value="'+esc(v)+'" placeholder="'+esc(ph||"")+'" aria-label="'+esc(label)+'"'+(extra||"")+'>'; }
+
+  function buildFunding(){
+    var tb=val("f-rows"); tb.innerHTML="";
+    funding().forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td class="item">'+textIn("",r.name,"source","Source")+'</td><td class="cat">'+textIn("",r.basis,"basis","Basis")+'</td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.per)+'" placeholder="—" aria-label="Per event"></td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+(r.n||"")+'" style="width:5ch" aria-label="Events per year"></td><td class="amt num" data-yr>—</td><td class="x"><button type="button" aria-label="Remove">×</button></td>';
+      tb.appendChild(tr); var ins=tr.querySelectorAll("input");
+      ins[0].addEventListener("change",function(e){r.name=e.target.value;save();}); ins[1].addEventListener("change",function(e){r.basis=e.target.value;save();});
+      ins[2].addEventListener("change",function(e){r.per=parse(e.target.value);save();render();}); ins[3].addEventListener("change",function(e){r.n=parse(e.target.value)||0;save();render();});
+      ins[2].classList.toggle("empty",r.per===null);
+      tr.querySelector("button").addEventListener("click",function(){S.funding=funding().filter(function(x){return x!==r;});save();buildFunding();render();});
+      r._yr=tr.querySelector("[data-yr]");
+    });
+  }
+  val("f-add").addEventListener("click",function(){funding().push({id:"f"+Date.now().toString(36),name:"",basis:"",per:null,n:1});save();buildFunding();render();});
+
+  function buildSpend(){
+    var tb=val("sp-rows"); tb.innerHTML="";
+    spend().forEach(function(r){
+      var tr=document.createElement("tr"); tr.classList.toggle("done",!!r.paid);
+      tr.innerHTML='<td class="chk"><input type="checkbox" aria-label="Paid"'+(r.paid?" checked":"")+'></td><td class="item">'+textIn("",r.item,"purchase","Item")+'</td><td class="cat">'+textIn("",r.purpose,"purpose","Purpose")+'</td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.amt)+'" placeholder="—" aria-label="Amount"></td><td class="chk"><input type="checkbox" aria-label="Deductible"'+(r.ded?" checked":"")+'></td><td class="amt num" data-tax>—</td><td class="x"><button type="button" aria-label="Remove">×</button></td>';
+      tb.appendChild(tr); var cbs=tr.querySelectorAll('input[type=checkbox]'), txt=tr.querySelectorAll('input[type=text]');
+      cbs[0].addEventListener("change",function(){r.paid=cbs[0].checked;tr.classList.toggle("done",r.paid);save();render();});
+      cbs[1].addEventListener("change",function(){r.ded=cbs[1].checked;save();render();});
+      txt[0].addEventListener("change",function(e){r.item=e.target.value;save();}); txt[1].addEventListener("change",function(e){r.purpose=e.target.value;save();});
+      txt[2].addEventListener("change",function(e){r.amt=parse(e.target.value);save();render();});
+      tr.querySelector(".x button").addEventListener("click",function(){S.spend=spend().filter(function(x){return x!==r;});save();buildSpend();render();});
+      r._tax=tr.querySelector("[data-tax]");
+    });
+  }
+  val("sp-add").addEventListener("click",function(){spend().push({id:"s"+Date.now().toString(36),item:"",purpose:"",amt:null,ded:true});save();buildSpend();render();});
+
+  function buildRevenue(){
+    var tb=val("r-rows"); tb.innerHTML="";
+    revenue().forEach(function(r){
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td class="item">'+textIn("",r.name,"revenue line","Line")+'</td><td class="amt num"><input class="money" type="text" inputmode="numeric" value="'+fmtIn(r.amt)+'" placeholder="—" aria-label="Amount"></td><td class="amt num"><input class="money" type="text" inputmode="decimal" value="'+(r.conf==null?"":r.conf)+'" style="width:5ch" aria-label="Confidence">%</td><td class="amt num" data-ev>—</td><td class="x"><button type="button" aria-label="Remove">×</button></td>';
+      tb.appendChild(tr); var ins=tr.querySelectorAll("input");
+      ins[0].addEventListener("change",function(e){r.name=e.target.value;save();});
+      ins[1].addEventListener("change",function(e){r.amt=parse(e.target.value);save();render();});
+      ins[2].addEventListener("change",function(e){r.conf=parse(e.target.value)||0;save();render();});
+      tr.querySelector("button").addEventListener("click",function(){S.revenue=revenue().filter(function(x){return x!==r;});save();buildRevenue();render();});
+      r._ev=tr.querySelector("[data-ev]");
+    });
+  }
+  val("r-add").addEventListener("click",function(){revenue().push({id:"r"+Date.now().toString(36),name:"",amt:null,conf:50});save();buildRevenue();render();});
+
+  function buildGate(){
+    var ul=val("gate"); ul.innerHTML="";
+    var committed=!!S.gate.commit;
+    D.gate.forEach(function(gt,i){
+      var li=document.createElement("li"); var done=!!S.gate[gt.id]; var locked=i>0&&!committed;
+      li.className=(done?"done":"")+(locked?" locked":"");
+      li.innerHTML='<input type="checkbox" id="g-'+gt.id+'" aria-label="'+esc(gt.t)+'"'+(done?" checked":"")+(locked?" disabled":"")+'><label for="g-'+gt.id+'"><b>'+esc(gt.t)+'</b><span>'+esc(gt.s)+'</span></label>';
+      ul.appendChild(li);
+      li.querySelector("input").addEventListener("change",function(e){ S.gate[gt.id]=e.target.checked; save(); buildGate(); render(); });
+    });
+    var n=D.gate.filter(function(x){return S.gate[x.id];}).length;
+    var st=val("gate-status"); st.textContent= committed ? n+" of "+D.gate.length : "Locked"; st.style.color= committed?"var(--good)":"var(--accent)";
+  }
+
+  function render(){
+    painters.forEach(function(p){p();});
+    var marg=g(S,"marg",D.marg)/100, se=g(S,"se",D.se)/100;
+    val("marg-ex").textContent=fmt(1000*marg);
+    var fin=0; funding().forEach(function(r){ var y=(r.per||0)*(r.n||0); fin+=y; if(r._yr) r._yr.textContent=fmt(y); });
+    val("f-total").textContent=fmt(fin);
+    var sp=0, spPaid=0, tax=0; spend().forEach(function(r){ var a=r.amt||0; sp+=a; if(r.paid) spPaid+=a; var t=r.ded?a*marg:0; tax+=t; if(r._tax) r._tax.textContent=r.ded?fmt(t):"—"; });
+    val("sp-total").textContent=fmt(sp); val("sp-tax").textContent=fmt(tax); val("sp-tax2").textContent=fmt(tax);
+    var price=g(S.truck,"price",D.truck.price)||0, pct=g(S.truck,"pct",D.truck.pct), miles=g(S.truck,"miles",D.truck.miles)||0, rate=g(S.truck,"rate",D.truck.rate)||0;
+    val("t-pct-label").textContent=pct+"% · Uber, deliveries, site visits"+(pct<=50?" · must exceed 50% to depreciate":"");
+    var dep=pct>50?price*pct/100:0, mil=miles*rate, best=Math.max(dep,mil), tval=best*marg;
+    val("t-dep").textContent=pct>50?fmt(dep):"— (≤50%)"; val("t-mil").textContent=fmt(mil); val("t-value").textContent=fmt(tval);
+    val("t-best").innerHTML='<span class="pill good">'+(dep>=mil?"Depreciation":"Mileage")+' · '+fmt(best)+' deduction</span>';
+    var ev=0; revenue().forEach(function(r){ var e=(r.amt||0)*((r.conf||0)/100)*(1-se); ev+=e; if(r._ev) r._ev.textContent=fmt(e); });
+    val("r-ev").textContent=fmt(ev);
+    var value=tax+tval+ev;
+    val("s-in").textContent=fmt(fin); val("s-spend").textContent=fmt(sp); val("s-spend-note").textContent=fmt(spPaid)+" paid so far · "+(fin-sp>=0?fmt(fin-sp)+" unallocated":fmt(sp-fin)+" more than funded");
+    val("s-value").textContent=fmt(value);
+    val("s-ratio").textContent= sp>0 ? (value/sp).toFixed(1)+"×" : "—";
+    val("s-ratio-note").textContent= sp>0 ? (value>=sp?"expected to return more than it costs":"below break-even on current confidence") : "add spend lines";
+    val("s-ratio").style.color= sp>0&&value>=sp?"var(--good)":"var(--warn)";
+  }
+
+  buildFunding(); buildSpend(); buildRevenue(); buildGate(); render();
+  val("reset").addEventListener("click",function(){ S=blank(); save(); painters.length=0; location.reload(); });
+})();
+</script>
+
+</body>
+</html>
