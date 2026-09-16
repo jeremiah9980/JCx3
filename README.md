@@ -9,7 +9,8 @@ Static site for GitHub Pages. `index.html` is the master index: every page in th
 | `plan.html` | Settlement Allocation Plan |
 | `cargill-budget-site/index.html` | Cargill Household Budget — payday deposits, personal bills, 401(k), Q1 bonus, reimbursements, checklist |
 | `cargill-budget-site/llc.html` | Cargill Consulting Ledger |
-| `cargill-llc-ledger/index.html` | Consulting Ledger, stand-alone copy for sharing on its own |
+| `cargill-budget-site/runbook.html` | Cargill Consulting Runbook — plan, script, 16 procedures, compliance calendar |
+| `cargill-llc-ledger/index.html` + `runbook.html` | Consulting Ledger + Runbook, stand-alone copies for sharing on their own |
 
 ## Publish
 Upload everything to the root of `main`. Settings → Pages → Deploy from a branch → `main` / `/ (root)`. The site appears at `https://<username>.github.io/JCx3/`.

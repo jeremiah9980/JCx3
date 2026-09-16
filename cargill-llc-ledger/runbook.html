@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Cargill Consulting Runbook</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&display=swap">
+<style>
+:root{
+  --ink:#201e1d; --accent:#ec3013;
+  --bg:#f6f3ee; --surface:#fdfcfa; --surface-2:#efeae2; --line:#d8d1c6; --line-strong:#b9b0a2;
+  --text:#201e1d; --muted:#6f6860; --good:#2e6b3a; --good-bg:#e4efe3; --warn:#9a3b0e; --warn-bg:#f7e6dc; --rule:#201e1d;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+    --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519; --rule:#57524b;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1a1917; --surface:#232120; --surface-2:#2b2927; --line:#3a3733; --line-strong:#57524b;
+  --text:#f1ede6; --muted:#a49c91; --good:#8fd39a; --good-bg:#203526; --warn:#f2a583; --warn-bg:#3e2519; --rule:#57524b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;padding-block:28px 64px;padding-inline:clamp(16px,4vw,40px)}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:clamp(28px,4.5vw,42px);font-stretch:90%;line-height:1.03}
+h2{font-size:22px;margin:40px 0 14px;padding-top:18px;border-top:2px solid var(--rule)}
+h3{font-size:17px}
+h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:12px 0 6px}
+p{margin:0 0 10px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{display:grid;grid-template-columns:1fr auto;gap:16px 32px;align-items:end;padding-bottom:18px}
+header p{color:var(--muted);max-width:62ch;margin:8px 0 0}
+header nav{font-size:13px}
+header nav a{margin-left:14px;font-weight:600;text-decoration:none}
+@media (max-width:760px){header{grid-template-columns:1fr}header nav a{margin:0 14px 0 0}}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:var(--surface);margin-bottom:6px}
+.strip>div{padding:14px 18px;border-left:1px solid var(--line)}
+.strip>div:first-child{border-left:0}
+.strip .big{font-size:26px;font-weight:700;line-height:1;margin-top:6px}
+.strip small{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.strip .result{background:var(--surface-2)}
+@media (max-width:820px){.strip{grid-template-columns:1fr 1fr}.strip>div:nth-child(3){border-left:0}.strip>div:nth-child(n+3){border-top:1px solid var(--line)}}
+.progress{height:6px;background:var(--surface-2);margin:0 0 20px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .2s}
+.callout{background:var(--surface-2);padding:14px 18px;font-size:14px;color:var(--muted);border-left:3px solid var(--accent);margin:14px 0}
+.callout b{color:var(--text)}
+.lead{font-size:17px;max-width:70ch}
+
+/* two-column strategy */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--rule);padding:16px 18px}
+.panel.no{border-top-color:var(--line-strong)}
+.panel ul{margin:8px 0 0;padding-left:18px}
+.panel li{margin-bottom:6px;font-size:14px}
+.panel li b{display:block}
+.panel li span{color:var(--muted)}
+
+/* script */
+.script{list-style:none;margin:0;padding:0}
+.script li{display:grid;grid-template-columns:150px 1fr;gap:6px 18px;padding:14px 0;border-bottom:1px solid var(--line)}
+.script li:last-child{border-bottom:0}
+.script .when{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700;padding-top:3px}
+.script b{display:block;font-size:16px}
+.script span{color:var(--muted);font-size:14px}
+.script .rbs{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}
+.script .rbs a{font-size:11px;font-weight:700;letter-spacing:.06em;border:1px solid var(--line-strong);color:var(--muted);padding:2px 7px;text-decoration:none}
+.script .rbs a:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:600px){.script li{grid-template-columns:1fr}}
+
+/* runbook */
+.rb{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--rule);margin-bottom:18px}
+.rb.gate{border-top-color:var(--accent)}
+.rb.done{border-top-color:var(--good)}
+.rb-head{display:grid;grid-template-columns:auto 1fr auto;gap:12px 14px;align-items:start;padding:14px 18px;border-bottom:1px solid var(--line)}
+.rb-head .id{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--accent);padding-top:3px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.rb-head .sum{color:var(--muted);font-size:14px;margin-top:2px}
+.rb-head .meta{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;font-size:12px}
+.rb-head .meta span{border:1px solid var(--line);padding:2px 8px;color:var(--muted);white-space:nowrap}
+.rb-head .meta .who{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.rb-head .meta .who.j{border-color:var(--ink);color:var(--text)}
+.rb-head .meta .who.s{border-color:var(--accent);color:var(--accent)}
+.rb-head .meta .who.b{background:var(--ink);border-color:var(--ink);color:#fff}
+:root[data-theme="dark"] .rb-head .meta .who.b, :root:not([data-theme="light"]) .rb-head .meta .who.b{background:var(--text);color:var(--bg);border-color:var(--text)}
+@media (max-width:700px){.rb-head{grid-template-columns:auto 1fr}.rb-head .meta{grid-column:1/-1;justify-content:flex-start}}
+.rb-body{display:grid;grid-template-columns:1fr 280px;gap:0}
+@media (max-width:820px){.rb-body{grid-template-columns:1fr}}
+.steps{padding:6px 18px 14px}
+.steps ol{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);counter-increment:s;align-items:start;font-size:14px}
+.steps li:last-child{border-bottom:0}
+.steps li input{width:18px;height:18px;accent-color:var(--accent);margin:2px 0 0;cursor:pointer}
+.steps li label{cursor:pointer}
+.steps li.done label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-strong)}
+.steps li label small{display:block;color:var(--muted);font-size:12px;text-decoration:none}
+.side{border-left:1px solid var(--line);padding:6px 18px 14px;font-size:13px;color:var(--muted);background:var(--surface-2)}
+@media (max-width:820px){.side{border-left:0;border-top:1px solid var(--line)}}
+.side h4{margin-top:10px}
+.side p{margin:0 0 6px}
+.side b{color:var(--text)}
+.side .verify{border-left:3px solid var(--good);padding-left:10px}
+.side .pit{border-left:3px solid var(--warn);padding-left:10px}
+.side code, .steps code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--surface);padding:1px 5px;border:1px solid var(--line)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line)}
+th,td{padding:9px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto}
+td.mo{font-weight:700;white-space:nowrap}
+.tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-top:30px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.tools button{font:inherit;font-weight:600;font-size:13px;border:1px solid var(--line-strong);background:transparent;color:var(--text);padding:7px 12px;cursor:pointer}
+.tools button:hover{border-color:var(--accent);color:var(--accent)}
+footer{color:var(--muted);font-size:13px;max-width:76ch;margin-top:12px}
+</style>
+
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">Cargill Consulting LLC · La Marque, Texas · establishment plan</div>
+    <h1>Cargill Consulting Runbook</h1>
+    <p>The plan, the dated script, and the step-by-step procedures to stand up the LLC at Jesica's address inside the Texas City / La Marque Enterprise Zone — built around the incentives and certifications that actually pay for a two-family consulting shell, and honest about the ones that don't.</p>
+  </div>
+  <nav><a href="#strategy">Strategy</a><a href="#script">Script</a><a href="#runbook">Runbook</a><a href="#calendar">Calendar</a><a href="#decisions">Decisions</a><a href="index.html" target="_blank" rel="noopener">Ledger ↗</a></nav>
+</header>
+
+<div class="strip">
+  <div><div class="eyebrow">Runbook steps done</div><div class="big num" id="s-done">0 / 0</div><small>ticks save on this device</small></div>
+  <div><div class="eyebrow">Formation cost</div><div class="big num">~$425</div><small>SOS $300 · two DBAs $50 · county filings ~$75</small></div>
+  <div><div class="eyebrow">Year-one setup</div><div class="big num">~$4,900</div><small>+ insurance, certs, demo kit, tooling — on the ledger</small></div>
+  <div class="result"><div class="eyebrow">Formation week</div><div class="big">Jan 2027</div><small>so the truck's first business year is a full one</small></div>
+</div>
+<div class="progress"><span id="s-bar" style="width:0%"></span></div>
+
+<!-- ============ STRATEGY ============ -->
+<h2 id="strategy">Strategy in one screen</h2>
+<p class="lead">Cargill Consulting is a consulting shell: it engages small and medium businesses on a project basis. Cooper and Myles deliver access-control and security-system installs and small-business websites; Jesica runs Cargill Home (owner's-rep project management); Jeremiah is the senior engineer behind every proposal. The LLC is registered at Jesica's La Marque address, owned 51% by Jesica so it qualifies as woman-owned, and it earns its way in through certifications and local buyers rather than through incentives written for factories.</p>
+
+<div class="two">
+  <div class="panel">
+    <h3>What pays, in order</h3>
+    <ul>
+      <li><b>Texas HUB certification + local vendor registrations</b><span>Free. Puts the LLC on the lists that La Marque, Texas City, Galveston County, College of the Mainland and TCISD are pushed to buy from — and small IT/security jobs under their bid thresholds can be awarded without a solicitation. The most reliable first-year revenue source on this page.</span></li>
+      <li><b>La Marque EDC Chamber Membership Grant</b><span>A paid first year in the Texas City–La Marque Chamber: every clinic, realtor and shop owner who'd buy a camera install or a website is in that room. Take it the week the LLC exists.</span></li>
+      <li><b>The EDC as navigator, not funder</b><span>Their "grant or loan procurement assistance" means staff who help a local business find and apply for outside money — and who know which Enterprise Zone employers must hire zone residents. That's a placement channel for Cooper and Myles and a customer list.</span></li>
+      <li><b>WOSB (federal) + Roth IRAs + business credit</b><span>Free credentials that compound: WOSB through SBA, earned income from LLC wages opening Roths at 22, a D-U-N-S file and net-30 tradelines building a Paydex 80 within a year.</span></li>
+      <li><b>DPS route via a licensed partner</b><span>Identity/network work needs no license; camera and access installs do. Cooper and Myles register as installers under a licensed alarm contractor, bank the documented experience, and the LLC pursues its own Class B in year two.</span></li>
+    </ul>
+  </div>
+  <div class="panel no">
+    <h3>What we're not chasing yet — and why</h3>
+    <ul>
+      <li><b>Texas Enterprise Zone Program</b><span>A state sales-tax refund for a city-nominated "enterprise project": scarce nominations (105 statewide per biennium), capital investment from ~$40,000 up, full-time jobs at the county average wage, 25% zone-resident hires. Not a two-person LLC in year one. Revisit at a shop, a van and installers on payroll.</span></li>
+      <li><b>Tax abatements · IRBs · Freeport</b><span>Need taxable property, a facility, or inventory leaving the state. None apply to a home-based consultancy.</span></li>
+      <li><b>Texas Leverage Fund · Capital Fund · TMAC</b><span>Money the city or EDC borrows for an employer's infrastructure, and a manufacturing extension program. Not for us.</span></li>
+      <li><b>Business Improvement / Sign funds</b><span>Curb-appeal grants for a storefront on a main thoroughfare. Worth knowing if Cargill Home ever takes a space; not worth chasing before.</span></li>
+      <li><b>Utility rate reductions · fee waivers · fast-track</b><span>Negotiated on industrial usage and real construction. File under "later".</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="callout"><b>The one structural decision that unlocks everything above:</b> Jesica holds at least 51% of the membership interest and runs day-to-day operations. That is the test for Texas HUB (woman-owned, Texas resident, active in the business) and for federal WOSB. Jeremiah at 49% keeps his role as senior engineer and reviewer without touching eligibility. Cooper and Myles join later by a written path to membership. Decide this in RB-01 — before filing, not after.</div>
+
+<!-- ============ SCRIPT ============ -->
+<h2 id="script">The script</h2>
+<p class="muted">Dated, in order. Each step names the runbook procedures it runs. The gate in RB-01 comes first and nothing recurring moves until it's signed.</p>
+<ol class="script">
+  <li><div class="when">Now · Sep–Oct 2026</div><div><b>Agree the structure. Sign the gate.</b><span>Jesica's role and 51% stake, Jeremiah's 49%, the boys' path to membership, the truck-use terms — one operating agreement, one sit-down, signed before the settlement money lands. Name check and domain the same week.</span><div class="rbs"><a href="#rb-01">RB-01</a><a href="#rb-02">RB-02</a></div></div></li>
+  <li><div class="when">Sep 30 · Oct 2026</div><div><b>La Marque City Hall: apply, then pitch.</b><span>The City has two open IT roles (Junior Systems Administrator, Network Security IT Specialist — $48K each, closing Sep 30). Cooper or Myles applies now: municipal IT experience is the résumé the plan wants and it makes us known inside City Hall. In October Jeremiah asks the IT lead / City Manager for twenty minutes with the co-managed IT proposal: if either seat is still empty by Thanksgiving, a six-month pilot under the $50K quote threshold can start the week the LLC exists. CJIS clearances and Texas Mutual's outside-employment disclosure come first.</span><div class="rbs"><a href="#rb-15">RB-15</a><a href="#rb-13">RB-13</a></div></div></li>
+  <li><div class="when">Oct–Dec 2026</div><div><b>Credentials before customers.</b><span>Cooper: Security+ and a manufacturer cert. Myles: SC-300 and Network+. Jesica: Google PM certificate. Open the conversation with a licensed La Marque / Texas City alarm contractor about registering the boys as installers under them. Exam fees come from the LLC seed once filed — keep receipts.</span><div class="rbs"><a href="#rb-13">RB-13</a></div></div></li>
+  <li><div class="when">Dec 2026</div><div><b>Pre-stage the paperwork.</b><span>Draft the Certificate of Formation, list the DBAs, pick the bank, pick the bookkeeping tool, get insurance quotes so binding is a phone call in January. Ask Texas Mutual HR whether part of the March bonus can be routed to the 401(k).</span><div class="rbs"><a href="#rb-03">RB-03</a><a href="#rb-08">RB-08</a><a href="#rb-14">RB-14</a></div></div></li>
+  <li><div class="when">Jan 2027 · formation week</div><div><b>File. EIN. Bank. Same week.</b><span>Monday: Certificate of Formation on SOSDirect ($300). Tuesday: EIN online (free, instant). Wednesday: business checking with the filed certificate and EIN. Thursday: Comptroller sales-tax permit. Friday: DBAs. The LLC exists, banks, and can invoice by the weekend.</span><div class="rbs"><a href="#rb-03">RB-03</a><a href="#rb-04">RB-04</a><a href="#rb-05">RB-05</a><a href="#rb-06">RB-06</a><a href="#rb-07">RB-07</a></div></div></li>
+  <li><div class="when">Jan–Feb 2027</div><div><b>Insurance, Chamber, EDC.</b><span>Bind GL + E&amp;O. Call the La Marque EDC: ask for the Chamber Membership Grant and a fifteen-minute meeting about what a small "Application for Incentives" would need to show. Attend the first Chamber mixer with a one-page services sheet.</span><div class="rbs"><a href="#rb-08">RB-08</a><a href="#rb-09">RB-09</a></div></div></li>
+  <li><div class="when">Feb–Mar 2027</div><div><b>Certify and register everywhere that buys.</b><span>Texas HUB application (allow ~90 days). SAM.gov UEI, then WOSB. Vendor registration with La Marque, Texas City, Galveston County, College of the Mainland, TCISD. D-U-N-S number and first two net-30 accounts. First customer is the LLC's own Microsoft 365 tenant at a written internal price.</span><div class="rbs"><a href="#rb-10">RB-10</a><a href="#rb-11">RB-11</a><a href="#rb-05">RB-05</a><a href="#rb-15">RB-15</a></div></div></li>
+  <li><div class="when">Mar 2027</div><div><b>Bonus lands. Payroll starts.</b><span>The LLC slice of the Q1 bonus moves to business checking per the ledger. Cooper and Myles go on W-2 for logged hours (CPA confirms W-2 vs 1099); each opens a Roth IRA with the first paystub.</span><div class="rbs"><a href="#rb-12">RB-12</a></div></div></li>
+  <li><div class="when">Apr–Jun 2027</div><div><b>Sell the first three products.</b><span>Identity Baseline (fixed price, no license) to a clinic or realtor from the Chamber; first website build; first Camera + Access Starter delivered as registered installers under the partner's license. Every job on the ledger with its confidence raised to 100%. First quarterly sales-tax return filed.</span><div class="rbs"><a href="#rb-15">RB-15</a><a href="#rb-13">RB-13</a><a href="#rb-14">RB-14</a></div></div></li>
+  <li><div class="when">May 15, 2027</div><div><b>First franchise-tax filing.</b><span>No tax due under the $2.65M threshold, but the Public Information Report is mandatory — miss it and the Comptroller forfeits the LLC's right to do business. Calendar it now.</span><div class="rbs"><a href="#rb-14">RB-14</a></div></div></li>
+  <li><div class="when">Jul–Sep 2027</div><div><b>Retainers. HUB in hand. The girls' LLC.</b><span>Convert installs to monthly managed-security retainers. HUB certificate arrives — update every vendor profile and the proposal template. Kelsie files her own LLC (RB-16) in time for the TWU StartUP grant window, September 1–23.</span><div class="rbs"><a href="#rb-15">RB-15</a><a href="#rb-10">RB-10</a><a href="#rb-16">RB-16</a></div></div></li>
+  <li><div class="when">Oct–Dec 2027</div><div><b>Year-one review. Own license path.</b><span>Walk the ledger: dollars in vs. value back. If one of the boys has the documented experience, schedule the DPS qualified-manager exam and the LLC's own Class B application. Revisit EDC job-creation incentives only if there's a headcount to show.</span><div class="rbs"><a href="#rb-13">RB-13</a><a href="#rb-09">RB-09</a></div></div></li>
+</ol>
+
+<!-- ============ RUNBOOK ============ -->
+<h2 id="runbook">Runbook</h2>
+<p class="muted">Sixteen procedures. Each has an owner, prerequisites, exact steps, cost, time, a verification, and the pitfall that catches people. Tick steps as you go — ticks save on this device.</p>
+<div id="rbs"></div>
+
+<!-- ============ CALENDAR ============ -->
+<h2 id="calendar">Compliance calendar</h2>
+<div class="tablewrap"><table>
+  <thead><tr><th>When</th><th>What</th><th>Owner</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td class="mo">Jan 20 · Apr 20 · Jul 20 · Oct 20</td><td>Texas sales &amp; use tax return</td><td>Jesica</td><td>Quarterly unless the Comptroller assigns monthly/annual. Security services and installs are taxable; website/data-processing charges are taxable on 80% of the fee. File even if $0.</td></tr>
+    <tr><td class="mo">May 15</td><td>Franchise tax — Public Information Report</td><td>Jeremiah</td><td>No tax due under $2.65M revenue (2026 threshold), but the PIR is required every year. Forfeiture follows a missed one.</td></tr>
+    <tr><td class="mo">Jan 31</td><td>W-2s / 1099-NECs issued</td><td>Jeremiah</td><td>Payroll provider files them if Cooper and Myles are W-2; 1099-NEC by the LLC if contractors.</td></tr>
+    <tr><td class="mo">Mar 15</td><td>Partnership return (Form 1065) + K-1s</td><td>CPA</td><td>Multi-member LLC files as a partnership by default; extension to Sep 15 if needed. Members report K-1 income on personal returns.</td></tr>
+    <tr><td class="mo">Apr 15 · Jun 15 · Sep 15 · Jan 15</td><td>Estimated taxes on LLC profit</td><td>Each member</td><td>Only once the LLC is actually profitable; the CPA sets the amounts.</td></tr>
+    <tr><td class="mo">Anniversary of policy</td><td>GL + E&amp;O renewal</td><td>Jesica</td><td>Re-quote every year; coverage floor is whatever the DPS license and PM contracts demand.</td></tr>
+    <tr><td class="mo">Every 10 years</td><td>Assumed-name certificates expire</td><td>Jesica</td><td>State Form 503 and county filings; set the reminder the day they're filed.</td></tr>
+    <tr><td class="mo">Every 4 years</td><td>HUB recertification</td><td>Jesica</td><td>The Comptroller sends notice; ownership and control must still be 51% Jesica.</td></tr>
+    <tr><td class="mo">Annually</td><td>SAM.gov registration renewal</td><td>Jeremiah</td><td>Lapses silently; WOSB status depends on an active UEI.</td></tr>
+    <tr><td class="mo">Sep 1–23</td><td>TWU StartUP grant window (girls' LLC)</td><td>Kelsie</td><td>Draft the application in August; $500 owner match ready.</td></tr>
+    <tr><td class="mo">Monthly</td><td>Books closed · mileage log reconciled · Nav credit file checked</td><td>Jeremiah</td><td>Twelve of these is a clean year-end and a Paydex score.</td></tr>
+  </tbody>
+</table></div>
+
+<!-- ============ DECISIONS ============ -->
+<h2 id="decisions">Decisions log</h2>
+<div class="tablewrap"><table>
+  <thead><tr><th>Decision</th><th>Recommendation</th><th>Why</th><th>Decide by</th></tr></thead>
+  <tbody>
+    <tr><td><b>Ownership split</b></td><td>Jesica 51% · Jeremiah 49%</td><td>Unlocks HUB and WOSB; Jeremiah keeps architect/reviewer role. Anything under 51% for Jesica forfeits both certifications.</td><td>RB-01 · Oct 2026</td></tr>
+    <tr><td><b>Registered agent &amp; address</b></td><td>Jesica, at her La Marque address</td><td>Places the LLC in the Enterprise Zone and La Marque EDC's jurisdiction; free vs. $100+/yr for a service. The address becomes public record on the SOS filing.</td><td>RB-03</td></tr>
+    <tr><td><b>Cooper &amp; Myles: W-2 or 1099</b></td><td>W-2 through a payroll provider</td><td>They work under Jeremiah's direction with the LLC's tools — that's employment. W-2 also gives clean earned income for Roths and a paystub for the truck refinance. CPA confirms.</td><td>RB-12 · Mar 2027</td></tr>
+    <tr><td><b>Tax treatment</b></td><td>Default partnership; revisit S-corp at ~$40K+ steady profit</td><td>S-corp election saves self-employment tax only once profit covers reasonable member salaries plus payroll cost. Not year one.</td><td>CPA · Dec 2027</td></tr>
+    <tr><td><b>Truck: depreciation vs. mileage</b></td><td>CPA runs both in year one</td><td>Bonus depreciation on the business share usually wins on a $40K truck at 60%+ use; mileage wins if use is lower or the truck is cheap. The method mostly sticks for the vehicle's life.</td><td>Apr 2028 return</td></tr>
+    <tr><td><b>Own DPS Class B license</b></td><td>Apply once one installer has the documented experience</td><td>Until then the partner's cut is the cost of getting legal experience. Rushing it fails the qualified-manager requirement.</td><td>Q4 2027 review</td></tr>
+    <tr><td><b>Enterprise Zone nomination</b></td><td>Do not pursue before a shop, van and payroll exist</td><td>City nominations are scarce and the minimum investment and wage tests aren't met by a home-based shell.</td><td>Revisit 2028</td></tr>
+  </tbody>
+</table></div>
+
+<h2>Contacts &amp; links</h2>
+<div class="tablewrap"><table>
+  <thead><tr><th>Who</th><th>For</th><th>Where</th></tr></thead>
+  <tbody>
+    <tr><td>Texas Secretary of State · SOSDirect</td><td>Name search, Certificate of Formation (Form 205), assumed names (Form 503)</td><td><a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank" rel="noopener">sos.state.tx.us — SOSDirect</a></td></tr>
+    <tr><td>IRS</td><td>EIN, free, online</td><td><a href="https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number" target="_blank" rel="noopener">irs.gov — Get an EIN</a></td></tr>
+    <tr><td>Texas Comptroller</td><td>Sales &amp; use tax permit, franchise tax / PIR, HUB certification</td><td><a href="https://comptroller.texas.gov/taxes/permit/" target="_blank" rel="noopener">Sales tax permit</a> · <a href="https://comptroller.texas.gov/purchasing/vendor/hub/" target="_blank" rel="noopener">HUB program</a> · <a href="https://comptroller.texas.gov/taxes/franchise/forms/2026-franchise.php" target="_blank" rel="noopener">2026 franchise forms</a></td></tr>
+    <tr><td>La Marque EDC</td><td>Chamber Membership Grant, Application for Incentives, navigator meeting</td><td>1130 1st Street, La Marque 77568 · 409-938-9200 · <a href="https://cityoflamarque.gov/188/Applications-for-Incentives" target="_blank" rel="noopener">Applications for Incentives</a></td></tr>
+    <tr><td>Texas City–La Marque Chamber</td><td>Membership (via the EDC grant), mixers, member directory = prospect list</td><td>Ask the EDC for the current contact</td></tr>
+    <tr><td>Galveston County Clerk</td><td>County assumed-name filings</td><td>League City / Galveston offices — file after the state Form 503</td></tr>
+    <tr><td>Texas DPS · Private Security</td><td>Installer registrations, Class B company license, qualified manager exam</td><td><a href="https://www.dps.texas.gov/section/private-security" target="_blank" rel="noopener">dps.texas.gov — Private Security</a></td></tr>
+    <tr><td>SBA</td><td>SAM.gov UEI, WOSB certification</td><td><a href="https://sam.gov" target="_blank" rel="noopener">sam.gov</a> · <a href="https://certify.sba.gov" target="_blank" rel="noopener">certify.sba.gov</a></td></tr>
+    <tr><td>UH SBDC · Galveston County</td><td>Free business advising, grant navigation, HUB application help</td><td><a href="https://www.sbdc.uh.edu" target="_blank" rel="noopener">sbdc.uh.edu</a></td></tr>
+    <tr><td>Dun &amp; Bradstreet · Nav</td><td>D-U-N-S number (free), business credit monitoring (free tier)</td><td><a href="https://www.dnb.com/duns.html" target="_blank" rel="noopener">dnb.com/duns</a> · <a href="https://www.nav.com" target="_blank" rel="noopener">nav.com</a></td></tr>
+    <tr><td>TWU Center for Women Entrepreneurs</td><td>StartUP grant (girls' LLC), Sep 1–23</td><td><a href="https://twu.edu/center-women-entrepreneurs/grant-dates/" target="_blank" rel="noopener">twu.edu — grant dates</a></td></tr>
+  </tbody>
+</table></div>
+
+<div class="tools">
+  <span>Ticks are saved on <b>this device only</b>. The plan itself is Jeremiah's to update.</span>
+  <button id="reset" type="button">Reset all ticks</button>
+</div>
+<footer>Planning arithmetic and sequencing, not legal or tax advice. Fees and thresholds as of September 2026: SOS filing $300, assumed name $25, franchise no-tax-due threshold $2.65M with the PIR still required, Enterprise Zone tiers per the Governor's office. Have the operating agreement, the W-2/1099 call and the truck method confirmed by a CPA and an attorney before filing.</footer>
+</div>
+
+<script>
+(function(){
+  var RB=[
+    {id:"rb-01",gate:true,title:"Commitment & operating agreement — the gate",sum:"Jesica commits; ownership, roles and the truck terms go on paper before anything is filed.",who:"b",when:"Sep–Oct 2026",cost:"$0–$400",time:"2 sittings",
+      pre:"Both of you have read the Family Board LLC view and this page. Settlement money not yet moved.",
+      steps:[["Sit down once, no laptop: does Jesica want to own and run this? Yes/no, in her words.","Fiduciary control means the deposits to her accounts and her stake in the business are decided together. If it's no, the household budget still works — the LLC just stays Jeremiah's side project."],
+             ["Agree the split: Jesica 51%, Jeremiah 49%.","51% woman-owned is the test for Texas HUB and federal WOSB. Write the number down."],
+             ["Write the boys' path to membership.","e.g. 5% each after 12 months and $X in retainers brought in, vesting on signature of an amendment. Not members on day one — members at 22 with no capital in muddies the HUB 'control' test."],
+             ["Attach the truck-use agreement from the Family Board as Exhibit A.","Title and loan personal to Jeremiah; LLC reimburses business miles or takes depreciation; named drivers; Cooper's buy-in path."],
+             ["Set the capital contributions.","Settlement seed $1,500 from Jeremiah, sweat equity and the La Marque address from Jesica — record both so the K-1s make sense later."],
+             ["Draft the operating agreement from a Texas template; have an attorney read it (~$300–400) or use a legal-plan benefit if Texas Mutual offers one.","Texas doesn't require an operating agreement to be filed, but banks, HUB and WOSB will all ask for it."],
+             ["Sign, date, scan to the LLC folder. Tick the gate on the ledger.",""]],
+      verify:"A signed PDF exists in the shared LLC folder and the ledger's gate step 1 is ticked.",
+      pit:"Filing the LLC first and 'sorting the percentages later'. The SOS filing doesn't list owners, so nothing stops you — but every certification application asks for the operating agreement, and rewriting it after the bank account exists is where families fall out."},
+    {id:"rb-02",title:"Name, domain, DBAs",sum:"Confirm 'Cargill Consulting LLC' is available and lock the web names before anyone else does.",who:"j",when:"Sep–Oct 2026",cost:"$15–40/yr domains",time:"1 hour",
+      pre:"None.",
+      steps:[["Search the name on SOSDirect (taxable-entity search) and the Comptroller's franchise-tax account search.","'Cargill Consulting' must not be deceptively similar to an existing Texas entity. Have two fallbacks: 'Cargill Consulting Group LLC', 'Cargill Family Consulting LLC'."],
+             ["Check the assumed names too: Cargill Secure, Cargill Home.","Same search; DBAs can't conflict with a registered entity name either."],
+             ["Register domains: cargillconsulting.co or similar, plus the two DBAs if cheap.","Cloudflare or Porkbun; turn on auto-renew; put them in the LLC's name once it exists."],
+             ["Reserve the name with the SOS only if filing is more than a month away (Form 501, $40, 120 days).","Otherwise skip — RB-03 files in January and the reservation is wasted money."]],
+      verify:"Name search shows no conflict; domains resolve to a parking page.",
+      pit:"Buying a .com you love before checking the Texas name — the entity name and the brand should match or the DBAs multiply."},
+    {id:"rb-03",title:"File the Certificate of Formation",sum:"Form 205 on SOSDirect. Registered agent Jesica at the La Marque address. $300. The LLC exists when this is approved.",who:"s",when:"Mon, formation week · Jan 2027",cost:"$300 (+$25 expedite optional)",time:"45 min online · approval 1–3 business days",
+      pre:"RB-01 signed. RB-02 clear. A credit card. Jesica's consent to serve as registered agent (keep the signed consent form in the folder — it isn't filed but the law requires it).",
+      steps:[["Create an SOSDirect account and start Form 205, Certificate of Formation — Limited Liability Company.",""],
+             ["Entity name: exactly as searched in RB-02, ending in 'LLC'.",""],
+             ["Registered agent: Jesica, individual; registered office: her La Marque street address (no P.O. box).","This address becomes public record. That's the trade for being inside the zone and the EDC's jurisdiction."],
+             ["Governing authority: member-managed. List Jesica and Jeremiah as the initial members with the La Marque address.",""],
+             ["Purpose: 'any lawful purpose'. Organizer: whoever is typing.",""],
+             ["Effective date: on filing. Pay $300. Download the filed certificate and the file number the moment it's approved.","Save as Certificate-of-Formation.pdf in the LLC folder; you'll upload it to the bank, the Comptroller, HUB and SAM."]],
+      verify:"SOS 'Business Organizations Inquiry' shows the LLC as 'In existence' with a file number.",
+      pit:"Listing the LLC's own name as its registered agent — Texas rejects it. The agent must be a person or another registered entity."},
+    {id:"rb-04",title:"Federal EIN",sum:"Free, online, instant. Do it the day the SOS approval lands.",who:"j",when:"Tue, formation week",cost:"$0",time:"15 min",
+      pre:"Filed certificate with file number. Jesica's SSN (she's the responsible party as majority member).",
+      steps:[["Go to irs.gov → Get an EIN → apply online, weekdays 7am–10pm Eastern.","Third-party sites charge for this. The IRS never does."],
+             ["Entity: LLC, 2 members, Texas. Responsible party: Jesica.","A two-member LLC defaults to partnership taxation — fine for now (see Decisions)."],
+             ["Reason: started new business. First wages: March 2027 if the boys go W-2; answer 'yes, will have employees'.",""],
+             ["Download the CP-575 letter as PDF immediately — it isn't re-issued.","Save to the LLC folder. Banks want this exact letter."]],
+      verify:"CP-575 PDF in the folder with a 9-digit EIN.",
+      pit:"Closing the browser before saving the letter. You'll wait weeks for a replacement 147C by mail."},
+    {id:"rb-05",title:"Business banking, D-U-N-S, credit file",sum:"One checking account every LLC dollar moves through — and the start of the business-credit track.",who:"s",when:"Wed, formation week; net-30s from Feb",cost:"$0–$15/mo",time:"1 hour at the bank · 20 min online",
+      pre:"Filed certificate, EIN letter, operating agreement, both members' IDs.",
+      steps:[["Open business checking in the LLC's name — a local credit union or a no-fee business account (Relay, Bluevine, Mercury) if a branch doesn't matter.","Both members as signers. Order a debit card. No personal spending from it, ever."],
+             ["Move the $1,500 settlement seed in as the capital contribution; note it in the books as such.",""],
+             ["Apply for a free D-U-N-S number at dnb.com (2–5 business days).","Uses the LLC name, EIN and La Marque address exactly as filed."],
+             ["Open a free Nav account to watch the D&B and Experian Business files.",""],
+             ["From February: open two net-30 vendor accounts that report (Uline, Quill, Summa Office Supplies). Buy something the LLC actually needs, pay early, repeat monthly.","This is how a Paydex score is manufactured. Six months of it and a business card without personal utilization reporting becomes realistic."],
+             ["Month 6+: apply for a business credit card that doesn't report to Jesica's personal file unless in default (Amex, Chase Ink, Capital One Spark).","The personal guarantee is unavoidable at this size; the reporting policy is the thing to choose on."]],
+      verify:"Account open with the seed deposited; D-U-N-S issued; first net-30 tradeline showing on Nav by April.",
+      pit:"Paying a business expense from a personal card 'just this once' — it pierces the liability shield and wrecks the books. Reimburse through an expense report if it happens."},
+    {id:"rb-06",title:"Texas Comptroller: sales tax permit & franchise account",sum:"Security services, installs and (80% of) web work are taxable in Texas. Get the permit before the first invoice.",who:"s",when:"Thu, formation week",cost:"$0",time:"30 min",
+      pre:"EIN, filed certificate, bank account.",
+      steps:[["The franchise-tax account is created automatically from the SOS filing — look it up on the Comptroller's taxable-entity search a week later and note the 11-digit taxpayer number.",""],
+             ["Apply for a Sales and Use Tax Permit online (Texas Online Tax Registration).","NAICS: 561621 Security Systems Services and 541511/541512 for the IT and web work. Estimated monthly taxable sales: small — the Comptroller assigns quarterly filing."],
+             ["Learn the two rates that matter: security services and installation of security equipment are fully taxable; 'data processing services' (website design/hosting) are taxable on 80% of the charge. Consulting/PM fees (Cargill Home) generally aren't.","Put the rules on the invoice template so the tax line is right the first time."],
+             ["Set up a resale/exemption certificate file for equipment bought for resale on installs.",""],
+             ["Calendar the return dates (20th after quarter-end). File $0 returns until sales start.","A missed $0 return still draws a penalty."]],
+      verify:"Permit number issued; WebFile access works; first return date on the calendar.",
+      pit:"Invoicing a camera install without tax because 'we're a consultancy'. The Comptroller audits security companies specifically for this."},
+    {id:"rb-07",title:"Assumed names (DBAs)",sum:"Cargill Secure and Cargill Home as state and county assumed names under the LLC.",who:"s",when:"Fri, formation week",cost:"$25 each state · ~$25 each county",time:"40 min",
+      pre:"LLC in existence; RB-02 names clear.",
+      steps:[["File Form 503, Assumed Name Certificate, on SOSDirect for each DBA ($25 each, 10-year term).",""],
+             ["File the same names with the Galveston County Clerk (the LLC's principal office county).","Texas law expects both state and county filings for an LLC's assumed names."],
+             ["Give the bank the filed certificates so checks written to 'Cargill Secure' deposit.",""],
+             ["Set a reminder for the 10-year expiry.",""]],
+      verify:"Both certificates in the folder; bank accepts DBA deposits.",
+      pit:"Signing a customer contract as 'Cargill Secure' with no DBA on file — the contract's fine but the customer's check may bounce at the bank."},
+    {id:"rb-08",title:"Insurance: GL + E&O",sum:"Required by DPS for security work and by any owner's-rep PM agreement. Quote in December, bind in January.",who:"s",when:"Dec 2026 quotes · Jan 2027 bind",cost:"~$1,200–1,800/yr combined",time:"2 hours of quotes",
+      pre:"LLC filed (or filing date set); a one-paragraph description of the work.",
+      steps:[["Get three quotes for general liability ($1M/$2M) plus professional liability / E&O covering IT consulting and project management.","Hiscox, Next, and a local independent agent. Describe the work as IT consulting, low-voltage installation under a licensed partner, and construction project management (no trade work)."],
+             ["Ask each about a cyber-liability rider — cheap while small, and clients in healthcare will ask.",""],
+             ["Bind in January to the LLC's name and La Marque address; pay annually from business checking.",""],
+             ["Store the certificate of insurance (COI) in the folder; customers and the DPS partner will ask for it.",""]],
+      verify:"COI in hand naming the LLC; premium paid from business checking.",
+      pit:"A policy that excludes 'security and alarm services' — read the exclusions page, not the summary."},
+    {id:"rb-09",title:"La Marque EDC & Chamber",sum:"The Chamber Membership Grant, the navigator meeting, and the prospect list that comes with both.",who:"s",when:"Jan–Feb 2027",cost:"$0",time:"1 call · 1 meeting · 1 mixer",
+      pre:"LLC in existence at the La Marque address; a one-page services sheet.",
+      steps:[["Call the La Marque EDC (409-938-9200): ask for the Chamber Membership Grant application and a fifteen-minute meeting.",""],
+             ["In the meeting, ask three things: what a small business must show for an 'Application for Incentives' to be worth filing; which Enterprise Zone employers have resident-hiring requirements this cycle; whether they run or know of any small-business grant rounds.","You're establishing the LLC as a local employer-to-be and the boys as zone-resident hires."],
+             ["Submit the Chamber grant; on approval join the Texas City–La Marque Chamber and pull the member directory.","The directory is the first-quarter prospect list for Identity Baselines and websites."],
+             ["Attend the first mixer with the services sheet and a QR to the site. Book two follow-ups.",""],
+             ["Log the grant's value as a funding line on the ledger.",""]],
+      verify:"Chamber membership active at no cost to the LLC; EDC contact name in the contacts table.",
+      pit:"Pitching the EDC for money. Pitch them for introductions — that's what they have for a business this size."},
+    {id:"rb-10",title:"Texas HUB certification + local vendor registrations",sum:"Free, ~90 days. The lists that public buyers in Galveston County are pushed to spend from.",who:"s",when:"Feb 2027 (allow to May)",cost:"$0",time:"3 hours to assemble",
+      pre:"Operating agreement showing 51% Jesica; EIN; certificate; bank statement; Jesica's Texas ID; prior-year tax return if any.",
+      steps:[["Apply through the Comptroller's HUB program (Centralized Master Bidders List first, then the HUB application).","Categories: woman-owned. Jesica must show she's active in day-to-day operations — the operating agreement's management section should say so plainly."],
+             ["Upload: certificate of formation, operating agreement, EIN letter, ID, bank signature card, a short narrative of who does what.",""],
+             ["While it processes, register as a vendor with: City of La Marque, City of Texas City, Galveston County Purchasing, College of the Mainland, Texas City ISD, and the Galveston County Health District.","Each has a vendor form; use the same NAICS codes as RB-06. Ask each purchasing office for their small-purchase threshold — jobs under it can be awarded on quotes."],
+             ["When the HUB certificate arrives, add the number to every vendor profile, the proposal template and the website footer.",""],
+             ["Recertify every four years; report any ownership change.",""]],
+      verify:"HUB certificate PDF with a certificate number; six vendor registrations confirmed by email.",
+      pit:"An operating agreement that says 'members manage jointly'. HUB reads that as Jesica not controlling the business. Name her as managing member."},
+    {id:"rb-11",title:"SAM.gov + WOSB",sum:"Federal registration and woman-owned status. Mostly a credential at this size — and the paperwork drill that makes HUB easy.",who:"j",when:"Feb–Mar 2027",cost:"$0",time:"2 hours + waiting",
+      pre:"RB-10 documents; a notarized letter appointing the entity administrator (SAM requires it).",
+      steps:[["Register the entity on SAM.gov to get a Unique Entity ID (UEI). Free; beware paid look-alike sites.",""],
+             ["Complete the full registration (CAGE code assigned automatically) so the LLC can be paid by a federal or federally funded buyer.",""],
+             ["Apply for WOSB on certify.sba.gov with the same document set; Jesica signs as the 51% owner and manager.",""],
+             ["Renew SAM annually; calendar it.",""]],
+      verify:"Active SAM registration with UEI; WOSB shown as certified in the SBA portal.",
+      pit:"Letting SAM lapse — it deactivates silently and WOSB rides on it."},
+    {id:"rb-12",title:"Payroll for Cooper & Myles · Roth IRAs",sum:"Real wages, real records. W-2 through a payroll provider; each paystub opens a Roth.",who:"j",when:"Mar 2027, as the bonus slice lands",cost:"~$40–50/mo payroll service",time:"1 hour setup",
+      pre:"CPA's W-2 vs 1099 call (Decisions); EIN; bank; Texas Workforce Commission account (payroll provider sets it up).",
+      steps:[["Choose a payroll provider (Gusto or similar); enter the LLC, EIN, bank and the TWC account.",""],
+             ["Add Cooper and Myles as hourly W-2 employees at a written rate; they log hours per job in the shared tracker.","Texas has no state income tax; the provider handles federal withholding, FICA and TWC unemployment."],
+             ["Run the first payroll from the bonus slice. Save the paystubs — they're also the income proof for Cooper's truck refinance later.",""],
+             ["Each opens a Roth IRA (Fidelity/Schwab) and sets an automatic transfer from each paycheck.","Earned income is the unlock; the runway at 22 is the point."],
+             ["Record wages as LLC expense on the ledger's spend list so expected value stays honest.",""]],
+      verify:"First payroll run; two Roth accounts funded; W-2 registered with TWC.",
+      pit:"Paying them cash 'until it's steady'. No credit history, no Roth eligibility, no refinance paystub, and an audit problem."},
+    {id:"rb-13",title:"Credentials & DPS registration under a licensed partner",sum:"Identity work needs no license. Cameras and access control do — start under a licensed alarm contractor and bank the experience.",who:"j",when:"Oct 2026 → ongoing",cost:"~$1,500 exams · ~$200 DPS registrations",time:"3–6 months of study",
+      pre:"Study plan agreed with Cooper and Myles; the LLC seed to expense fees after formation.",
+      steps:[["Cooper: CompTIA Security+ and a manufacturer certification (Verkada, Ubiquiti Protect or Axis Academy — free or cheap). Myles: Microsoft SC-300 and Network+.",""],
+             ["Identify two licensed Class B alarm/security contractors in La Marque, Texas City or League City. Propose: the boys register with DPS as installers under their license, they take a cut on installs, Cargill Secure owns the customer and the retainer.",""],
+             ["Each completes the DPS individual registration (fingerprints, background check) sponsored by the partner.",""],
+             ["Log every install: date, site, scope, hours, supervising license number. This is the documented-experience file for the LLC's own qualified manager later.",""],
+             ["Year two: when one of them qualifies, sit the DPS qualified-manager exam and file the LLC's Class B company license application (insurance from RB-08 is a prerequisite).",""]],
+      verify:"Certs on file; two DPS registration cards; a partner agreement in writing; install log started.",
+      pit:"Installing a camera 'for a friend's shop' for money before registration. Class A misdemeanor in Texas, and it forfeits the license path."},
+    {id:"rb-14",title:"Bookkeeping & compliance calendar",sum:"One ledger, one folder, one calendar. Twelve monthly closes is a clean year.",who:"j",when:"Formation week, then monthly",cost:"$0–$30/mo",time:"1 hour setup · 30 min/month",
+      pre:"Bank account (RB-05).",
+      steps:[["Pick the books: Wave (free) or QuickBooks Simple Start. Connect business checking. Chart of accounts: consulting income, install income, web income, COGS-equipment, wages, insurance, certs, software, mileage reimbursement.",""],
+             ["Create the LLC folder (shared drive): Formation, Tax, Insurance, Contracts, Payroll, Certifications, Install Log, Receipts/YYYY-MM.",""],
+             ["Start the mileage log the day the truck comes home (any IRS-format app); reconcile monthly.",""],
+             ["Put the compliance calendar on this page into the shared calendar with two-week reminders: sales tax (20th after quarter), PIR (May 15), 1065/K-1s (Mar 15), SAM renewal, insurance renewal, DBA expiry.",""],
+             ["Federal beneficial-ownership (BOI) reporting: as of 2025 FinCEN exempted domestic companies — confirm with the CPA at formation that nothing is due.",""],
+             ["Monthly close: categorize, reconcile, photograph receipts, update the ledger's Paid ticks and confidence percentages.",""]],
+      verify:"Books reconcile to the bank each month; every calendar item has an owner.",
+      pit:"Skipping the Public Information Report because 'no tax is due'. The report is still mandatory; forfeiture follows."},
+    {id:"rb-15",title:"First customers & the proposal kit",sum:"Two customers make a startup. The first is internal at a written price; the second comes from the Chamber directory.",who:"j",when:"Feb–Jun 2027",cost:"$0",time:"ongoing",
+      pre:"LLC banking and invoicing (RB-05, RB-06); services sheet.",
+      steps:[["Write the three fixed-price products: Small-Business Identity Baseline (M365/Entra MFA, conditional access, admin separation, backup check, one-page report); Website Build (5-page site, hosting, domain, 1 year of updates); Camera + Access Starter (4–8 cameras, 1–2 doors, tied to the identity baseline, delivered under the partner license).","Price them once; put them on one page."],
+             ["Customer #1: the LLC's own tenant and website, invoiced at the internal price. Customer #2: Kelsie & Kinsley's LLC (website + baseline) — a real invoice between two real entities.",""],
+             ["Customer #3+: the Chamber directory — clinics, therapists, realtors, landlords. Ten conversations, two proposals, one signed by June.",""],
+             ["City of La Marque co-managed IT: leave the proposal in October; if a posted IT seat is still vacant by late November, submit a six-month pilot quote under $50,000 for a January start.","Both roles\u2019 duties mapped to service lines in the proposal document. CJIS Security Addendum, fingerprinting and Security Awareness training for anyone touching police systems; Texas Mutual outside-employment disclosure filed first."],
+             ["Every install converts to a monthly managed-security retainer ($150–300): identity monitoring, camera health, access-list changes, quarterly review.",""],
+             ["Each signed job: raise its confidence on the ledger to 100% and add the next one at 50%.",""]],
+      verify:"Three invoices paid to business checking by June 30; one retainer live.",
+      pit:"Building product four before product one has a paying external customer. The rule stands: a product with no customer is a school project."},
+    {id:"rb-16",title:"Kelsie & Kinsley's LLC (phase 2)",sum:"Their own women-owned Texas LLC — Kelsie sole member now, Kinsley by agreement at 18 — run through this same runbook, aimed at the September grant window.",who:"j",when:"Jun–Aug 2027 file · Sep 1–23 grant",cost:"$300 + $500 grant match",time:"same runbook, lighter",
+      pre:"Kelsie's decision; a one-page plan naming her line (cottage-food or food pop-up) and Kinsley's (tutoring).",
+      steps:[["Run RB-01 for them: Kelsie 100% member; a written clause granting Kinsley an interest on her 18th birthday tied to hours and revenue; Kinsley as W-2 employee meanwhile.","No custodial ownership for Kinsley — it muddies 'owned and controlled by women' for HUB and WOSB."],
+             ["RB-02 → RB-07 as written, at whichever address they'll operate from. Texas Cottage Food Law lets Kelsie sell qualifying foods from home with no permit up to $50,000/yr.",""],
+             ["RB-05's credit track for Kelsie personally: secured or student card, autopay one bill, authorized user on your oldest card. Kinsley: authorized user now, own card at 18.",""],
+             ["RB-10 HUB (woman-owned) and RB-11 WOSB — free, and the application drill is the lesson.",""],
+             ["August: draft the TWU Center for Women Entrepreneurs StartUP grant ($5,000; Texas women-owned; under 5 years; ≤5 employees; $500 owner match). Submit September 1–23. Attend the required training if awarded.",""],
+             ["Their first vendor: Cargill Consulting (website + identity baseline). Their first customer for tutoring: the Chamber directory's parents.",""]],
+      verify:"LLC in existence by August; grant application submitted in the window; first invoice between the two LLCs.",
+      pit:"Filing in early September to 'make the window' — the grant wants an established entity with a match in hand. File in summer."}
+  ];
+  var WHO={j:"Jeremiah",s:"Jesica",b:"Both"};
+  var KEY="cargill-runbook-v1", S; try{ S=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ S={}; }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  var host=document.getElementById("rbs"), total=0;
+  RB.forEach(function(r){
+    var sec=document.createElement("section"); sec.className="rb"+(r.gate?" gate":""); sec.id=r.id;
+    var stepsHtml=r.steps.map(function(st,i){ var k=r.id+"-"+i; total++; return '<li class="'+(S[k]?"done":"")+'"><input type="checkbox" id="'+k+'"'+(S[k]?" checked":"")+'><label for="'+k+'">'+esc(st[0])+(st[1]?'<small>'+esc(st[1])+'</small>':'')+'</label></li>'; }).join("");
+    sec.innerHTML='<div class="rb-head"><div class="id">'+r.id.toUpperCase()+'</div><div><h3>'+esc(r.title)+'</h3><div class="sum">'+esc(r.sum)+'</div></div><div class="meta"><span class="who '+r.who+'">'+WHO[r.who]+'</span><span>'+esc(r.when)+'</span><span>'+esc(r.cost)+'</span><span>'+esc(r.time)+'</span></div></div>'+
+      '<div class="rb-body"><div class="steps"><h4>Steps</h4><ol>'+stepsHtml+'</ol></div><div class="side"><h4>Prerequisites</h4><p>'+esc(r.pre)+'</p><h4>Verify</h4><p class="verify">'+esc(r.verify)+'</p><h4>Pitfall</h4><p class="pit">'+esc(r.pit)+'</p></div></div>';
+    host.appendChild(sec);
+  });
+  function refresh(){
+    var done=0; document.querySelectorAll('.steps input[type=checkbox]').forEach(function(cb){ if(cb.checked) done++; cb.closest("li").classList.toggle("done",cb.checked); });
+    document.querySelectorAll(".rb").forEach(function(sec){ var cbs=sec.querySelectorAll('input[type=checkbox]'), n=0; cbs.forEach(function(c){ if(c.checked) n++; }); sec.classList.toggle("done",cbs.length>0&&n===cbs.length); });
+    document.getElementById("s-done").textContent=done+" / "+total;
+    document.getElementById("s-bar").style.width=(total?Math.round(done/total*100):0)+"%";
+  }
+  host.addEventListener("change",function(e){ if(e.target.type==="checkbox"){ S[e.target.id]=e.target.checked; if(!e.target.checked) delete S[e.target.id]; save(); refresh(); } });
+  document.getElementById("reset").addEventListener("click",function(){ S={}; save(); document.querySelectorAll('.steps input').forEach(function(c){c.checked=false;}); refresh(); });
+  refresh();
+})();
+</script>
+
+</body>
+</html>
